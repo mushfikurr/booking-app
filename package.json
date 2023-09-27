@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.3.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
@@ -26,14 +27,16 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@types/node": "latest",
+    "@types/node": "^20.7.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "prisma": "^5.3.1",
     "tailwindcss": "latest",
-    "typescript": "latest"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   }
 }
