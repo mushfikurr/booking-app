@@ -6,20 +6,21 @@ import { ArrowRight } from "lucide-react";
 export default function Home() {
   return (
     <main className="container max-w-5xl">
-      <div className="py-4 flex flex-col gap-8">
-        <div className="flex flex-col gap-1 rounded-lg py-16 px-16 border border-border bg-muted/20">
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4 rounded-lg py-16 px-16 border border-border bg-muted/20">
           <h1 className="text-4xl sm:text-5xl font-bold">
-            Booking made simple.
+            Booking made{" "}
+            <span className="bg-clip-text bg-gradient-to-r from-primary to-primary/70 text-transparent">
+              simple
+            </span>
+            .
           </h1>
           <div className="flex flex-col gap-1">
             <p className="text-md text-muted-foreground">
               Discover services near you
             </p>
             <div className="flex gap-2 max-w-md">
-              <Input
-                placeholder="Some input"
-                className="focus:ring-0 focus:ring-offset-0"
-              />
+              <Input placeholder="Some input" />
               <ComboboxDemo />
             </div>
           </div>
