@@ -27,7 +27,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-semibold">Featured services</h2>
-          <div className="grid grid-cols-3 gap-8">
+          <div className="sm:grid grid-cols-3 gap-8">
             <div className="flex flex-col border border-border rounded-md py-4 group">
               <div className="flex-grow h-32"></div>
               <div className="flex container justify-between items-center">
