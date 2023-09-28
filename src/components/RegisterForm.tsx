@@ -16,13 +16,20 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
+import { useState } from "react";
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegistrationSchema>>({
     resolver: zodResolver(RegistrationSchema),
   });
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   function onSubmit(values: z.infer<typeof RegistrationSchema>) {
+    setIsLoading(true);
     const payload = {
       name: values.name,
       email: values.email,
@@ -31,7 +38,13 @@ const RegisterForm = () => {
 
     axios
       .post("/api/register", payload)
-      .then((resp) => console.log(resp))
+      .then((resp) => {
+        setIsLoading(false);
+        router.push("/login");
+        toast({
+          description: "Registration successful! Please sign in.",
+        });
+      })
       .catch(() => alert("error"));
   }
 
@@ -95,7 +108,7 @@ const RegisterForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" isLoading={isLoading}>
             Register
           </Button>
         </form>
