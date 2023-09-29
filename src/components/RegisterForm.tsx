@@ -1,6 +1,6 @@
 "use client";
 
-import RegistrationSchema from "@/lib/form/register-form-schema";
+import { RegistrationSchema } from "@/lib/form/register-form-schema";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

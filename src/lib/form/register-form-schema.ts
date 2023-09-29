@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 
-const RegistrationSchema = z
+export const RegistrationSchema = z
   .object({
     name: z
       .string({
@@ -33,7 +33,7 @@ const RegistrationSchema = z
     path: ["confirmPassword"],
   });
 
-const BusinessRegistrationSchema = z
+export const BusinessRegistrationPersonalSchema = z
   .object({
     name: z
       .string({
@@ -58,33 +58,36 @@ const BusinessRegistrationSchema = z
     confirmPassword: z.string({
       required_error: "Please confirm the password you have entered",
     }),
-    streetAddress1: z
-      .string({
-        required_error: "Street Address 1 is required",
-        invalid_type_error: "Street Address 1 must be a valid string",
-      })
-      .min(2, {
-        message: "Street Address 1 must be at least 2 characters long",
-      }),
-    streetAddress2: z
-      .string({
-        invalid_type_error: "Street Address 2 must be a valid string",
-      })
-      .min(2, {
-        message: "Street Address 2 must be at least 2 characters long",
-      }),
-    postcode: z
-      .string({
-        required_error: "Postcode is required",
-        invalid_type_error: "Postcode must be a valid string",
-      })
-      .regex(/^\w{5,8}$/, {
-        message: "Postcode must be a valid UK postcode format",
-      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
-export default RegistrationSchema;
+export const BusinessRegistrationLocationSchema = z.object({
+  streetAddress1: z
+    .string({
+      required_error: "Street Address 1 is required",
+      invalid_type_error: "Street Address 1 must be a valid string",
+    })
+    .min(2, {
+      message: "Street Address 1 must be at least 2 characters long",
+    }),
+  streetAddress2: z
+    .string({
+      invalid_type_error: "Street Address 2 must be a valid string",
+    })
+    .min(2, {
+      message: "Street Address 2 must be at least 2 characters long",
+    })
+    .optional()
+    .or(z.literal("")),
+  postcode: z
+    .string({
+      required_error: "Postcode is required",
+      invalid_type_error: "Postcode must be a valid string",
+    })
+    .regex(/^\w{5,8}$/, {
+      message: "Postcode must be a valid UK postcode format",
+    }),
+});

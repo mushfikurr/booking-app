@@ -30,7 +30,7 @@ export const NavbarAuthenticated: FC<NavbarAuthenticatedProps> = ({
   image,
 }) => {
   return (
-    <div className="fixed top-0 inset-x-0 h-fit0 z-[10] py-3 border-border border-b">
+    <div className="fixed top-0 inset-x-0 h-fit z-[10] py-3 bg-background border-border border-b">
       <div className="container flex justify-between items-center">
         <div className="flex items-center h-full">
           <Link className="hover:text-primary transition ease-in-out" href="/">
@@ -126,7 +126,7 @@ const NavLink: FC<NavLinkProps> = ({ route, displayName }) => {
 
 export default function Navbar() {
   return (
-    <div className="fixed top-0 inset-x-0 h-fit0 z-[10] py-3 border-border border-b">
+    <div className="fixed top-0 inset-x-0 h-fit bg-background z-[10] py-3 border-border border-b">
       <div className="container flex justify-between items-center">
         <div className="flex items-center h-full">
           <Link className="hover:text-primary transition ease-in-out" href="/">
