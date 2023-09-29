@@ -25,16 +25,6 @@ import { FC, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import InitialForm from "./InitialBusinessRegisterForm";
 
-export const BUSINESS_REGISTRATION_PAGES = [
-  {
-    displayName: "Personal details",
-    // component: <PersonalForm />,
-    icon: <Contact2 />,
-  },
-  { displayName: "Location", icon: <MapPin /> },
-  { displayName: "Review", icon: <Check /> },
-];
-
 const forms: CaptureFormProps[] = [
   {
     pageNumber: 0,
@@ -240,12 +230,19 @@ function Stepper() {
   const completeVariant = "bg-primary text-primary-foreground";
   const inProgressVariant =
     "text-secondary-foreground border-secondary-foreground bg-secondary";
+  const STEPS = [
+    {
+      displayName: "Personal details",
+      icon: <Contact2 />,
+    },
+    { displayName: "Location", icon: <MapPin /> },
+    { displayName: "Review", icon: <Check /> },
+  ];
 
   return (
     <div className="flex bg-accent p-3 rounded-md w-full h-full mb-4 sm:w-[500px] overflow-clip px-4">
       <div className="flex justify-between items-center w-full relative">
-        {BUSINESS_REGISTRATION_PAGES.map((page, idx) => (
-          // Find a better way to write this logic TODO
+        {STEPS.map((page, idx) => (
           <div
             className={cn(
               "rounded-full p-2 text-secondary-foreground/60 transition duration-150 ease-in-out",

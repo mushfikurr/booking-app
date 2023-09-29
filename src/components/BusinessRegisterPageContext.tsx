@@ -1,9 +1,4 @@
-import {
-  BusinessRegistrationLocationType,
-  BusinessRegistrationPersonalType,
-} from "@/lib/form/register-form";
 import { ReactNode, createContext, useContext, useMemo, useState } from "react";
-import { BUSINESS_REGISTRATION_PAGES } from "./BusinessRegisterForm";
 
 interface PageContextType {
   currentPage: number;
@@ -70,13 +65,6 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
       },
       prevPage: () => {
         setCurrentPage((prevPage) => prevPage - 1);
-      },
-      seekPage: (pageNumber: number) => {
-        if (
-          pageNumber > 0 &&
-          pageNumber < BUSINESS_REGISTRATION_PAGES.length + 1
-        )
-          setCurrentPage(pageNumber);
       },
     }),
     [currentPage]
