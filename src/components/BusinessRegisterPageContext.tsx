@@ -11,26 +11,9 @@ interface PageContextType {
   prevPage: () => void;
   seekPage: (pageNumber: number) => void;
   isPageFilled: (pageNumber: number) => boolean;
-  fillPersonalFormValues: (
-    formValues: BusinessRegistrationPersonalType
-  ) => void;
-  fillLocationFormValues: (
-    formValues: BusinessRegistrationLocationType
-  ) => void;
-  emptyPersonalFormValues: () => void;
-  emptyLocationFormValues: () => void;
-  // TODO:
-  personalFormValues: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  };
-  locationFormValues: {
-    streetAddress1: string;
-    streetAddress2: string;
-    postcode: string;
-  };
+  pushToAllFormValues: (values: {}, index: number) => void;
+  clearFormValueAtIndex: (index: number) => void;
+  allFormValues: object[];
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -49,25 +32,38 @@ interface PageProviderProps {
 
 export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [personalFormValues, setPersonalFormValues] = useState({});
-  const [locationFormValues, setLocationFormValues] = useState({});
+  const [allFormValues, setAllFormValues] = useState<{}[]>([]);
 
   const contextValue = useMemo(
     () => ({
       currentPage,
-      personalFormValues,
-      locationFormValues,
-      fillPersonalFormValues: (values: BusinessRegistrationPersonalType) => {
-        setPersonalFormValues((prevValues) => ({ ...prevValues, ...values }));
+      allFormValues,
+      pushToAllFormValues: (values: {}, index: number) => {
+        setAllFormValues((prevValues) => {
+          const newValues = [...prevValues];
+
+          if (index >= 0 && index < newValues.length) {
+            newValues[index] = values;
+          } else {
+            newValues.push(values);
+          }
+
+          return newValues;
+        });
       },
-      fillLocationFormValues: (values: BusinessRegistrationLocationType) => {
-        setLocationFormValues((prevValues) => ({ ...prevValues, ...values }));
-      },
-      emptyPersonalFormValues: () => {
-        setPersonalFormValues({});
-      },
-      emptyLocationFormValues: () => {
-        setLocationFormValues({});
+      clearFormValueAtIndex: (index: number) => {
+        setAllFormValues((prevValues) => {
+          console.log("Attempting to clearFormValue at index ", index);
+          if (index >= 0 && index < prevValues.length) {
+            const newValues = [
+              ...prevValues.slice(0, index),
+              ...prevValues.slice(index + 1),
+            ];
+            console.log("Success clearFormValue ", index);
+            return newValues;
+          }
+          return prevValues;
+        });
       },
       nextPage: () => {
         setCurrentPage((prevPage) => prevPage + 1);
