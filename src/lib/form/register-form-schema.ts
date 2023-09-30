@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import * as z from "zod";
 
 export const RegistrationSchema = z
@@ -33,6 +34,24 @@ export const RegistrationSchema = z
     path: ["confirmPassword"],
   });
 
+const doesAttributeExistForUser = async (
+  attribute: string,
+  attributeName: string,
+  value: any
+) => {
+  const uniqueQuery = await axios.post("/api/register/attributeExists", {
+    attribute,
+    attributeName,
+    value,
+  });
+
+  if (uniqueQuery.data.exists === true) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const BusinessRegistrationPersonalSchema = z
   .object({
     name: z
@@ -62,7 +81,18 @@ export const BusinessRegistrationPersonalSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  });
+  })
+  .refine(
+    async (data) => {
+      const doesEmailExistForUser = await doesAttributeExistForUser(
+        "email",
+        "email",
+        data.email
+      );
+      return !doesEmailExistForUser; // accept if the email does not exist
+    },
+    { message: "This email has already been registered.", path: ["email"] }
+  );
 
 export const BusinessRegistrationLocationSchema = z.object({
   streetAddress1: z
@@ -91,3 +121,31 @@ export const BusinessRegistrationLocationSchema = z.object({
       message: "Postcode must be a valid UK postcode format",
     }),
 });
+
+type DataItem = Record<string, any>;
+type SchemaItem = z.ZodSchema<any>;
+
+export function unifyAndValidateData(
+  data: DataItem[],
+  schemas: SchemaItem[]
+): any {
+  const validatedData: Record<string, any> = {};
+
+  for (const item of data) {
+    for (const schema of schemas) {
+      try {
+        const parsedItem = schema.parse(item);
+
+        for (const key in parsedItem) {
+          validatedData[key] = parsedItem[key];
+        }
+
+        break;
+      } catch (error) {
+        continue;
+      }
+    }
+  }
+
+  return validatedData;
+}

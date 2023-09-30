@@ -19,11 +19,13 @@ import { cn } from "@/lib/utils";
 import {
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
+  unifyAndValidateData,
 } from "@/lib/form/register-form-schema";
 import { ZodTypeAny, z } from "zod";
 import { FC, useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import InitialForm from "./InitialBusinessRegisterForm";
+import { useToast } from "./ui/use-toast";
 
 const forms: CaptureFormProps[] = [
   {
@@ -41,14 +43,14 @@ const forms: CaptureFormProps[] = [
       {
         name: "email",
         label: "Email Address",
-        description: "This will be used for logging into your account.",
+        description: "This will be the email for logging into your account.",
         placeholder: "johndoe@gmail.com",
         type: "email",
       },
       {
         name: "password",
         label: "Password",
-        description: "This will be used for logging into your account.",
+        description: "This will be the password for logging into your account.",
         type: "password",
       },
       {
@@ -150,7 +152,6 @@ const CaptureForm: FC<CaptureFormProps> = ({
     nextPage,
     prevPage,
     pushToAllFormValues,
-    allFormValues,
     clearFormValueAtIndex,
   } = usePageContext();
   const [isLoading, setIsLoading] = useState(false);
@@ -261,10 +262,30 @@ function Stepper() {
 }
 
 function Review() {
-  const { currentPage, prevPage } = usePageContext();
+  const { currentPage, prevPage, allFormValues } = usePageContext();
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   if (currentPage !== 3) return;
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      console.log(
+        unifyAndValidateData(allFormValues, [
+          BusinessRegistrationLocationSchema,
+          BusinessRegistrationPersonalSchema,
+        ])
+      );
+      setIsLoading(false);
+    } catch (error) {
+      toast({
+        title: "There was an error handling your registration.",
+        description: `${error}`,
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="gap-4 space-y-1 leading-snug items-center">
@@ -274,10 +295,14 @@ function Review() {
           {/* <AvatarImage alt={`${personalFormValues?.name}'s Profile Picture`} /> */}
           {/* <AvatarFallback>{formValues?.name[0]}</AvatarFallback> */}
         </Avatar>
-        <div></div>
-        <Button variant="secondary" onClick={prevPage}>
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
+        <div className="flex justify-between">
+          <Button variant="secondary" onClick={prevPage}>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button onClick={handleSubmit}>
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
     </div>
   );
