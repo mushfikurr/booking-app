@@ -58,29 +58,33 @@ const ButtonLoading = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, isLoading = false, asChild = false, ...props },
+    {
+      className,
+      variant,
+      children,
+      isLoading,
+      size,
+      asChild = false,
+      ...props
+    },
     ref
   ) => {
-    // Extend shadcn component to allow for loading buttons by passing isLoading prop in. (works with custom theme)
-    if (isLoading) {
-      return (
-        <ButtonLoading
-          className={className}
-          variant={variant}
-          size={size}
-          isLoading={isLoading}
-          asChild={asChild}
-        />
-      );
-    }
-
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        {isLoading ? (
+          <React.Fragment>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <span>{children}</span>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>{children}</React.Fragment>
+        )}
+      </Comp>
     );
   }
 );
