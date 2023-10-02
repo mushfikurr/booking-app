@@ -12,14 +12,6 @@ const Register = async () => {
         </TabsList>
         <TabsContent value="personal">
           <div className="container flex w-full flex-col space-y-6 py-8 sm:min-w-[600px] sm:w-[600px] border border-border rounded-lg">
-            <div>
-              <h1 className="font-bold text-3xl">Register an account</h1>
-              <h3 className="text-lead text-foreground/70">
-                Create a new account with us to unlock features such as{" "}
-                <strong>booking, reviewing, and more</strong>!
-              </h3>
-            </div>
-
             <RegisterForm />
           </div>
         </TabsContent>

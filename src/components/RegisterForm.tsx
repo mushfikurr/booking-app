@@ -19,6 +19,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 import { useState } from "react";
+import { CaptureForm, CaptureFormProps } from "./CaptureForm";
 
 const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegistrationSchema>>({
@@ -48,72 +49,44 @@ const RegisterForm = () => {
       .catch(() => alert("error"));
   }
 
+  const captureFormProps: CaptureFormProps = {
+    title: "Register an account",
+    description:
+      "Create a new account with us to unlock features such as booking, reviewing, and more!",
+    schema: RegistrationSchema,
+    onSubmit,
+    isLoading,
+    formFields: [
+      {
+        name: "name",
+        label: "Name",
+        placeholder: "John Stone.",
+        description: "Your public display name.",
+      },
+      {
+        name: "email",
+        label: "Email Address",
+        placeholder: "john@stone.com",
+        description: "This will be used for logging into your account.",
+        type: "email",
+      },
+      {
+        name: "password",
+        label: "Password",
+        type: "password",
+      },
+      {
+        name: "confirmPassword",
+        label: "Confirm Password",
+        type: "password",
+      },
+    ],
+    submitButtonText: "Register",
+    submitButtonClassNames: "w-full",
+  };
+
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Stone" {...field} />
-                </FormControl>
-                <FormDescription>Your public display name.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email Address</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="john@stone.com" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This will be used for logging into your account.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm your password</FormLabel>
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full" isLoading={isLoading}>
-            Register
-          </Button>
-        </form>
-      </Form>
-    </div>
+      <CaptureForm {...captureFormProps} />
   );
 };
 
