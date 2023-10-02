@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronLeft, Contact2, MapPin } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { PageProvider, usePageContext } from "./BusinessRegisterPageContext";
 import {
   Form,
@@ -11,8 +11,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
+} from "../ui/form";
+import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
@@ -23,11 +23,12 @@ import {
 } from "@/lib/form/register-form-schema";
 import { ZodTypeAny, z } from "zod";
 import { FC, useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import InitialForm from "./InitialBusinessRegisterForm";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "../ui/use-toast";
+import { CaptureFormProps } from "../CaptureForm";
 
-const forms: CaptureFormProps[] = [
+const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 0,
     title: "Personal details",
@@ -113,7 +114,7 @@ function BusinessRegisterFormWithProvider() {
           <InitialForm />
           {forms.map((form, idx) => {
             const CaptureFormProps = { ...form, pageNumber: idx + 1 };
-            return <CaptureForm {...CaptureFormProps} />;
+            return <MultiCaptureForm {...CaptureFormProps} key={form.title} />;
           })}
           <Review />
         </div>
@@ -122,24 +123,11 @@ function BusinessRegisterFormWithProvider() {
   );
 }
 
-interface CaptureFormField {
-  name: string;
-  label: string;
-  placeholder?: string;
-  description: string;
-  type?: string;
-}
-
-interface CaptureFormProps {
+interface MultiCaptureFormProps extends CaptureFormProps {
   pageNumber: number;
-  title: string;
-  description: string;
-  schema: ZodTypeAny;
-  formFields: CaptureFormField[];
-  submitButtonText: string;
 }
 
-const CaptureForm: FC<CaptureFormProps> = ({
+const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
   pageNumber,
   title,
   schema,
@@ -200,8 +188,8 @@ const CaptureForm: FC<CaptureFormProps> = ({
                     <FormLabel>{formField.label}</FormLabel>
                     <FormControl>
                       <Input
-                        type={formField.type}
-                        placeholder={formField.placeholder}
+                        type={formField.type ?? ""}
+                        placeholder={formField.placeholder ?? ""}
                         {...field}
                       />
                     </FormControl>
@@ -299,7 +287,7 @@ function Review() {
           <Button variant="secondary" onClick={prevPage}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button onClick={handleSubmit}>
+          <Button onClick={handleSubmit} isLoading={isLoading}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
         </div>

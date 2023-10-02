@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { usePageContext } from "./BusinessRegisterPageContext";
 import { Activity, CalendarPlus, MessageCircle } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Link from "next/link";
 
 const RenderIcon = ({ children }: { children: ReactNode }) => {
-  return <div className="bg-primary rounded-full p-2">{children}</div>;
+  return <span className="bg-primary rounded-full p-2">{children}</span>;
 };
 
 export default function InitialForm() {

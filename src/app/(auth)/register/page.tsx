@@ -1,4 +1,4 @@
-import BusinessRegisterForm from "@/components/BusinessRegisterForm";
+import BusinessRegisterForm from "@/components/BusinessRegisterForm/BusinessRegisterForm";
 import RegisterForm from "@/components/RegisterForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 

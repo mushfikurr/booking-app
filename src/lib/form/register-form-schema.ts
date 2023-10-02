@@ -70,7 +70,19 @@ export const BusinessRegistrationPersonalSchema = z
       .email({
         message: "Email has to be in a suitable format (example@domain.com)",
       })
-      .max(256, { message: "Email must be a maximum of 256 characters long" }),
+      .max(256, { message: "Email must be a maximum of 256 characters long" })
+      .refine(
+        async (val) => {
+          // This seems to run when any input changes. Transition to react-use-hook instead of in schema?
+          const doesEmailExistForUser = await doesAttributeExistForUser(
+            "email",
+            "email",
+            val
+          );
+          return !doesEmailExistForUser;
+        },
+        { message: "This email has already been registered." }
+      ),
     password: z
       .string({ required_error: "Password is required" })
       .min(5, { message: "A password must be at least 5 characters long" }),
@@ -81,18 +93,7 @@ export const BusinessRegistrationPersonalSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
-  })
-  .refine(
-    async (data) => {
-      const doesEmailExistForUser = await doesAttributeExistForUser(
-        "email",
-        "email",
-        data.email
-      );
-      return !doesEmailExistForUser; // accept if the email does not exist
-    },
-    { message: "This email has already been registered.", path: ["email"] }
-  );
+  });
 
 export const BusinessRegistrationLocationSchema = z.object({
   streetAddress1: z
