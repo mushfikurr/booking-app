@@ -1,6 +1,19 @@
 "use client";
 
-import { Check, ChevronLeft, Contact2, MapPin } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  Contact,
+  Contact2,
+  MailCheck,
+  MailOpen,
+  MailSearch,
+  Mailbox,
+  Mails,
+  MapPin,
+  Phone,
+  Smartphone,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { PageProvider, usePageContext } from "./BusinessRegisterPageContext";
 import {
@@ -17,6 +30,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import {
+  BusinessRegistrationContactSchema,
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
   unifyAndValidateData,
@@ -65,6 +79,31 @@ const forms: MultiCaptureFormProps[] = [
   },
   {
     pageNumber: 1,
+    title: "Contact details",
+    description: "Allow users to get in touch for fast access",
+    schema: BusinessRegistrationContactSchema,
+    formFields: [
+      {
+        name: "phoneNumber",
+        label: "Phone Number",
+        description: "Must be a valid UK number",
+      },
+      {
+        name: "businessEmail",
+        label: "Business Email",
+        description:
+          "A business email that users can contact you with enquiries",
+      },
+      {
+        name: "instagram",
+        label: "Instagram",
+        description: "Must be a valid Instagram handle",
+      },
+    ],
+    submitButtonText: "Next",
+  },
+  {
+    pageNumber: 2,
     title: "Location",
     description:
       "Simplify the booking process by allowing customers to locate you.",
@@ -103,13 +142,13 @@ export default function BusinessRegisterForm() {
 function BusinessRegisterFormWithProvider() {
   const { currentPage } = usePageContext();
   return (
-    <div className="mb-16">
+    <div className="mb-16 flex gap-3">
       {currentPage > 0 && (
-        <div className="flex justify-center">
+        <div className="flex flex-col">
           <Stepper />
         </div>
       )}
-      <div className="container flex gap-8 space-y-6 py-8 sm:min-w-[600px] sm:w-[600px] border border-border rounded-lg">
+      <div className="flex-grow container flex gap-8 space-y-6 py-8 sm:min-w-[550px] sm:w-[550px] border border-border rounded-lg mr-[64px]">
         <div className="flex-grow">
           <InitialForm />
           {forms.map((form, idx) => {
@@ -123,7 +162,8 @@ function BusinessRegisterFormWithProvider() {
   );
 }
 
-interface MultiCaptureFormProps extends CaptureFormProps {
+interface MultiCaptureFormProps extends Omit<CaptureFormProps, "onSubmit"> {
+  // Omit onSubmit as the submit for multipage registration is the same for all pages.
   pageNumber: number;
 }
 
@@ -215,33 +255,60 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
 };
 
 function Stepper() {
-  const { currentPage, seekPage, allFormValues } = usePageContext();
-  const completeVariant = "bg-primary text-primary-foreground";
-  const inProgressVariant =
-    "text-secondary-foreground border-secondary-foreground bg-secondary";
+  const { currentPage, allFormValues } = usePageContext();
+
+  const stepperIconClassNames = "h-6 w-6";
   const STEPS = [
     {
       displayName: "Personal details",
-      icon: <Contact2 />,
+      icon: <Contact2 className={stepperIconClassNames} />,
     },
-    { displayName: "Location", icon: <MapPin /> },
-    { displayName: "Review", icon: <Check /> },
+    {
+      displayName: "Contact details",
+      icon: <Smartphone className={stepperIconClassNames} />,
+    },
+    {
+      displayName: "Location",
+      icon: <MapPin className={stepperIconClassNames} />,
+    },
+    {
+      displayName: "Review",
+      icon: <Check className={stepperIconClassNames} />,
+    },
   ];
 
+  const completeVariant = "bg-primary text-primary-foreground";
+  const inProgressVariant =
+    "text-foreground/80 border-secondary-foreground bg-secondary";
+
   return (
-    <div className="flex bg-accent p-3 rounded-md w-full h-full mb-4 sm:w-[500px] overflow-clip px-4">
-      <div className="flex justify-between items-center w-full relative">
+    <div className="flex flex-col pl-3 pr-6 py-8 rounded-md h-fit mb-4 w-fit overflow-clip px-4">
+      <div className="flex flex-col gap-8 w-full relative">
         {STEPS.map((page, idx) => (
           <div
-            className={cn(
-              "rounded-full p-2 text-secondary-foreground/60 transition duration-150 ease-in-out",
-              currentPage === idx + 1 && inProgressVariant, // Steppers should highlight when they are in progress (currentPage)
-              allFormValues.length >= idx + 1 && completeVariant, // Steppers should highlight primary colour if there is a valid formValue object in each
-              currentPage === forms.length + 1 && completeVariant // Last page (review page) should highlight all steppers
-            )}
             key={page.displayName}
+            className={`flex flex-row-reverse items-center animate-in fade-in slide-in-from-right-2 duration-200 ease-in-out`}
           >
-            {page.icon}
+            <div
+              className={cn(
+                "rounded-full p-3 ml-3 text-secondary-foreground/60 transition duration-150 ease-in-out",
+                currentPage === idx + 1 && inProgressVariant, // Steppers should highlight when they are in progress (currentPage)
+                allFormValues.length >= idx + 1 && completeVariant, // Steppers should highlight primary colour if there is a valid formValue object in each
+                currentPage === forms.length + 1 && completeVariant // Last page (review page) should highlight all steppers
+              )}
+            >
+              {page.icon}
+            </div>
+            <p
+              className={cn(
+                "text-foreground/60 text-sm",
+                currentPage === idx + 1 && "text-foreground/80",
+                allFormValues.length >= idx + 1 && "text-foreground",
+                currentPage === forms.length + 1 && "text-foreground"
+              )}
+            >
+              {page.displayName}
+            </p>
           </div>
         ))}
       </div>
@@ -254,7 +321,7 @@ function Review() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  if (currentPage !== 3) return;
+  if (currentPage !== forms.length + 1) return;
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -279,16 +346,12 @@ function Review() {
       <div className="gap-4 space-y-1 leading-snug items-center">
         <h1 className="font-bold text-2xl">Review</h1>
         <h3 className="text-foreground/80">Are all the details correct?</h3>
-        <Avatar className="w-7 h-7 text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
-          {/* <AvatarImage alt={`${personalFormValues?.name}'s Profile Picture`} /> */}
-          {/* <AvatarFallback>{formValues?.name[0]}</AvatarFallback> */}
-        </Avatar>
         <div className="flex justify-between">
           <Button variant="secondary" onClick={prevPage}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button onClick={handleSubmit} isLoading={isLoading}>
-            <ChevronLeft className="h-4 w-4" />
+            Submit
           </Button>
         </div>
       </div>

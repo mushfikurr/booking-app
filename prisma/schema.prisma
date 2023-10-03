@@ -38,14 +38,29 @@ model Session {
 }
 
 model User {
-  id             String    @id @default(cuid())
-  email          String?   @unique
+  id             String        @id @default(cuid())
+  email          String?       @unique
   name           String?
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
   accounts       Account[]
   sessions       Session[]
+  BusinessUser   BusinessUser?
+}
+
+model BusinessUser {
+  id                String  @id @default(cuid())
+  streetAddress1    String?
+  streetAddress2    String?
+  postcode          String?
+  phoneNumber       String?
+  instagram         String?
+  businessEmail     String?
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model VerificationToken {

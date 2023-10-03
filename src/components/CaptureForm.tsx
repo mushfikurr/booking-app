@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft } from "lucide-react";
+import { AlertCircle, ChevronLeft } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Form,
@@ -12,10 +12,11 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { ZodType, ZodTypeAny, z } from "zod";
-import { FC, ReactNode, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ZodType, z } from "zod";
+import { FC, ReactNode } from "react";
+import { SubmitHandler, UseFormSetError, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 export interface CaptureFormField {
   name: string;
@@ -31,11 +32,35 @@ export interface CaptureFormProps {
   schema: ZodType<any>;
   isLoading?: boolean;
   formFields: CaptureFormField[];
-  onSubmit?: (values: ZodTypeAny["_input"]) => void;
+  onSubmit: SubmitHandler<any>;
   submitButtonText?: string;
   submitButtonClassNames?: string;
   children?: ReactNode;
 }
+
+export interface CaptureFormServerAlertProps {
+  type: string | number;
+  description?: string;
+}
+
+export const CaptureFormServerAlert: FC<CaptureFormServerAlertProps> = ({
+  type,
+  description,
+}) => {
+  const types: { [key: string | number]: string } = {
+    400: "There was an error in your submission",
+  };
+
+  if (description) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle className="text-lead">{types[type]}</AlertTitle>
+        <AlertDescription>{description}</AlertDescription>
+      </Alert>
+    );
+  }
+};
 
 export const CaptureForm: FC<CaptureFormProps> = ({
   title,
@@ -52,6 +77,24 @@ export const CaptureForm: FC<CaptureFormProps> = ({
     resolver: zodResolver(schema),
   });
 
+  const handleOnSubmit = async (values: z.infer<typeof schema>) => {
+    const onSubmitResponse = (await onSubmit(values)) as {
+      error: string;
+      field: string;
+    };
+    console.log("handleOnSubmit", onSubmitResponse);
+    if (onSubmitResponse) {
+      form.setError(
+        onSubmitResponse.field,
+        {
+          type: "custom",
+          message: onSubmitResponse.error,
+        },
+        { shouldFocus: true }
+      );
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="gap-4 space-y-1 leading-snug items-center">
@@ -59,8 +102,19 @@ export const CaptureForm: FC<CaptureFormProps> = ({
         <h3 className="text-foreground/80">{description}</h3>
       </div>
 
+      {form.formState.errors?.root?.serverError && (
+        <CaptureFormServerAlert
+          type={
+            form.formState.errors?.root?.serverError.type as string | number
+          }
+          description={form.formState.errors?.root?.serverError.message}
+        />
+      )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(handleOnSubmit)}
+          className="space-y-6"
+        >
           {formFields.map((formField) => {
             return (
               <FormField
@@ -77,7 +131,9 @@ export const CaptureForm: FC<CaptureFormProps> = ({
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>{formField.description}</FormDescription>
+                    {formField.description && (
+                      <FormDescription>{formField.description}</FormDescription>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -88,7 +144,7 @@ export const CaptureForm: FC<CaptureFormProps> = ({
             <Button
               className={submitButtonClassNames ?? ""}
               type="submit"
-              isLoading={isLoading || form.formState.isValidating}
+              isLoading={isLoading}
             >
               {submitButtonText}
             </Button>

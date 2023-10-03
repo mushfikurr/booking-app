@@ -2,19 +2,6 @@
 
 import { RegistrationSchema } from "@/lib/form/register-form-schema";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button } from "./ui/button";
-import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
@@ -22,9 +9,6 @@ import { useState } from "react";
 import { CaptureForm, CaptureFormProps } from "./CaptureForm";
 
 const RegisterForm = () => {
-  const form = useForm<z.infer<typeof RegistrationSchema>>({
-    resolver: zodResolver(RegistrationSchema),
-  });
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,16 +21,23 @@ const RegisterForm = () => {
       password: values.password,
     };
 
-    axios
+    return axios
       .post("/api/register", payload)
       .then((resp) => {
-        setIsLoading(false);
         router.push("/login");
-        toast({
-          description: "Registration successful! Please sign in.",
-        });
       })
-      .catch(() => alert("error"));
+      .catch((err) => {
+        toast({
+          title: "Registration error",
+          variant: "destructive",
+          description: err.response.data.error,
+        });
+        console.log(err.response.data);
+        return err.response.data;
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   const captureFormProps: CaptureFormProps = {
@@ -60,7 +51,7 @@ const RegisterForm = () => {
       {
         name: "name",
         label: "Name",
-        placeholder: "John Stone.",
+        placeholder: "John Stone",
         description: "Your public display name.",
       },
       {
@@ -85,9 +76,7 @@ const RegisterForm = () => {
     submitButtonClassNames: "w-full",
   };
 
-  return (
-      <CaptureForm {...captureFormProps} />
-  );
+  return <CaptureForm {...captureFormProps} />;
 };
 
 export default RegisterForm;

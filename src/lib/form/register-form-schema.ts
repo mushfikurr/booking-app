@@ -70,19 +70,7 @@ export const BusinessRegistrationPersonalSchema = z
       .email({
         message: "Email has to be in a suitable format (example@domain.com)",
       })
-      .max(256, { message: "Email must be a maximum of 256 characters long" })
-      .refine(
-        async (val) => {
-          // This seems to run when any input changes. Transition to react-use-hook instead of in schema?
-          const doesEmailExistForUser = await doesAttributeExistForUser(
-            "email",
-            "email",
-            val
-          );
-          return !doesEmailExistForUser;
-        },
-        { message: "This email has already been registered." }
-      ),
+      .max(256, { message: "Email must be a maximum of 256 characters long" }),
     password: z
       .string({ required_error: "Password is required" })
       .min(5, { message: "A password must be at least 5 characters long" }),
@@ -121,6 +109,38 @@ export const BusinessRegistrationLocationSchema = z.object({
     .regex(/^\w{5,8}$/, {
       message: "Postcode must be a valid UK postcode format",
     }),
+});
+
+export const BusinessRegistrationContactSchema = z.object({
+  phoneNumber: z
+    .string({ invalid_type_error: "Phone number must be a valid string" })
+    .min(11, {
+      message: "Phone number must be at least 11 characters long",
+    })
+    .regex(/^((\+44)|(0)) ?\d{4} ?\d{6}$/, {
+      message: "Phone number must be in valid UK format",
+    }),
+  instagram: z
+    .string({
+      invalid_type_error: "Instagram handle must be a valid string",
+    })
+    .min(3, {
+      message: "Instagram handle must be a minimum of 3 characters long",
+    })
+    .max(30, {
+      message: "Instagram handle must be a maximum of 30 characters long",
+    })
+    .optional()
+    .or(z.literal("")),
+  businessEmail: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must contain letters",
+    })
+    .email({
+      message: "Email has to be in a suitable format (example@domain.com)",
+    })
+    .max(256, { message: "Email must be a maximum of 256 characters long" }),
 });
 
 type DataItem = Record<string, any>;

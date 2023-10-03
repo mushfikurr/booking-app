@@ -48,13 +48,13 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
       },
       clearFormValueAtIndex: (index: number) => {
         setAllFormValues((prevValues) => {
-          console.log("Attempting to clearFormValue at index ", index);
           if (index >= 0 && index < prevValues.length) {
             const newValues = [
               ...prevValues.slice(0, index),
               ...prevValues.slice(index + 1),
             ];
             console.log("Success clearFormValue ", index);
+            
             return newValues;
           }
           return prevValues;

@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/lib/db";
 import { compare } from "bcrypt-ts";
+import { NextResponse } from "next/server";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -20,13 +21,23 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password)
-          throw new Error("Email / password not provided");
+          throw new Error(
+            JSON.stringify({
+              error: "Email / password not provided",
+              field: "email",
+            })
+          );
         const user = await db.user.findUnique({
           where: { email: credentials.email },
         });
 
         if (!user || !user?.hashedPassword) {
-          throw new Error("User does not exist.");
+          throw new Error(
+            JSON.stringify({
+              error: "User does not exist",
+              field: "email",
+            })
+          );
         }
 
         const matchPassword = await compare(
@@ -36,7 +47,9 @@ export const authOptions: NextAuthOptions = {
 
         // if password does not match
         if (!matchPassword) {
-          throw new Error("Incorrect password");
+          throw new Error(
+            JSON.stringify({ error: "Incorrect password", field: "password" })
+          );
         }
 
         return user;

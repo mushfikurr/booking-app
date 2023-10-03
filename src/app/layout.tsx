@@ -19,9 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-  console.log(session);
-
   return (
     <html lang="en">
       <body
@@ -30,7 +27,7 @@ export default async function RootLayout({
           "min-h-screen pt-16 antialiased light bg-background text-foreground"
         )}
       >
-        {session ? <NavbarAuthenticated {...session?.user} /> : <Navbar />}
+        <Navbar />
         <div className="container max-w-7xl mx-auto h-full pt-12 antialiased">
           {children}
           <Toaster />

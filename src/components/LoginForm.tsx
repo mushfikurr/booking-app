@@ -14,7 +14,7 @@ const LoginForm = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  function onCaptureFormSubmit(values: z.infer<typeof LoginSchema>) {
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setIsLoading(true);
 
     const payload = {
@@ -22,32 +22,27 @@ const LoginForm = () => {
       password: values.password,
     };
 
-    signIn("credentials", {
-      ...payload,
-      redirect: false,
-      callbackUrl: "http://localhost:3000/",
-    })
-      .then((callback) => {
-        if (callback?.error) {
-          toast({
-            title: "Sign in error",
-            description: callback.error,
-            variant: "destructive",
-          });
-        }
-
-        if (callback?.ok && !callback?.error) {
-          router.push("/");
-          toast({ description: "Logged in successfully!" });
-        }
-      })
-      .catch((err) => {
-        toast({ title: "Sign in error", description: err });
-      })
-      .finally(() => {
-        setIsLoading(false);
+    try {
+      const callback = await signIn("credentials", {
+        ...payload,
+        redirect: false,
+        callbackUrl: "http://localhost:3000/",
       });
-  }
+
+      if (callback?.error) {
+        throw new Error(callback.error); // Throw error to be caught in the catch block
+      }
+
+      if (callback?.ok && !callback?.error) {
+        router.push("/");
+        toast({ description: "Logged in successfully!" });
+      }
+    } catch (err: any) {
+      return JSON.parse(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const captureFormProps = {
     title: "Welcome back!",
@@ -68,9 +63,9 @@ const LoginForm = () => {
         type: "password",
       },
     ],
-    submitButtonText: "Next",
+    submitButtonText: "Login",
     submitButtonClassNames: "w-full",
-    onSubmit: onCaptureFormSubmit,
+    onSubmit,
   };
 
   return (

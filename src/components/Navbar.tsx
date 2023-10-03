@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { SessionProvider, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -19,9 +19,9 @@ import { Separator } from "./ui/separator";
 import { LogOut, User2 } from "lucide-react";
 
 interface NavbarAuthenticatedProps {
-  name: string;
-  email: string;
-  image: string;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
 }
 
 export const NavbarAuthenticated: FC<NavbarAuthenticatedProps> = ({
@@ -34,7 +34,7 @@ export const NavbarAuthenticated: FC<NavbarAuthenticatedProps> = ({
       <div className="container flex justify-between items-center">
         <div className="flex items-center h-full">
           <Link className="hover:text-primary transition ease-in-out" href="/">
-            <p className="font-medium text-lg">BookingApp.</p>
+            <p className="font-medium text-lg tracking-tighter">BookingApp.</p>
           </Link>
         </div>
 
@@ -124,13 +124,23 @@ const NavLink: FC<NavLinkProps> = ({ route, displayName }) => {
   );
 };
 
-export default function Navbar() {
+function NavbarWithProvider() {
+  const { status, data } = useSession();
+  if (status === "authenticated" && data.user) {
+    return (
+      <NavbarAuthenticated
+        name={data.user.name}
+        email={data.user.email}
+        image={data.user.image}
+      />
+    );
+  }
   return (
     <div className="fixed top-0 inset-x-0 h-fit bg-background z-[10] py-3 border-border border-b">
       <div className="container flex justify-between items-center">
         <div className="flex items-center h-full">
           <Link className="hover:text-primary transition ease-in-out" href="/">
-            <p className="font-medium text-lg">BookingApp.</p>
+            <p className="font-medium text-lg tracking-tighter">BookingApp.</p>
           </Link>
         </div>
 
@@ -143,5 +153,13 @@ export default function Navbar() {
         </NavigationMenu>
       </div>
     </div>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <SessionProvider>
+      <NavbarWithProvider />
+    </SessionProvider>
   );
 }
