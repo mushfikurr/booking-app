@@ -8,7 +8,7 @@ export default function Home() {
     <main className="container max-w-5xl">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4 rounded-lg py-16 px-16 border border-border bg-muted/20">
-          <h1 className="text-4xl sm:text-5xl font-bold">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
             Booking made{" "}
             <span className="bg-clip-text bg-gradient-to-r from-primary to-primary/70 text-transparent">
               simple
@@ -32,7 +32,7 @@ export default function Home() {
               <div className="flex-grow h-32"></div>
               <div className="flex container justify-between items-center">
                 <div>
-                  <h3 className="text-sm">Barber Moss</h3>
+                  <h3 className="text-sm">Dummy Data</h3>
                   <p className="text-xs text-foreground/70">
                     Whitechapel, London
                   </p>
@@ -44,7 +44,7 @@ export default function Home() {
               <div className="flex-grow h-32"></div>
               <div className="flex container justify-between items-center">
                 <div>
-                  <h3 className="text-sm">Barber Moss</h3>
+                  <h3 className="text-sm">Dummy Data</h3>
                   <p className="text-xs text-foreground/70">
                     Whitechapel, London
                   </p>
@@ -56,7 +56,7 @@ export default function Home() {
               <div className="flex-grow h-32"></div>
               <div className="flex container justify-between items-center">
                 <div>
-                  <h3 className="text-sm">Barber Moss</h3>
+                  <h3 className="text-sm">Dummy Data</h3>
                   <p className="text-xs text-foreground/70">
                     Whitechapel, London
                   </p>

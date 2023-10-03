@@ -16,10 +16,9 @@ export default function InitialForm() {
     <div className="flex flex-col space-y-5 py-1">
       <div className="space-y-3">
         <div className="space-y-1">
-          <h1 className="font-bold text-3xl">Welcome</h1>
+          <h1 className="font-bold text-3xl">Welcome!</h1>
           <h2 className="text-lead">
-            Lets get started with creating your{" "}
-            <strong>business account</strong>
+            Lets get started with creating your business account
           </h2>
         </div>
         <Link
@@ -32,21 +31,23 @@ export default function InitialForm() {
 
       <div className="flex-grow">
         <div className="space-y-3 bg-secondary border-border border p-4 rounded-md mb-1 text-foreground/90">
-          <h2 className="text-lead">With a business account you can:</h2>
-          <div className="space-y-4">
-            <p className="flex items-center gap-3 text-lead leading-snug">
+          <h2 className="text-lead font-semibold">
+            With a business account you can:
+          </h2>
+          <div className="space-y-6">
+            <p className="flex items-center gap-3 text-base leading-tight">
               <RenderIcon>
                 <CalendarPlus className="h-5 w-5 text-primary-foreground" />
               </RenderIcon>
               Create, reschedule, and cancel bookings
             </p>
-            <p className="flex items-center gap-3 text-lead leading-snug">
+            <p className="flex items-center gap-3 text-base leading-tight">
               <RenderIcon>
                 <Activity className="h-5 w-5 text-primary-foreground" />
               </RenderIcon>
               Access your own profile space to attract and interact with clients
             </p>
-            <p className="flex items-center gap-3 text-lead leading-snug">
+            <p className="flex items-center gap-3 text-base leading-tight">
               <RenderIcon>
                 <MessageCircle className="h-5 w-5 text-primary-foreground" />
               </RenderIcon>
