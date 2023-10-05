@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { ZodType, z } from "zod";
+import { AnyZodObject, ZodType, ZodTypeAny, z } from "zod";
 import { FC, ReactNode } from "react";
 import { SubmitHandler, UseFormSetError, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ export interface CaptureFormField {
 export interface CaptureFormProps {
   title: string;
   description: string;
-  schema: ZodType<any>;
+  schema: ZodTypeAny;
   isLoading?: boolean;
   formFields: CaptureFormField[];
   onSubmit: SubmitHandler<any>;

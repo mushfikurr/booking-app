@@ -18,7 +18,7 @@ const Register = async () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="personal">
-          <div className="container flex w-full flex-col space-y-6 py-8 sm:min-w-[600px] sm:w-[600px] border border-border rounded-lg">
+          <div className="container flex items-center w-full flex-col space-y-6 py-8 sm:min-w-[600px] sm:w-[600px] border border-border rounded-lg">
             <RegisterForm />
           </div>
         </TabsContent>

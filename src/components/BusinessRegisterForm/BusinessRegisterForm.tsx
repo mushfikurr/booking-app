@@ -13,6 +13,7 @@ import {
   MapPin,
   Phone,
   Smartphone,
+  User2,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { PageProvider, usePageContext } from "./BusinessRegisterPageContext";
@@ -35,14 +36,14 @@ import {
   BusinessRegistrationPersonalSchema,
   unifyAndValidateData,
 } from "@/lib/form/register-form-schema";
-import { ZodTypeAny, z } from "zod";
-import { FC, useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { z } from "zod";
+import { FC, ReactNode, useEffect, useState } from "react";
 import InitialForm from "./InitialBusinessRegisterForm";
-import { useToast } from "../ui/use-toast";
 import { CaptureFormProps } from "../CaptureForm";
+import Stepper from "./Stepper";
+import Review from "./Review";
 
-const forms: MultiCaptureFormProps[] = [
+export const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 0,
     title: "Personal details",
@@ -142,27 +143,30 @@ export default function BusinessRegisterForm() {
 function BusinessRegisterFormWithProvider() {
   const { currentPage } = usePageContext();
   return (
-    <div className="mb-16 flex gap-3">
+    <div className={cn("mb-16 flex", currentPage > 0 && "sm:mr-[52px]")}>
       {currentPage > 0 && (
         <div className="flex flex-col">
           <Stepper />
         </div>
       )}
-      <div className="flex-grow container flex gap-8 space-y-6 py-8 sm:min-w-[550px] sm:w-[550px] border border-border rounded-lg mr-[64px]">
-        <div className="flex-grow">
-          <InitialForm />
-          {forms.map((form, idx) => {
-            const CaptureFormProps = { ...form, pageNumber: idx + 1 };
-            return <MultiCaptureForm {...CaptureFormProps} key={form.title} />;
-          })}
-          <Review />
-        </div>
+      <div
+        className={cn(
+          "flex-grow container flex gap-8 py-8 sm:min-w-[550px] sm:w-[550px] border border-border rounded-lg"
+        )}
+      >
+        <InitialForm />
+        {forms.map((form, idx) => {
+          const CaptureFormProps = { ...form, pageNumber: idx + 1 };
+          return <MultiCaptureForm {...CaptureFormProps} key={form.title} />;
+        })}
+        <Review forms={forms} />
       </div>
     </div>
   );
 }
 
-interface MultiCaptureFormProps extends Omit<CaptureFormProps, "onSubmit"> {
+export interface MultiCaptureFormProps
+  extends Omit<CaptureFormProps, "onSubmit"> {
   // Omit onSubmit as the submit for multipage registration is the same for all pages.
   pageNumber: number;
 }
@@ -209,7 +213,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
 
   if (currentPage !== pageNumber) return;
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <div className="gap-4 space-y-1 leading-snug items-center">
         <h1 className="font-bold text-2xl">{title}</h1>
         <h3 className="text-foreground/80">{description}</h3>
@@ -230,6 +234,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
                       <Input
                         type={formField.type ?? ""}
                         placeholder={formField.placeholder ?? ""}
+                        className="w-full"
                         {...field}
                       />
                     </FormControl>
@@ -253,108 +258,3 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
     </div>
   );
 };
-
-function Stepper() {
-  const { currentPage, allFormValues } = usePageContext();
-
-  const stepperIconClassNames = "h-6 w-6";
-  const STEPS = [
-    {
-      displayName: "Personal details",
-      icon: <Contact2 className={stepperIconClassNames} />,
-    },
-    {
-      displayName: "Contact details",
-      icon: <Smartphone className={stepperIconClassNames} />,
-    },
-    {
-      displayName: "Location",
-      icon: <MapPin className={stepperIconClassNames} />,
-    },
-    {
-      displayName: "Review",
-      icon: <Check className={stepperIconClassNames} />,
-    },
-  ];
-
-  const completeVariant = "bg-primary text-primary-foreground";
-  const inProgressVariant =
-    "text-foreground/80 border-secondary-foreground bg-secondary";
-
-  return (
-    <div className="flex flex-col pl-3 pr-6 py-8 rounded-md h-fit mb-4 w-fit overflow-clip px-4">
-      <div className="flex flex-col gap-8 w-full relative">
-        {STEPS.map((page, idx) => (
-          <div
-            key={page.displayName}
-            className={`flex flex-row-reverse items-center animate-in fade-in slide-in-from-right-2 duration-200 ease-in-out`}
-          >
-            <div
-              className={cn(
-                "rounded-full p-3 ml-3 text-secondary-foreground/60 transition duration-150 ease-in-out",
-                currentPage === idx + 1 && inProgressVariant, // Steppers should highlight when they are in progress (currentPage)
-                allFormValues.length >= idx + 1 && completeVariant, // Steppers should highlight primary colour if there is a valid formValue object in each
-                currentPage === forms.length + 1 && completeVariant // Last page (review page) should highlight all steppers
-              )}
-            >
-              {page.icon}
-            </div>
-            <p
-              className={cn(
-                "text-foreground/60 text-sm",
-                currentPage === idx + 1 && "text-foreground/80",
-                allFormValues.length >= idx + 1 && "text-foreground",
-                currentPage === forms.length + 1 && "text-foreground"
-              )}
-            >
-              {page.displayName}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Review() {
-  const { currentPage, prevPage, allFormValues } = usePageContext();
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
-  if (currentPage !== forms.length + 1) return;
-
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    try {
-      console.log(
-        unifyAndValidateData(allFormValues, [
-          BusinessRegistrationLocationSchema,
-          BusinessRegistrationPersonalSchema,
-        ])
-      );
-      setIsLoading(false);
-    } catch (error) {
-      toast({
-        title: "There was an error handling your registration.",
-        description: `${error}`,
-      });
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      <div className="gap-4 space-y-1 leading-snug items-center">
-        <h1 className="font-bold text-2xl">Review</h1>
-        <h3 className="text-foreground/80">Are all the details correct?</h3>
-        <div className="flex justify-between">
-          <Button variant="secondary" onClick={prevPage}>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button onClick={handleSubmit} isLoading={isLoading}>
-            Submit
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}

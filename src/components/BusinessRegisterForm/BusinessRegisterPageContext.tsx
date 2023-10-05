@@ -54,7 +54,7 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
               ...prevValues.slice(index + 1),
             ];
             console.log("Success clearFormValue ", index);
-            
+
             return newValues;
           }
           return prevValues;
@@ -65,6 +65,9 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
       },
       prevPage: () => {
         setCurrentPage((prevPage) => prevPage - 1);
+      },
+      seekPage: (page: number) => {
+        setCurrentPage(page);
       },
     }),
     [currentPage]
