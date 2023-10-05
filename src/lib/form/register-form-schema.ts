@@ -32,24 +32,6 @@ export const RegistrationSchema = z
     path: ["confirmPassword"],
   });
 
-const doesAttributeExistForUser = async (
-  attribute: string,
-  attributeName: string,
-  value: any
-) => {
-  const uniqueQuery = await axios.post("/api/register/attributeExists", {
-    attribute,
-    attributeName,
-    value,
-  });
-
-  if (uniqueQuery.data.exists === true) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 export const BusinessRegistrationPersonalSchema = z
   .object({
     name: z

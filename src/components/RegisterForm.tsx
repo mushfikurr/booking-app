@@ -23,16 +23,11 @@ const RegisterForm = () => {
 
     return axios
       .post("/api/register", payload)
-      .then((resp) => {
+      .then(() => {
         router.push("/login");
+        toast({ description: "Registration successful! Please login." });
       })
       .catch((err) => {
-        toast({
-          title: "Registration error",
-          variant: "destructive",
-          description: err.response.data.error,
-        });
-        console.log(err.response.data);
         return err.response.data;
       })
       .finally(() => {

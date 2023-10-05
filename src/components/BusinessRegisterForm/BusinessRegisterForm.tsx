@@ -1,20 +1,6 @@
 "use client";
 
-import {
-  Check,
-  ChevronLeft,
-  Contact,
-  Contact2,
-  MailCheck,
-  MailOpen,
-  MailSearch,
-  Mailbox,
-  Mails,
-  MapPin,
-  Phone,
-  Smartphone,
-  User2,
-} from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Button } from "../ui/button";
 import { PageProvider, usePageContext } from "./BusinessRegisterPageContext";
 import {
@@ -27,27 +13,41 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import {
   BusinessRegistrationContactSchema,
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
-  unifyAndValidateData,
 } from "@/lib/form/register-form-schema";
-import { z } from "zod";
+import { ZodTypeAny, z } from "zod";
 import { FC, ReactNode, useEffect, useState } from "react";
 import InitialForm from "./InitialBusinessRegisterForm";
-import { CaptureFormProps } from "../CaptureForm";
+import { CaptureFormField } from "../CaptureForm";
 import Stepper from "./Stepper";
 import Review from "./Review";
+import axios from "axios";
+
+const doesEmailExistForUser = async (
+  values: z.infer<typeof BusinessRegistrationPersonalSchema>
+) => {
+  const resp = await axios.post("/api/register/attributeExists", {
+    attribute: "email",
+    attributeName: "email",
+    value: values.email,
+  });
+  if (resp.data.exists) {
+    return { error: "Email already exists", field: "email" };
+  }
+};
 
 export const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 0,
     title: "Personal details",
     description: "Lets get to know you",
+    customValidation: doesEmailExistForUser,
     schema: BusinessRegistrationPersonalSchema,
     formFields: [
       {
@@ -165,10 +165,18 @@ function BusinessRegisterFormWithProvider() {
   );
 }
 
-export interface MultiCaptureFormProps
-  extends Omit<CaptureFormProps, "onSubmit"> {
-  // Omit onSubmit as the submit for multipage registration is the same for all pages.
+export interface MultiCaptureFormProps {
+  // Same as CaptureFormProps, however make customOnSubmit parameter optional for per-page server validation for individual fields.
   pageNumber: number;
+  title: string;
+  description: string;
+  schema: ZodTypeAny;
+  isLoading?: boolean;
+  formFields: CaptureFormField[];
+  customValidation?: SubmitHandler<any>;
+  submitButtonText?: string;
+  submitButtonClassNames?: string;
+  children?: ReactNode;
 }
 
 const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
@@ -178,6 +186,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
   description,
   formFields,
   submitButtonText,
+  customValidation,
 }) => {
   const {
     currentPage,
@@ -199,8 +208,35 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
     return () => subscription.unsubscribe();
   }, [form.watch, clearFormValueAtIndex, pageNumber]);
 
-  function onSubmit(values: z.infer<typeof schema>) {
+  async function customValidationHandler(values: z.infer<typeof schema>) {
+    if (!customValidation) {
+      return null; // No custom validation required, continue
+    }
+    const validationResponse = (await customValidation(values)) as {
+      error: string;
+      field: string;
+    };
+    if (validationResponse) {
+      form.setError(
+        validationResponse.field,
+        {
+          type: "custom",
+          message: validationResponse.error,
+        },
+        { shouldFocus: true }
+      );
+      return validationResponse;
+    } else {
+      return null;
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof schema>) {
     setIsLoading(true);
+    const customValidation = await customValidationHandler(values);
+    if (customValidation) {
+      return;
+    }
     const valuesToBeSubmitted: z.infer<typeof schema> = { ...values };
     // Simulate some loading for user feedback
     setTimeout(() => {

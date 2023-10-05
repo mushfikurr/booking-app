@@ -82,7 +82,6 @@ export const CaptureForm: FC<CaptureFormProps> = ({
       error: string;
       field: string;
     };
-    console.log("handleOnSubmit", onSubmitResponse);
     if (onSubmitResponse) {
       form.setError(
         onSubmitResponse.field,
