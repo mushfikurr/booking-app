@@ -1,12 +1,12 @@
 "use client";
-import { FC, useState } from "react";
-import { Button } from "./ui/button";
-import { Icons } from "./Icons";
 import LoginSchema from "@/lib/form/login-form-schema";
-import * as z from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import * as z from "zod";
 import { CaptureForm } from "./CaptureForm";
+import { Icons } from "./Icons";
+import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
 const LoginForm = () => {

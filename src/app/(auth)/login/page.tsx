@@ -1,5 +1,4 @@
 import LoginForm from "@/components/LoginForm";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const Login = async () => {
   return (
