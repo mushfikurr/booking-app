@@ -6,7 +6,7 @@ import { FC } from "react";
 import {
   NavigationMenuAuthenticated,
   NavigationMenuUnauthenticated,
-} from "./NavigationMenuAuthenticated";
+} from "./NavigationMenu";
 import {
   NavigationMenu,
   NavigationMenuItem,
