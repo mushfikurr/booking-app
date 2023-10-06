@@ -8,7 +8,7 @@ export default function Home() {
     <main className="container max-w-5xl">
       <div className="flex flex-col gap-8">
         <div className="flex justify-between items-center rounded-lg bg-secondary/40 border border-border relative z-10">
-          <div className="hidden md:block absolute -right-6 -bottom-4 -z-10">
+          <div className="hidden md:block absolute -right-6 -bottom-4 -z-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
             <Image
               className="rounded-xl drop-shadow-lg border-border border"
               src="/assets/haircut-2.jpg"
