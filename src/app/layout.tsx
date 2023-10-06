@@ -28,7 +28,7 @@ export default async function RootLayout({
         )}
       >
         <Navbar />
-        <div className="container max-w-7xl mx-auto h-full pt-12 antialiased">
+        <div className="container max-w-7xl mx-auto h-full pt-12 antialiased mb-16">
           {children}
           <Toaster />
         </div>

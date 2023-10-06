@@ -35,6 +35,7 @@ const LoginForm = () => {
 
       if (callback?.ok && !callback?.error) {
         router.push("/");
+        router.refresh();
         toast({ description: "Logged in successfully!" });
       }
     } catch (err: any) {

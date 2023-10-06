@@ -1,26 +1,40 @@
 import { ComboboxDemo } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="container max-w-5xl">
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-4 rounded-lg py-16 px-16 border border-border bg-muted/20">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tighter">
-            Booking made{" "}
-            <span className="bg-clip-text bg-gradient-to-r from-primary to-primary/70 text-transparent">
-              simple
-            </span>
-            .
-          </h1>
-          <div className="flex flex-col gap-1">
-            <p className="text-md text-muted-foreground">
-              Discover services near you
-            </p>
-            <div className="flex gap-2 max-w-md">
-              <Input placeholder="Some input" />
-              <ComboboxDemo />
+        <div className="flex justify-between items-center rounded-lg bg-secondary/40 border border-border relative z-10">
+          <div className="hidden md:block absolute -right-6 -bottom-4 -z-10">
+            <Image
+              className="rounded-xl drop-shadow-lg border-border border"
+              src="/assets/haircut-2.jpg"
+              width={400}
+              height={400}
+              alt="Picture of the author"
+            />
+          </div>
+          <div className="flex flex-col gap-4 py-16 px-16">
+            <h1 className="flex flex-col justify-center text-4xl sm:text-5xl font-bold tracking-tight flex-grow">
+              Booking made{" "}
+              <span>
+                <span className="bg-clip-text bg-gradient-to-r from-primary to-primary/70 text-transparent">
+                  simple
+                </span>
+                .
+              </span>
+            </h1>
+            <div className="flex flex-col gap-3">
+              <p className="text-md text-muted-foreground">
+                Discover services near you
+              </p>
+              <div className="flex gap-2 max-w-md">
+                <Input placeholder="Some input" />
+                <ComboboxDemo />
+              </div>
             </div>
           </div>
         </div>
