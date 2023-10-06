@@ -17,7 +17,8 @@ import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { FC } from "react";
 import { DefaultSession } from "next-auth";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import NavigationMenuDropdown from "./NavigationMenuDropdown";
 
 interface NavigationMenuAuthenticatedProps {
   name?: string | null | undefined;
@@ -68,57 +69,34 @@ export function NavigationMenuUnauthenticated() {
 }
 
 export const NavigationMenuAuthenticated = (user) => {
-  console.log(user);
+  const router = useRouter();
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem className="flex items-center">
           <NavigationMenuTrigger>
-            <div className="flex gap-3 items-center mr-2">
+            <div className="flex gap-4 items-center mr-2">
               <Avatar className="w-7 h-7 text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
                 <AvatarImage alt={`${user?.data?.name}'s Profile Picture`} />
                 <AvatarFallback>
                   {user?.data?.name && user?.data?.name[0]}
                 </AvatarFallback>
               </Avatar>
-              <p className="test-sm text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
-                {user?.data?.name}
-              </p>
+              <div className="flex flex-col items-start">
+                <p className="text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground font-semibold">
+                  {user?.data?.name}
+                </p>
+                {user?.data?.isBusinessUser && (
+                  <p className="uppercase text-primary text-xs">Business</p>
+                )}
+              </div>
             </div>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             {/* Display user settings here */}
-            <ul className="flex flex-col p-3 sm:w-[200px]">
-              <NavigationMenuLink asChild>
-                <Link
-                  className={cn(
-                    "block select-none space-y-1 rounded-sm p-2 leading-none text-foreground/80 no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  )}
-                  href="/profile"
-                >
-                  <div className="flex items-center gap-3 text-sm font-medium leading-none">
-                    <User2 className="w-4 h-4" />
-                    <p className="leading-snug">Profile</p>
-                  </div>
-                </Link>
-              </NavigationMenuLink>
-              <Separator className="my-2" />
-              <NavigationMenuLink asChild>
-                <button
-                  className={cn(
-                    "block select-none space-y-1 rounded-sm p-2 leading-none text-foreground/80 no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  )}
-                  onClick={() => {
-                    signOut();
-                  }}
-                >
-                  <div className="flex items-center gap-3 text-sm font-medium leading-none">
-                    <LogOut className="w-4 h-4" />
-                    <p className="leading-snug">Logout</p>
-                  </div>
-                </button>
-              </NavigationMenuLink>
-            </ul>
+            <NavigationMenuDropdown
+              isBusinessUser={user?.data?.isBusinessUser}
+            />
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

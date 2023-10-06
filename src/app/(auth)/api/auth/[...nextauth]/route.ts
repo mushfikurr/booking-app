@@ -1,9 +1,14 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth, { Session, type NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/lib/db";
 import { compare } from "bcrypt-ts";
 import { NextResponse } from "next/server";
+import { User } from "@prisma/client";
+
+interface BusinessUser extends User {
+  isBusinessUser: boolean;
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -29,6 +34,7 @@ export const authOptions: NextAuthOptions = {
           );
         const user = await db.user.findUnique({
           where: { email: credentials.email },
+          include: { BusinessUser: true },
         });
 
         if (!user || !user?.hashedPassword) {
@@ -52,10 +58,37 @@ export const authOptions: NextAuthOptions = {
           );
         }
 
-        return user;
+        const isBusinessUser = !!user?.BusinessUser;
+        console.log("findUnique", { isBusinessUser, ...user });
+        return { isBusinessUser, ...user };
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, session }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          isBusinessUser: (user as BusinessUser).isBusinessUser,
+        };
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        return {
+          ...session,
+          user: { ...session.user, isBusinessUser: token.isBusinessUser },
+        };
+      }
+
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/login",
+  },
   debug: process.env.NODE_ENV === "development",
 };
 
