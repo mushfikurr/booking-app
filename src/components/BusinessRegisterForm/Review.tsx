@@ -1,12 +1,12 @@
-import { unifyAndValidateData } from "@/lib/form/register-form-schema";
+import { validateAllFormValuesAndMerge } from "@/lib/form/register-form-schema";
+import axios from "axios";
 import { ChevronLeft, Contact2, MapPin, Smartphone } from "lucide-react";
-import { useState, FC } from "react";
-import { useToast } from "../ui/use-toast";
-import { usePageContext } from "./BusinessRegisterPageContext";
-import { Button } from "../ui/button";
-import { MultiCaptureFormProps } from "./BusinessRegisterForm";
-import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { FC, useState } from "react";
+import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
+import { MultiCaptureFormProps } from "./BusinessRegisterForm";
+import { usePageContext } from "./BusinessRegisterPageContext";
 
 interface ReviewProps {
   forms: MultiCaptureFormProps[];
@@ -24,15 +24,22 @@ const Review: FC<ReviewProps> = ({ forms }) => {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const validatedForms = unifyAndValidateData(
+      console.log(allFormValues);
+
+      const validatedForms = validateAllFormValuesAndMerge(
         allFormValues,
         forms.map((form) => form.schema)
       );
       const resp = await axios.post("/api/register/business", validatedForms);
+      toast({
+        title: "Successfully created business account!",
+        description: "Please login to continue.",
+      });
       router.push("/login");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast({
+          variant: "destructive",
           title: "There was an error handling your registration.",
           description: `${error.response?.data.error}`,
         });
@@ -54,7 +61,7 @@ const Review: FC<ReviewProps> = ({ forms }) => {
         <div className="flex gap-6 bg-accent rounded-sm p-5 border-accent border">
           <Contact2 />
           <div className="flex flex-col leading-tight -mt-[2px] text-secondary-foreground/80">
-            <h3 className="uppercase text-foreground text-sm font-semibold">
+            <h3 className="uppercase text-secondary-foreground/80 text-sm font-semibold">
               {forms[0].title}
             </h3>
             {Object.keys(allFormValues[0] || {})?.map((key, idx) => (
@@ -71,7 +78,7 @@ const Review: FC<ReviewProps> = ({ forms }) => {
         <div className="flex gap-6 bg-accent rounded-sm p-5 border-accent border">
           <Smartphone />
           <div className="flex flex-col leading-tight -mt-[2px] text-secondary-foreground/80">
-            <h3 className="uppercase text-foreground text-sm font-semibold">
+            <h3 className="uppercase text-secondary-foreground/80 text-sm font-semibold">
               {forms[1].title}
             </h3>
             {Object.keys(allFormValues[1] || {})?.map((key, idx) => (
@@ -88,7 +95,7 @@ const Review: FC<ReviewProps> = ({ forms }) => {
         <div className="flex gap-6 bg-accent rounded-sm p-5 border-accent border">
           <MapPin />
           <div className="flex flex-col leading-tight -mt-[2px] text-secondary-foreground/80">
-            <h3 className="uppercase text-foreground text-sm font-semibold">
+            <h3 className="uppercase text-secondary-foreground/80 text-sm font-semibold">
               {forms[2].title}
             </h3>
             {Object.keys(allFormValues[2] || {})?.map((key, idx) => (

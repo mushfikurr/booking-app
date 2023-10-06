@@ -143,7 +143,7 @@ export default function BusinessRegisterForm() {
 function BusinessRegisterFormWithProvider() {
   const { currentPage } = usePageContext();
   return (
-    <div className={cn("mb-16 flex", currentPage > 0 && "sm:mr-[52px]")}>
+    <div className={cn("flex", currentPage > 0 && "sm:mr-[52px]")}>
       {currentPage > 0 && (
         <div className="flex flex-col">
           <Stepper />
@@ -235,16 +235,15 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
     setIsLoading(true);
     const customValidation = await customValidationHandler(values);
     if (customValidation) {
+      setIsLoading(false);
       return;
     }
     const valuesToBeSubmitted: z.infer<typeof schema> = { ...values };
     // Simulate some loading for user feedback
-    setTimeout(() => {
-      // pageNumber - 1 as we do the pages with a +1 offset (as the initial page has no inputs)
-      pushToAllFormValues(valuesToBeSubmitted, pageNumber - 1);
-      nextPage();
-      setIsLoading(false);
-    }, 200);
+    // pageNumber - 1 as we do the pages with a +1 offset (as the initial page has no inputs)
+    pushToAllFormValues(valuesToBeSubmitted, pageNumber - 1);
+    nextPage();
+    setIsLoading(false);
   }
 
   if (currentPage !== pageNumber) return;

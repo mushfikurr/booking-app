@@ -8,7 +8,7 @@ interface PageContextType {
   isPageFilled: (pageNumber: number) => boolean;
   pushToAllFormValues: (values: {}, index: number) => void;
   clearFormValueAtIndex: (index: number) => void;
-  allFormValues: object[];
+  allFormValues: { [key: number]: object };
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -35,26 +35,17 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
       allFormValues,
       pushToAllFormValues: (values: {}, index: number) => {
         setAllFormValues((prevValues) => {
-          const newValues = [...prevValues];
-
-          if (index >= 0 && index < newValues.length) {
-            newValues[index] = values;
-          } else {
-            newValues.push(values);
-          }
-
+          const newValues = { ...prevValues };
+          // if current index is empty
+          newValues[index] = values;
           return newValues;
         });
       },
       clearFormValueAtIndex: (index: number) => {
         setAllFormValues((prevValues) => {
-          if (index >= 0 && index < prevValues.length) {
-            const newValues = [
-              ...prevValues.slice(0, index),
-              ...prevValues.slice(index + 1),
-            ];
-            console.log("Success clearFormValue ", index);
-
+          if (Object.keys(prevValues[index] || {})?.length !== 0) {
+            const newValues = { ...prevValues };
+            newValues[index] = {};
             return newValues;
           }
           return prevValues;

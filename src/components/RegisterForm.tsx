@@ -25,7 +25,10 @@ const RegisterForm = () => {
       .post("/api/register", payload)
       .then(() => {
         router.push("/login");
-        toast({ description: "Registration successful! Please login." });
+        toast({
+          title: "Successfully created account!",
+          description: "Please login to continue.",
+        });
       })
       .catch((err) => {
         return err.response.data;

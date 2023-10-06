@@ -126,23 +126,20 @@ export const BusinessRegistrationContactSchema = z.object({
 type DataItem = Record<string, any>;
 type SchemaItem = z.ZodSchema<any>;
 
-export function unifyAndValidateData(
-  data: DataItem[],
-  schemas: SchemaItem[]
-): any {
-  const validatedData: Record<string, any> = {};
+export function validateAllFormValuesAndMerge(
+  formData: { [key: number]: object },
+  schemas: z.ZodSchema<any>[]
+): Record<string, any> {
+  let validatedData: Record<string, any> = {};
 
-  for (const item of data) {
-    for (const schema of schemas) {
+  for (const pageNumber in Object.keys(formData)) {
+    if (formData[pageNumber]) {
+      const schemaForPageNumber = schemas[pageNumber];
       try {
-        const parsedItem = schema.parse(item);
-
-        for (const key in parsedItem) {
-          validatedData[key] = parsedItem[key];
-        }
-
-        break;
-      } catch (error) {
+        const result = schemaForPageNumber.parse(formData[pageNumber]);
+        validatedData = { ...validatedData, ...result };
+      } catch (err) {
+        console.log(err);
         continue;
       }
     }

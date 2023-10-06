@@ -58,7 +58,7 @@ export default function Stepper() {
           </p>
         </>
       );
-    } else if (Object.keys(allFormValues[currentIndex] || {})?.length !== 0) {
+    } else if (allFormValues[currentIndex]) {
       return (
         <>
           <div
