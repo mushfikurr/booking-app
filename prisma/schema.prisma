@@ -46,21 +46,64 @@ model User {
   hashedPassword String?
   accounts       Account[]
   sessions       Session[]
-  BusinessUser   BusinessUser?
+  businessUser   BusinessUser?
+  bookings       Booking[]
+
+  @@index([email])
+}
+
+model OpeningHour {
+  id         Int          @id @default(autoincrement())
+  businessId String
+  business   BusinessUser @relation(fields: [businessId], references: [id])
+  dayOfWeek  String
+  startTime  DateTime
+  endTime    DateTime
+
+  @@index([businessId])
 }
 
 model BusinessUser {
-  id                String  @id @default(cuid())
-  streetAddress1    String?
-  streetAddress2    String?
-  postcode          String?
-  phoneNumber       String?
-  instagram         String?
-  businessEmail     String?
-  userId            String  @unique
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             String        @id @default(cuid())
+  streetAddress1 String
+  streetAddress2 String?
+  postcode       String
+  phoneNumber    String
+  instagram      String?
+  businessEmail  String
+  userId         String        @unique
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  services       Service[]
+  bookings       Booking[]
+  openingHours   OpeningHour[]
 
   @@index([userId])
+  @@index([businessEmail])
+}
+
+model Service {
+  id             String       @id @default(cuid())
+  name           String
+  description    String
+  price          Decimal
+  businessUserId String
+  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id])
+  booking        Booking[]
+
+  @@index([businessUserId])
+}
+
+model Booking {
+  id             String       @id @default(cuid())
+  date           DateTime
+  services       Service[] // A booking can consist of multiple services
+  userId         String
+  businessUserId String
+  user           User?        @relation(fields: [userId], references: [id]) // Specify fields and references
+  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id]) // Specify fields and references
+
+  @@index([userId])
+  @@index([businessUserId])
 }
 
 model VerificationToken {
