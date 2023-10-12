@@ -96,11 +96,11 @@ model Service {
 model Booking {
   id             String       @id @default(cuid())
   date           DateTime
-  services       Service[] // A booking can consist of multiple services
+  services       Service[] 
   userId         String
   businessUserId String
-  user           User?        @relation(fields: [userId], references: [id]) // Specify fields and references
-  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id]) // Specify fields and references
+  user           User?        @relation(fields: [userId], references: [id]) 
+  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id]) 
 
   @@index([userId])
   @@index([businessUserId])

@@ -39,6 +39,7 @@ const LoginForm = () => {
         toast({ description: "Logged in successfully!" });
       }
     } catch (err: any) {
+      console.log(err.message);
       return JSON.parse(err.message);
     } finally {
       setIsLoading(false);

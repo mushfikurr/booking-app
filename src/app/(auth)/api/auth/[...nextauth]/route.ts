@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           );
         const user = await db.user.findUnique({
           where: { email: credentials.email },
-          include: { BusinessUser: true },
+          include: { businessUser: true },
         });
 
         if (!user || !user?.hashedPassword) {
@@ -58,8 +58,15 @@ export const authOptions: NextAuthOptions = {
           );
         }
 
-        const isBusinessUser = !!user?.BusinessUser;
-        console.log("findUnique", { isBusinessUser, ...user });
+        console.log(user);
+
+        const isBusinessUser = !!user?.businessUser;
+        if (isBusinessUser) {
+          return {
+            isBusinessUser,
+            ...user,
+          };
+        }
         return { isBusinessUser, ...user };
       },
     }),

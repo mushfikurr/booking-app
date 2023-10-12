@@ -33,7 +33,7 @@ export default function Home() {
           <div className="flex-grow relative w-full h-full">
             <div className="hidden md:block min-w-[400px] min-h-[300px] rounded-xl absolute -top-20 -right-4 -z-10 animate-in fade-in slide-in-from-bottom-8 duration-500">
               <Image
-                className="transition duration-300 ease-in-out rounded-xl drop-shadow-xl hover:grayscale-0 hover:brightness-100 grayscale brightness-125"
+                className="transition duration-300 ease-in-out rounded-xl drop-shadow-xl hover:brightness-125 brightness-100"
                 src={haircut}
                 priority={false}
                 placeholder="blur"

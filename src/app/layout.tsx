@@ -6,6 +6,7 @@ import Navbar, { NavbarAuthenticated } from "@/components/Navbar";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./(auth)/api/auth/[...nextauth]/route";
 import { Toaster } from "@/components/ui/toaster";
+import Providers from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,11 +28,13 @@ export default async function RootLayout({
           "min-h-screen pt-16 antialiased light bg-background text-foreground"
         )}
       >
-        <Navbar />
-        <div className="container max-w-7xl mx-auto h-full pt-12 antialiased mb-16">
-          {children}
-          <Toaster />
-        </div>
+        <Providers>
+          <Navbar />
+          <div className="container max-w-7xl mx-auto h-full pt-12 antialiased mb-16">
+            {children}
+            <Toaster />
+          </div>
+        </Providers>
       </body>
     </html>
   );
