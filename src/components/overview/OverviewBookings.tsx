@@ -28,7 +28,7 @@ export default function OverviewBookings({
   console.log(data);
   if (data?.bookings?.length === 0) {
     return (
-      <div className="flex-grow animate-in fade-in slide-in-from-bottom-8 duration-500 ease-in-out">
+      <div className="flex-grow animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
         <div className="flex flex-col items-center justify-center bg-muted rounded-lg border border-border drop-shadow-sm p-32 space-y-1 text-center">
           <h3 className="text-muted-foreground font-semibold text-xl tracking-tight">
             No bookings at the moment.

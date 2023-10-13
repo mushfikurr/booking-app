@@ -70,7 +70,7 @@ model BusinessUser {
   postcode       String
   phoneNumber    String
   instagram      String?
-  businessEmail  String
+  businessEmail  String        @unique
   userId         String        @unique
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   services       Service[]
@@ -83,9 +83,10 @@ model BusinessUser {
 
 model Service {
   id             String       @id @default(cuid())
-  name           String
-  description    String
-  price          Decimal
+  name           String       @unique
+  description    String?
+  price          String
+  estimatedTime  Int
   businessUserId String
   businessUser   BusinessUser @relation(fields: [businessUserId], references: [id])
   booking        Booking[]
@@ -96,11 +97,11 @@ model Service {
 model Booking {
   id             String       @id @default(cuid())
   date           DateTime
-  services       Service[] 
+  services       Service[]
   userId         String
   businessUserId String
-  user           User?        @relation(fields: [userId], references: [id]) 
-  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id]) 
+  user           User?        @relation(fields: [userId], references: [id])
+  businessUser   BusinessUser @relation(fields: [businessUserId], references: [id])
 
   @@index([userId])
   @@index([businessUserId])

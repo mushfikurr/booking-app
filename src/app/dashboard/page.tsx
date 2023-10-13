@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Overview from "@/components/overview/Overview";
 import { db } from "@/lib/db";
 import { BusinessUser, User } from "@prisma/client";
+import Services from "@/components/services/Services";
 
 export default async function Dashboard() {
   const data = await getServerSession(authOptions);
@@ -34,7 +35,7 @@ export default async function Dashboard() {
             />
           </TabsContent>
           <TabsContent value="services">
-            <div>Services</div>
+            <Services businessUser={businessUser as BusinessUser} />
           </TabsContent>
           <TabsContent value="bookings">
             <div>Bookings</div>

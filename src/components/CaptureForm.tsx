@@ -27,8 +27,8 @@ export interface CaptureFormField {
 }
 
 export interface CaptureFormProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   schema: ZodTypeAny;
   isLoading?: boolean;
   formFields: CaptureFormField[];
@@ -91,15 +91,20 @@ export const CaptureForm: FC<CaptureFormProps> = ({
         },
         { shouldFocus: true }
       );
+    } else {
+      console.log("Reset form!");
+      form.reset({});
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="gap-4 space-y-1 leading-snug items-center">
-        <h1 className="font-bold text-2xl">{title}</h1>
-        <h3 className="text-foreground/80">{description}</h3>
-      </div>
+      {title && description && (
+        <div className="gap-4 space-y-1 leading-snug items-center">
+          {title && <h1 className="font-bold text-2xl">{title}</h1>}
+          {description && <h3 className="text-foreground/80">{description}</h3>}
+        </div>
+      )}
 
       {form.formState.errors?.root?.serverError && (
         <CaptureFormServerAlert
@@ -120,6 +125,7 @@ export const CaptureForm: FC<CaptureFormProps> = ({
                 key={formField.name}
                 control={form.control}
                 name={formField.name}
+                defaultValue=""
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{formField.label}</FormLabel>

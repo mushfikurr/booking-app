@@ -1,20 +1,15 @@
-import { AlertCircle, Clock, Settings2, Users } from "lucide-react";
-import { Button } from "../ui/button";
+import { db } from "@/lib/db";
+import { BusinessUser, User } from "@prisma/client";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
-import { Booking, BusinessUser, Service, User } from "@prisma/client";
+import NoServicesCard from "./NoServicesCard";
 import OverviewBookings from "./OverviewBookings";
 import RundownStatistics from "./RundownStatistics";
-import NoServicesCard from "./NoServicesCard";
-import ExtraStatisticCards from "./ExtraStatisticCards";
 
 export default async function Overview({
   user,
@@ -42,7 +37,7 @@ export default async function Overview({
           />
           <Card className="max-w-xl animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out w-full">
             <CardHeader className="pb-2 space-y-1">
-              <CardTitle className="text-xl">Hello {firstName}!</CardTitle>
+              <CardTitle>Hello {firstName}!</CardTitle>
               <CardDescription>Here's your rundown for today</CardDescription>
             </CardHeader>
             <CardContent className="text-sm space-y-2">

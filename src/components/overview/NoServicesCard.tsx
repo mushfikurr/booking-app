@@ -40,15 +40,13 @@ export default function NoServicesCard({
         <CardHeader className="pb-2 space-y-1">
           <CardTitle>
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold tracking-tight w-full">
-                Create a new service
-              </h3>
+              <h3 className="tracking-tight w-full">Create a new service</h3>
               <AlertCircle className="text-foreground h-7 w-7" />
             </div>
           </CardTitle>
           <CardDescription>Required for new users</CardDescription>
         </CardHeader>
-        <CardContent className="pb-2">
+        <CardContent className="">
           <p className="text-sm max-w-xs text-foreground">
             Showcase what you can provide to a customer, and name a price the
             customer can expect.{" "}
@@ -57,8 +55,8 @@ export default function NoServicesCard({
             </span>
           </p>
         </CardContent>
-        <CardFooter>
-          <Button className="w-fit ml-auto">Create</Button>
+        <CardFooter className="">
+          <Button className="w-fit">Go to services</Button>
         </CardFooter>
       </Card>
     );
