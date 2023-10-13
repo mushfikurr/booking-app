@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
       console.log(body);
       const { name, description, price, estimatedTime, businessUserId } = body;
       const [hours, minutes, seconds] = estimatedTime.split(":");
-      console.log(hours, minutes, seconds);
       const timeFormatToSeconds =
         parseInt(hours, 10) * 3600 +
         parseInt(minutes, 10) * 60 +

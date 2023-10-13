@@ -1,25 +1,23 @@
 "use client";
-import LoginSchema from "@/lib/form/login-form-schema";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import NewServiceSchema from "@/lib/form/new-service-schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import * as z from "zod";
-import { BusinessUser } from "@prisma/client";
 import { useToast } from "../ui/use-toast";
-import NewServiceSchema from "@/lib/form/new-service-schema";
+import { Service } from "@prisma/client";
 import { CaptureForm } from "../CaptureForm";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError, AxiosResponse } from "axios";
+
 type NewServiceSchemaType = z.infer<typeof NewServiceSchema>;
 
-const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
+const UpdateServiceForm = ({ service }: { service: Service }) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (payload: NewServiceSchemaType) => {
-      return axios.post("/api/service/newService", payload);
+      return axios.put("/api/service/updateService", payload);
     },
     onMutate: () => {
       setIsLoading(true);
@@ -36,17 +34,22 @@ const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
   });
 
   const onSubmit = async (values: NewServiceSchemaType) => {
-    const payload = { ...values, businessUserId: businessUser.id };
+    const payload = { ...values, id: service.id };
     try {
       await mutation.mutateAsync(payload);
       toast({
-        title: "Successfully created service!",
-        description: "Customers will now be able to book this service.",
+        title: "Successfully updated service",
+        description: "Customers will now be able to see the new service.",
       });
     } catch (err) {
       return (err as AxiosError).response?.data;
     }
   };
+
+  // Convert the seconds stored in database to the input foramt (HH:MM:SS) for defaultValue
+  const estimatedTimeToFormat = new Date(service.estimatedTime * 1000)
+    .toISOString()
+    .slice(11, 19);
 
   const captureFormProps = {
     isLoading,
@@ -56,23 +59,27 @@ const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
         name: "name",
         label: "Service Name",
         placeholder: "Haircut + Beard",
+        defaultValue: service.name,
       },
       {
         name: "description",
         label: "Description",
         placeholder: "Cut both hair and beard",
+        defaultValue: service.description,
       },
       {
         name: "price",
         label: "Price",
         placeholder: "30.00",
+        defaultValue: service.price,
       },
       {
         name: "estimatedTime",
         label: "Estimated time (HH:MM:SS)",
+        defaultValue: estimatedTimeToFormat,
       },
     ],
-    submitButtonText: "Create",
+    submitButtonText: "Update",
     submitButtonClassNames: "w-full",
     onSubmit,
   };
@@ -84,4 +91,4 @@ const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
   );
 };
 
-export default NewServiceForm;
+export default UpdateServiceForm;

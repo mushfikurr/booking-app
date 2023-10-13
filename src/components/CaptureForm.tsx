@@ -23,6 +23,7 @@ export interface CaptureFormField {
   label: string;
   placeholder?: string;
   description?: string;
+  defaultValue?: string | null;
   type?: string;
 }
 
@@ -125,7 +126,7 @@ export const CaptureForm: FC<CaptureFormProps> = ({
                 key={formField.name}
                 control={form.control}
                 name={formField.name}
-                defaultValue=""
+                defaultValue={formField.defaultValue ?? ""}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{formField.label}</FormLabel>
