@@ -36,7 +36,7 @@ export default function NoServicesCard({
 
   if (data?.services?.length === 0) {
     return (
-      <Card className="animate-in fade-in slide-in-from-left-8 duration-200 ease-in-out">
+      <Card className="animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
         <CardHeader className="pb-2 space-y-1">
           <CardTitle>
             <div className="flex justify-between items-center">
@@ -44,7 +44,7 @@ export default function NoServicesCard({
               <AlertCircle className="text-foreground h-7 w-7" />
             </div>
           </CardTitle>
-          <CardDescription>Required for new users</CardDescription>
+          <CardDescription>Required for business accounts</CardDescription>
         </CardHeader>
         <CardContent className="">
           <p className="text-sm max-w-xs text-foreground">
@@ -55,9 +55,6 @@ export default function NoServicesCard({
             </span>
           </p>
         </CardContent>
-        <CardFooter className="">
-          <Button className="w-fit">Go to services</Button>
-        </CardFooter>
       </Card>
     );
   }

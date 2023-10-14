@@ -31,12 +31,13 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Check if the data being updated exists already
+    // Check if the name being updated exists already
     const updatedServiceExists = await db.service.findFirst({
       where: { name: service.name },
     });
 
-    if (updatedServiceExists) {
+
+    if (updatedServiceExists && service.name !== soughtService.name) {
       console.error("The input service name already exists");
       return NextResponse.json(
         { error: "A service with this name already exists", field: "name" },

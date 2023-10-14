@@ -37,6 +37,7 @@ export interface CaptureFormProps {
   submitButtonText?: string;
   submitButtonClassNames?: string;
   children?: ReactNode;
+  keepValues?: boolean;
 }
 
 export interface CaptureFormServerAlertProps {
@@ -73,6 +74,7 @@ export const CaptureForm: FC<CaptureFormProps> = ({
   children,
   submitButtonClassNames,
   isLoading = false,
+  keepValues = false,
 }) => {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -94,7 +96,7 @@ export const CaptureForm: FC<CaptureFormProps> = ({
       );
     } else {
       console.log("Reset form!");
-      form.reset({});
+      form.reset(values ? keepValues : {});
     }
   };
 

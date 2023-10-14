@@ -75,6 +75,7 @@ const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
     submitButtonText: "Create",
     submitButtonClassNames: "w-full",
     onSubmit,
+    keepValues: false,
   };
 
   return (

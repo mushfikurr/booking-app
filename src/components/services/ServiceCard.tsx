@@ -1,15 +1,15 @@
 import { Service } from "@prisma/client";
-import { Skeleton } from "../ui/skeleton";
 import { Clock, Pencil, Trash } from "lucide-react";
-import { Separator } from "../ui/separator";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "../ui/dialog";
+import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
+import RemoveServiceDialogContent from "./RemoveServiceDialogContent";
 import UpdateServiceForm from "./UpdateServiceForm";
 const humanizeDuration = require("humanize-duration");
 
@@ -55,11 +55,9 @@ export function ServiceCard({
             </p>
           </span>
           <div className="bg-accent rounded-md flex text-muted-foreground border border-border">
-            <EditCardTrigger service={service} />
+            <EditServiceButton service={service} />
             <Separator orientation="vertical" />
-            <button className="hover:text-destructive hover:bg-background rounded-r-md transition duration-200 ease-in-out">
-              <Trash className="h-4 w-4 mx-3 my-2" />
-            </button>
+            <RemoveServiceButton service={service} />
           </div>
         </div>
       </div>
@@ -67,7 +65,7 @@ export function ServiceCard({
   );
 }
 
-function EditCardTrigger({ service }: { service: Service }) {
+function EditServiceButton({ service }: { service: Service }) {
   return (
     <>
       <Dialog>
@@ -82,6 +80,21 @@ function EditCardTrigger({ service }: { service: Service }) {
           </DialogHeader>
           <UpdateServiceForm service={service} />
         </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function RemoveServiceButton({ service }: { service: Service }) {
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <div className="hover:text-destructive hover:bg-background rounded-r-md transition duration-200 ease-in-out cursor-pointer">
+            <Trash className="h-4 w-4 mx-3 my-2" />
+          </div>
+        </DialogTrigger>
+        <RemoveServiceDialogContent service={service} />
       </Dialog>
     </>
   );

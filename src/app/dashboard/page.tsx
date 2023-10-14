@@ -1,11 +1,11 @@
-import { DefaultSession, getServerSession } from "next-auth";
-import { authOptions } from "../(auth)/api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Overview from "@/components/overview/Overview";
+import Services from "@/components/services/Services";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/db";
 import { BusinessUser, User } from "@prisma/client";
-import Services from "@/components/services/Services";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../(auth)/api/auth/[...nextauth]/route";
 
 export default async function Dashboard() {
   const data = await getServerSession(authOptions);
@@ -18,6 +18,7 @@ export default async function Dashboard() {
     const businessUser = await db.businessUser.findUnique({
       where: { userId: userData?.id },
     });
+
     return (
       <div className="container max-w-5xl flex flex-col gap-5">
         <h1 className="text-4xl font-bold">Dashboard</h1>
