@@ -62,7 +62,7 @@ export default async function Services({
           </CardFooter>
         </Card>
       </div>
-      <div className="flex-grow grid grid-cols-3 grid-rows-3 gap-6 max-h-3xl">
+      <div className="flex-grow sm:grid md:grid-cols-3 gap-6 sm:grid-cols-2 max-sm:space-y-6">
         <ServicesDisplay
           prefetchedServicesData={services}
           businessUserId={businessUser.id}

@@ -47,14 +47,16 @@ export default function NoServicesCard({
           <CardDescription>Required for business accounts</CardDescription>
         </CardHeader>
         <CardContent className="">
-          <p className="text-sm max-w-xs text-foreground">
+          <p className="text-sm max-w-xs text-foreground/80">
             Showcase what you can provide to a customer, and name a price the
             customer can expect.{" "}
-            <span className="font-medium">
-              This is required for the booking process.
-            </span>
           </p>
         </CardContent>
+        <CardFooter>
+          <p className="text-sm max-w-xs font-medium text-foreground">
+            This is required for the booking process.
+          </p>
+        </CardFooter>
       </Card>
     );
   }
