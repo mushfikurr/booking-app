@@ -1,0 +1,36 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../(auth)/api/auth/[...nextauth]/route";
+import { RouteTabs } from "@/components/ui/tabs-with-route";
+
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const data = await getServerSession(authOptions);
+  const user = data?.user;
+
+  if (user?.isBusinessUser) {
+    return (
+      <div className="container max-w-5xl flex flex-col gap-5">
+        <h1 className="text-4xl font-bold">Dashboard</h1>
+        <RouteTabs
+          defaultValue="overview"
+          className="w-full flex flex-col gap-4"
+        >
+          <TabsList className="grid grid-cols-4 w-fit">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="services">Services</TabsTrigger>
+            <TabsTrigger value="bookings">Bookings</TabsTrigger>
+            <TabsTrigger value="editProfile">Edit Profile</TabsTrigger>
+          </TabsList>
+          {children}
+        </RouteTabs>
+      </div>
+    );
+  } else {
+    redirect("/profile");
+  }
+}

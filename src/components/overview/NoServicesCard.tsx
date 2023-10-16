@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { Service } from "@prisma/client";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const getServices = async (businessUserId: string) => {
   const resp = await axios.post("/api/service", { businessUserId });
@@ -34,6 +35,8 @@ export default function NoServicesCard({
     { initialData: prefetchedServicesData }
   );
 
+  const router = useRouter();
+
   if (data?.services?.length === 0) {
     return (
       <Card className="animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
@@ -51,11 +54,18 @@ export default function NoServicesCard({
             Showcase what you can provide to a customer, and name a price the
             customer can expect.{" "}
           </p>
-        </CardContent>
-        <CardFooter>
-          <p className="text-sm max-w-xs font-medium text-foreground">
+          <p className="text-sm max-w-xs font-medium text-destructive">
             This is required for the booking process.
           </p>
+        </CardContent>
+        <CardFooter>
+          <Button
+            onClick={() => {
+              router.push("/dashboard/services");
+            }}
+          >
+            Navigate to services
+          </Button>
         </CardFooter>
       </Card>
     );

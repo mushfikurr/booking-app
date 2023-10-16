@@ -58,8 +58,6 @@ export const authOptions: NextAuthOptions = {
           );
         }
 
-        console.log(user);
-
         const isBusinessUser = !!user?.businessUser;
         if (isBusinessUser) {
           return {

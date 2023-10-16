@@ -24,7 +24,6 @@ const Review: FC<ReviewProps> = ({ forms }) => {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      console.log(allFormValues);
 
       const validatedForms = validateAllFormValuesAndMerge(
         allFormValues,

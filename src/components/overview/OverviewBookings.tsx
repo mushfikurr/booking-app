@@ -25,7 +25,6 @@ export default function OverviewBookings({
     { initialData: prefetchedBookingsData }
   );
 
-  console.log(data);
   if (data?.bookings?.length === 0) {
     return (
       <div className="flex-grow animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">

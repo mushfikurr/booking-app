@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     try {
       const body = await req.json();
       const { businessUserId } = body;
-      console.log(body);
+
       const bookings = await db.booking.findMany({
         where: { businessUserId },
       });

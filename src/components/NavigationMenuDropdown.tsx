@@ -18,7 +18,7 @@ export default function NavigationMenuDropdown({
           className={cn(
             "block select-none space-y-1 rounded-sm p-2 leading-none text-foreground/80 no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
           )}
-          href={isBusinessUser ? "/dashboard" : "/profile"}
+          href={isBusinessUser ? "/dashboard/overview" : "/profile"}
         >
           <div className="flex items-center gap-3 text-sm font-medium leading-none">
             <User2 className="w-4 h-4" />
