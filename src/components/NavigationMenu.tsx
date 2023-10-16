@@ -79,7 +79,9 @@ export const NavigationMenuAuthenticated = (user) => {
               <Avatar className="w-7 h-7 text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
                 <AvatarImage alt={`${user?.data?.name}'s Profile Picture`} />
                 <AvatarFallback>
-                  {user?.data?.name && user?.data?.name[0]}
+                  {user?.data?.name &&
+                    user?.data?.name.split(" ")[0][0] +
+                      (user?.data?.name.split(" ")[1][0] ?? "")}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">

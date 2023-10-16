@@ -31,7 +31,6 @@ export default function Stepper() {
   const inProgressVariant =
     "text-foreground/80 border-secondary-foreground bg-secondary";
 
-  // Fix stepperIcons logic for highlighting
   const stepperIcon = (
     icon: ReactNode,
     displayName: string,

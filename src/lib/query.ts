@@ -1,7 +1,7 @@
-import { authOptions } from "@/app/(auth)/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
 import { db } from "./db";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const getUserWithBusinessData = cache(async () => {
   const data = await getServerSession(authOptions);

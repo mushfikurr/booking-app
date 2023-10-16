@@ -1,12 +1,10 @@
-import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
-import Navbar, { NavbarAuthenticated } from "@/components/Navbar";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./(auth)/api/auth/[...nextauth]/route";
-import { Toaster } from "@/components/ui/toaster";
-import Providers from "@/components/Providers";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

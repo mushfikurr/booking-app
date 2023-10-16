@@ -1,8 +1,8 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RouteTabs } from "@/components/ui/tabs-with-route";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../(auth)/api/auth/[...nextauth]/route";
-import { RouteTabs } from "@/components/ui/tabs-with-route";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Layout({
   children,
@@ -16,10 +16,7 @@ export default async function Layout({
     return (
       <div className="container max-w-5xl flex flex-col gap-5">
         <h1 className="text-4xl font-bold">Dashboard</h1>
-        <RouteTabs
-          defaultValue="overview"
-          className="w-full flex flex-col gap-4"
-        >
+        <RouteTabs className="w-full flex flex-col gap-4 mb-16">
           <TabsList className="grid grid-cols-4 w-fit">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>

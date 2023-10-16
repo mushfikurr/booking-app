@@ -13,19 +13,25 @@ const RouteTabs = React.forwardRef<
   const router = useRouter();
   const pathname = usePathname();
   const [routeState, setRouteState] = React.useState(props.value);
+  const defaultValue =
+    pathname.split("/").length === 1 ? "overview" : routeState;
 
   React.useEffect(() => {
+    // TODO: Make this dynamic
     const splitPath = pathname.split("/");
-    const endRoute = splitPath[splitPath.length - 1];
-    setRouteState(endRoute);
+    if (splitPath.length === 3) {
+      const endRoute = splitPath[2];
+      setRouteState(endRoute);
+    }
   }, [pathname]);
 
   return (
     <TabsPrimitive.Root
       ref={ref}
       value={routeState}
+      defaultValue={defaultValue}
       onValueChange={(value) => {
-        router.push(value);
+        router.push(`/dashboard/${value}`);
       }}
       className={cn(className)}
       {...props}
