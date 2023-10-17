@@ -20,9 +20,9 @@ const ActiveLink = ({
   icon: ReactNode;
   displayName: string;
   route: string;
-  editPage?: [string];
+  editPage?: string;
 }) => {
-  const editPageWithDefault = editPage ? editPage[0] : "personal";
+  const editPageWithDefault = editPage ?? "personal";
   if (route === editPageWithDefault) {
     return (
       <Link
@@ -61,7 +61,7 @@ const ActiveLink = ({
 export default function EditFormNavigation({
   editPage,
 }: {
-  editPage?: [string];
+  editPage?: string;
 }) {
   const EDIT_FORM_LINKS = [
     {

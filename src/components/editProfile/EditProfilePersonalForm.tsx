@@ -1,7 +1,16 @@
 "use client";
 
+import {
+  getUserWithBusinessDataFromClient,
+  updatePersonalUser,
+} from "@/lib/clientQuery";
+import { EditProfilePersonalSchema } from "@/lib/form/edit-profile-schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Contact2 } from "lucide-react";
+import { z } from "zod";
+import { UserWithBusinessUser } from "../../../@types/prisma";
 import { CaptureForm, CaptureFormProps } from "../CaptureForm";
-import { BusinessRegistrationPersonalSchema } from "@/lib/form/register-form-schema";
 import {
   Card,
   CardContent,
@@ -9,33 +18,72 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Contact2 } from "lucide-react";
+import { toast } from "../ui/use-toast";
 
-export default function EditProfilePersonalForm() {
-  const onSubmit = () => {};
+export default function EditProfilePersonalForm({
+  prefetchedUser,
+}: {
+  prefetchedUser: UserWithBusinessUser;
+}) {
+  const { data, isLoading, isFetching, refetch } = useQuery(
+    ["user"],
+    async () => {
+      return await getUserWithBusinessDataFromClient(prefetchedUser.id);
+    },
+    { initialData: prefetchedUser }
+  );
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (payload: z.infer<typeof EditProfilePersonalSchema>) => {
+      return updatePersonalUser(data.id || prefetchedUser.id, payload);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["user"]);
+      refetch();
+    },
+    onError: (data: AxiosError) => {
+      return data.response?.data;
+    },
+  });
+
+  const onSubmit = async (
+    values: z.infer<typeof EditProfilePersonalSchema>
+  ) => {
+    try {
+      await mutation.mutateAsync(values);
+      toast({
+        description: "Successfully updated user!",
+      });
+    } catch (err) {
+      return (err as AxiosError).response?.data;
+    }
+  };
+
   const captureFormProps: CaptureFormProps = {
-    schema: BusinessRegistrationPersonalSchema,
+    schema: EditProfilePersonalSchema,
     formFields: [
       {
         name: "name",
         label: "Name *",
-        description: "Your public display name.",
         placeholder: "John Doe",
+        defaultValue: data.name,
       },
       {
         name: "email",
         label: "Personal Email Address",
-        description: "This will be the email for logging into your account.",
         placeholder: "johndoe@gmail.com",
         type: "email",
+        defaultValue: data.email,
       },
       {
         name: "password",
         label: "Password",
-        description: "This will be the password for logging into your account.",
         type: "password",
       },
+      { name: "confirmPassword", label: "Confirm Password", type: "password" },
     ],
+    isLoading: mutation.isLoading || isLoading,
     onSubmit,
   };
   return (

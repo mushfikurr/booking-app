@@ -23,7 +23,6 @@ export default function RemoveServiceDialogContent({
   const { toast } = useToast();
   const mutation = useMutation({
     mutationFn: () => {
-      console.log(service.id);
       return axios.delete("/api/service/deleteService", {
         data: { id: service.id },
       });

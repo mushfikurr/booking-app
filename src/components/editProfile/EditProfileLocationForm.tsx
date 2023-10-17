@@ -2,6 +2,7 @@
 
 import { BusinessRegistrationLocationSchema } from "@/lib/form/register-form-schema";
 import { Building2 } from "lucide-react";
+import { UserWithBusinessUser } from "../../../@types/prisma";
 import { CaptureForm, CaptureFormProps } from "../CaptureForm";
 import {
   Card,
@@ -11,8 +12,13 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default function EditProfileLocationForm() {
+export default function EditProfileLocationForm({
+  prefetchedUser,
+}: {
+  prefetchedUser: UserWithBusinessUser;
+}) {
   const onSubmit = () => {};
+
   const captureFormProps: CaptureFormProps = {
     schema: BusinessRegistrationLocationSchema,
     formFields: [

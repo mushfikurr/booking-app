@@ -1,10 +1,9 @@
-import NextAuth, { Session, type NextAuthOptions } from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/lib/db";
-import { compare } from "bcrypt-ts";
-import { NextResponse } from "next/server";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { User } from "@prisma/client";
+import { compare } from "bcrypt-ts";
+import NextAuth, { type NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 interface BusinessUser extends User {
   isBusinessUser: boolean;
@@ -84,7 +83,11 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         return {
           ...session,
-          user: { ...session.user, isBusinessUser: token.isBusinessUser },
+          user: {
+            ...session.user,
+            id: token.id,
+            isBusinessUser: token.isBusinessUser,
+          },
         };
       }
 

@@ -1,7 +1,8 @@
 "use client";
 
 import { BusinessRegistrationContactSchema } from "@/lib/form/register-form-schema";
-import { Contact2, Smartphone } from "lucide-react";
+import { Smartphone } from "lucide-react";
+import { UserWithBusinessUser } from "../../../@types/prisma";
 import { CaptureForm, CaptureFormProps } from "../CaptureForm";
 import {
   Card,
@@ -11,7 +12,11 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default function EditProfileContactForm() {
+export default function EditProfileContactForm({
+  prefetchedUser,
+}: {
+  prefetchedUser: UserWithBusinessUser;
+}) {
   const onSubmit = () => {};
   const captureFormProps: CaptureFormProps = {
     schema: BusinessRegistrationContactSchema,

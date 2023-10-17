@@ -2,6 +2,10 @@ import EditProfileContactForm from "@/components/editProfile/EditProfileContactF
 import EditFormNavigation from "@/components/editProfile/EditProfileFormNavigation";
 import EditProfileLocationForm from "@/components/editProfile/EditProfileLocationForm";
 import EditProfilePersonalForm from "@/components/editProfile/EditProfilePersonalForm";
+import {
+  GetUserWithBusinessDataReturn,
+  getUserWithBusinessData,
+} from "@/lib/serverQuery";
 
 export default async function DashboardEditProfilePage({
   params,
@@ -9,16 +13,23 @@ export default async function DashboardEditProfilePage({
   params: { editPage?: [string] };
 }) {
   let currentEditPage = "personal";
-  if (params.editPage) {
-    currentEditPage = params.editPage[0];
-  }
-  
+  if (params.editPage) currentEditPage = params.editPage[0];
+
+  const prefetchedUser: GetUserWithBusinessDataReturn =
+    await getUserWithBusinessData();
+
   return (
     <div className="space-y-3 flex-grow">
-      <EditFormNavigation editPage={params.editPage} />
-      {currentEditPage === "personal" && <EditProfilePersonalForm />}
-      {currentEditPage === "location" && <EditProfileLocationForm />}
-      {currentEditPage === "contact" && <EditProfileContactForm />}
+      <EditFormNavigation editPage={currentEditPage} />
+      {currentEditPage === "personal" && (
+        <EditProfilePersonalForm prefetchedUser={prefetchedUser} />
+      )}
+      {currentEditPage === "location" && (
+        <EditProfileLocationForm prefetchedUser={prefetchedUser} />
+      )}
+      {currentEditPage === "contact" && (
+        <EditProfileContactForm prefetchedUser={prefetchedUser} />
+      )}
     </div>
   );
 }
