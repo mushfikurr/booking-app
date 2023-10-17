@@ -1,17 +1,14 @@
 import Overview from "@/components/overview/Overview";
 import { TabsContent } from "@/components/ui/tabs";
-import { getUserWithBusinessData } from "@/lib/query";
+import { getUserWithBusinessData } from "@/lib/serverQuery";
 import { BusinessUser, User } from "@prisma/client";
 
 export default async function DashboardOverview() {
   // TODO: Move Overview component to page.tsx
-  const { userData, businessUser } = await getUserWithBusinessData();
+  const user = await getUserWithBusinessData();
   return (
     <TabsContent value="overview">
-      <Overview
-        businessUser={businessUser as BusinessUser}
-        user={userData as User}
-      />
+      <Overview user={user} />
     </TabsContent>
   );
 }

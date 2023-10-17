@@ -9,16 +9,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
-import { getUserWithBusinessData } from "@/lib/query";
 import { Trash } from "lucide-react";
 import { ReactNode } from "react";
+import { UserWithBusinessUser } from "../../../../../@types/prisma";
+import { getUserWithBusinessData } from "@/lib/serverQuery";
 
 export default async function EditProfileLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { userData: user, businessUser } = await getUserWithBusinessData();
+  const user: UserWithBusinessUser = await getUserWithBusinessData();
   const userInitials =
     user?.name &&
     user?.name.split(" ")[0][0] + (user?.name.split(" ")[1][0] ?? "");

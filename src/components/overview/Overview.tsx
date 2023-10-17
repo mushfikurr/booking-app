@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { BusinessUser, User } from "@prisma/client";
+import { BusinessUser, Prisma, User } from "@prisma/client";
 import {
   Card,
   CardContent,
@@ -10,19 +10,18 @@ import {
 import NoServicesCard from "./NoServicesCard";
 import OverviewBookings from "./OverviewBookings";
 import RundownStatistics from "./RundownStatistics";
+import { UserWithBusinessUser } from "../../../@types/prisma";
 
 export default async function Overview({
   user,
-  businessUser,
 }: {
-  user: User;
-  businessUser: BusinessUser;
+  user?: UserWithBusinessUser | null;
 }) {
   const services = await db.service.findMany({
-    where: { businessUserId: businessUser?.id },
+    where: { businessUserId: user?.businessUser?.id },
   });
   const bookings = await db.booking.findMany({
-    where: { businessUserId: businessUser?.id },
+    where: { businessUserId: user?.businessUser?.id },
   });
 
   const firstName = user?.name?.split(" ")[0];
@@ -33,7 +32,7 @@ export default async function Overview({
         <div className="flex gap-6">
           <NoServicesCard
             prefetchedServicesData={services}
-            businessUserId={businessUser?.id}
+            businessUserId={user?.businessUser?.id}
           />
           <Card className="max-w-xl animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out w-full">
             <CardHeader className="pb-2 space-y-1">
@@ -50,7 +49,7 @@ export default async function Overview({
 
       <OverviewBookings
         prefetchedBookingsData={bookings}
-        businessUserId={businessUser?.id}
+        businessUserId={user?.businessUser?.id}
       />
     </div>
   );

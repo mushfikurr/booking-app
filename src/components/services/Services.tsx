@@ -1,4 +1,6 @@
+import { db } from "@/lib/db";
 import { PlusCircle } from "lucide-react";
+import { UserWithBusinessUser } from "../../../@types/prisma";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -15,18 +17,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { db } from "@/lib/db";
-import { BusinessUser } from "@prisma/client";
 import NewServiceForm from "./NewServiceForm";
 import ServicesDisplay from "./ServicesDisplay";
 
 export default async function Services({
-  businessUser,
+  user,
 }: {
-  businessUser: BusinessUser;
+  user: UserWithBusinessUser;
 }) {
   const services = await db.service.findMany({
-    where: { businessUserId: businessUser?.id },
+    where: { businessUserId: user?.businessUser.id },
   });
 
   return (
@@ -56,7 +56,7 @@ export default async function Services({
                     name a price for your services.
                   </DialogDescription>
                 </DialogHeader>
-                <NewServiceForm businessUser={businessUser} />
+                <NewServiceForm businessUser={user.businessUser} />
               </DialogContent>
             </Dialog>
           </CardFooter>
@@ -65,7 +65,7 @@ export default async function Services({
       <div className="flex-grow sm:grid md:grid-cols-3 gap-6 sm:grid-cols-2 max-sm:space-y-6">
         <ServicesDisplay
           prefetchedServicesData={services}
-          businessUserId={businessUser.id}
+          businessUserId={user?.businessUser.id}
         />
       </div>
     </div>

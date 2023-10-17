@@ -9,12 +9,10 @@ const getUserWithBusinessData = cache(async () => {
 
   const userData = await db.user.findUnique({
     where: { email: user?.email as string },
-  });
-  const businessUser = await db.businessUser.findUnique({
-    where: { userId: userData?.id },
+    include: { businessUser: true },
   });
 
-  return { userData, businessUser };
+  return userData;
 });
 
 export { getUserWithBusinessData };

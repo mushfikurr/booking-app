@@ -15,7 +15,7 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-const getServices = async (businessUserId: string) => {
+const getServices = async (businessUserId?: string) => {
   const resp = await axios.post("/api/service", { businessUserId });
   return resp.data;
 };
@@ -25,7 +25,7 @@ export default function NoServicesCard({
   businessUserId,
 }: {
   prefetchedServicesData: Service[];
-  businessUserId: string;
+  businessUserId?: string;
 }) {
   const { data } = useQuery(
     ["service"],

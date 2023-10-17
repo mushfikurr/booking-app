@@ -31,6 +31,7 @@ export default function ServicesDisplay({
   if (isError) {
     toast({ title: "Error getting services from the server." });
   }
+  
 
   const services = data?.services;
 
