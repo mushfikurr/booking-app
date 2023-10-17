@@ -95,8 +95,8 @@ export const CaptureForm: FC<CaptureFormProps> = ({
         { shouldFocus: true }
       );
     } else {
-      console.log("Reset form!");
-      form.reset(values ? keepValues : {});
+      console.log("values", values);
+      form.reset(values || {});
     }
   };
 
