@@ -16,7 +16,7 @@ import { Separator } from "./ui/separator";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { FC } from "react";
-import { DefaultSession } from "next-auth";
+import { DefaultSession, Session } from "next-auth";
 import { usePathname, useRouter } from "next/navigation";
 import NavigationMenuDropdown from "./NavigationMenuDropdown";
 
@@ -68,8 +68,11 @@ export function NavigationMenuUnauthenticated() {
   );
 }
 
-export const NavigationMenuAuthenticated = (user) => {
-  const router = useRouter();
+export const NavigationMenuAuthenticated = ({
+  user,
+}: {
+  user: Session["user"];
+}) => {
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -77,18 +80,18 @@ export const NavigationMenuAuthenticated = (user) => {
           <NavigationMenuTrigger>
             <div className="flex gap-4 items-center mr-2">
               <Avatar className="w-7 h-7 text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
-                <AvatarImage alt={`${user?.data?.name}'s Profile Picture`} />
+                <AvatarImage alt={`${user?.name}'s Profile Picture`} />
                 <AvatarFallback>
-                  {user?.data?.name &&
-                    user?.data?.name.split(" ")[0][0] +
-                      (user?.data?.name.split(" ")[1][0] ?? "")}
+                  {user?.name &&
+                    user?.name.split(" ")[0][0] +
+                      (user?.name.split(" ")[1][0] ?? "")}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">
                 <p className="text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground font-semibold">
-                  {user?.data?.name}
+                  {user?.name}
                 </p>
-                {user?.data?.isBusinessUser && (
+                {user?.isBusinessUser && (
                   <p className="uppercase text-primary text-xs">Business</p>
                 )}
               </div>
@@ -96,9 +99,7 @@ export const NavigationMenuAuthenticated = (user) => {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             {/* Display user settings here */}
-            <NavigationMenuDropdown
-              isBusinessUser={user?.data?.isBusinessUser}
-            />
+            <NavigationMenuDropdown isBusinessUser={user?.isBusinessUser} />
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>

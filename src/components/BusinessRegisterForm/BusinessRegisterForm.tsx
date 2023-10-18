@@ -206,7 +206,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
     });
 
     return () => subscription.unsubscribe();
-  }, [form.watch, clearFormValueAtIndex, pageNumber]);
+  }, [form, form.watch, clearFormValueAtIndex, pageNumber]);
 
   async function customValidationHandler(values: z.infer<typeof schema>) {
     if (!customValidation) {

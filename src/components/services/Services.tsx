@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
 import { PlusCircle } from "lucide-react";
-import { UserWithBusinessUser } from "../../../@types/prisma";
 import { Button } from "../ui/button";
 import {
   Card,
@@ -19,6 +18,7 @@ import {
 } from "../ui/dialog";
 import NewServiceForm from "./NewServiceForm";
 import ServicesDisplay from "./ServicesDisplay";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
 
 export default async function Services({
   user,

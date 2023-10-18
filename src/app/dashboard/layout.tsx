@@ -3,6 +3,7 @@ import { RouteTabs } from "@/components/ui/tabs-with-route";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import { Suspense } from "react";
 
 export default async function Layout({
   children,
@@ -23,7 +24,7 @@ export default async function Layout({
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="editProfile">Edit Profile</TabsTrigger>
           </TabsList>
-          {children}
+          <Suspense fallback={<h1>Loading!!</h1>}>{children}</Suspense>
         </RouteTabs>
       </div>
     );

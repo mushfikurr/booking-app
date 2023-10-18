@@ -95,7 +95,6 @@ export const CaptureForm: FC<CaptureFormProps> = ({
         { shouldFocus: true }
       );
     } else {
-      console.log("values", values);
       form.reset(values || {});
     }
   };

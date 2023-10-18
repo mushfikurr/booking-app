@@ -5,10 +5,9 @@ interface PageContextType {
   nextPage: () => void;
   prevPage: () => void;
   seekPage: (pageNumber: number) => void;
-  isPageFilled: (pageNumber: number) => boolean;
   pushToAllFormValues: (values: {}, index: number) => void;
   clearFormValueAtIndex: (index: number) => void;
-  allFormValues: { [key: number]: object };
+  allFormValues: { [key: number]: any };
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -61,7 +60,7 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
         setCurrentPage(page);
       },
     }),
-    [currentPage]
+    [allFormValues, currentPage]
   );
 
   return (

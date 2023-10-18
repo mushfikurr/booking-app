@@ -11,8 +11,8 @@ import {
 import { TabsContent } from "@/components/ui/tabs";
 import { Trash } from "lucide-react";
 import { ReactNode } from "react";
-import { UserWithBusinessUser } from "../../../../../@types/prisma";
 import { getUserWithBusinessData } from "@/lib/serverQuery";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
 
 export default async function EditProfileLayout({
   children,

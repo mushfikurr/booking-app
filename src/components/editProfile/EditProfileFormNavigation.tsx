@@ -86,7 +86,7 @@ export default function EditFormNavigation({
       <NavigationMenuList>
         <NavigationMenuItem>
           {EDIT_FORM_LINKS.map((link) => {
-            return <ActiveLink {...{ ...link, editPage }} />;
+            return <ActiveLink key={link.route} {...{ ...link, editPage }} />;
           })}
         </NavigationMenuItem>
       </NavigationMenuList>

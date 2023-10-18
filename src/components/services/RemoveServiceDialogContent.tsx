@@ -1,6 +1,8 @@
 "use client";
 
 import { Service } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 import { Button } from "../ui/button";
 import {
   DialogContent,
@@ -9,9 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../ui/dialog";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import ButtonLoading from "../ui/button-loading";
 import { useToast } from "../ui/use-toast";
 
 export default function RemoveServiceDialogContent({

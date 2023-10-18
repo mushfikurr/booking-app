@@ -1,4 +1,3 @@
-
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import {
@@ -19,7 +18,7 @@ async function NavbarWithProvider() {
           </Link>
           <div>
             {data ? (
-              <NavigationMenuAuthenticated data={data.user} />
+              <NavigationMenuAuthenticated user={data.user} />
             ) : (
               <NavigationMenuUnauthenticated />
             )}

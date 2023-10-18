@@ -9,7 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Contact2 } from "lucide-react";
 import { z } from "zod";
-import { UserWithBusinessUser } from "../../../@types/prisma";
+import { UserWithBusinessUser } from "../../lib/relational-model-type";
 import { CaptureForm, CaptureFormProps } from "../CaptureForm";
 import {
   Card,
@@ -32,6 +32,8 @@ export default function EditProfilePersonalForm({
     },
     { initialData: prefetchedUser }
   );
+
+  console.log(isFetching);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
