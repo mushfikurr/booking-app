@@ -11,13 +11,58 @@ import {
   CardTitle,
 } from "../ui/card";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import {
+  getUserWithBusinessDataFromClient,
+  updateLocationDetailsForUser,
+} from "@/lib/clientQuery";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { EditProfileLocationSchema } from "@/lib/form/edit-profile-schema";
+import { AxiosError } from "axios";
+import { toast } from "../ui/use-toast";
 
 export default function EditProfileLocationForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
 }) {
-  const onSubmit = () => {};
+  const { data, isLoading, refetch } = useQuery(
+    ["user"],
+    async () => {
+      return await getUserWithBusinessDataFromClient(prefetchedUser.id);
+    },
+    { initialData: prefetchedUser }
+  );
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (payload: z.infer<typeof EditProfileLocationSchema>) => {
+      return updateLocationDetailsForUser(
+        data.id || prefetchedUser.id,
+        payload
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["user"]);
+      refetch();
+    },
+    onError: (data: AxiosError) => {
+      return data.response?.data;
+    },
+  });
+
+  const onSubmit = async (
+    values: z.infer<typeof EditProfileLocationSchema>
+  ) => {
+    try {
+      await mutation.mutateAsync(values);
+      toast({
+        description: "Successfully updated location details for your account!",
+      });
+    } catch (err) {
+      return (err as AxiosError).response?.data;
+    }
+  };
 
   const captureFormProps: CaptureFormProps = {
     schema: BusinessRegistrationLocationSchema,
@@ -25,16 +70,20 @@ export default function EditProfileLocationForm({
       {
         name: "streetAddress1",
         label: "Street Address 1 *",
+        defaultValue: data.businessUser.streetAddress1,
       },
       {
         name: "streetAddress2",
         label: "Street Address 2 *",
+        defaultValue: data.businessUser.streetAddress2,
       },
       {
         name: "postcode",
         label: "Postcode *",
+        defaultValue: data.businessUser.postcode,
       },
     ],
+    isLoading: mutation.isLoading || isLoading,
     onSubmit,
   };
   return (

@@ -15,6 +15,7 @@ const getUserWithBusinessData = cache(async () => {
 
   return userData;
 });
+
 export type GetUserWithBusinessDataReturn = Prisma.PromiseReturnType<
   typeof getUserWithBusinessData
 >;

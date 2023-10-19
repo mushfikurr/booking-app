@@ -28,7 +28,7 @@ export default async function EditProfileLayout({
     <TabsContent value="editProfile">
       <div className="space-y-6">
         <div className="flex gap-6">
-          {children}
+          <>{children}</>
 
           <Card className="w-full max-w-xs drop-shadow-sm h-fit animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out mt-[3.25rem]">
             <CardHeader className="space-y-0">

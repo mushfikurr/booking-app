@@ -45,4 +45,64 @@ const EditProfilePersonalSchema = z
     }
   );
 
+export const EditProfileLocationSchema = z.object({
+  streetAddress1: z
+    .string({
+      required_error: "Street Address 1 is required",
+      invalid_type_error: "Street Address 1 must be a valid string",
+    })
+    .min(2, {
+      message: "Street Address 1 must be at least 2 characters long",
+    }),
+  streetAddress2: z
+    .string({
+      invalid_type_error: "Street Address 2 must be a valid string",
+    })
+    .min(2, {
+      message: "Street Address 2 must be at least 2 characters long",
+    })
+    .optional()
+    .or(z.literal("")),
+  postcode: z
+    .string({
+      required_error: "Postcode is required",
+      invalid_type_error: "Postcode must be a valid string",
+    })
+    .regex(/^\w{5,8}$/, {
+      message: "Postcode must be a valid UK postcode format",
+    }),
+});
+
+export const EditProfileContactSchema = z.object({
+  phoneNumber: z
+    .string({ invalid_type_error: "Phone number must be a valid string" })
+    .min(11, {
+      message: "Phone number must be at least 11 characters long",
+    })
+    .regex(/^((\+44)|(0)) ?\d{4} ?\d{6}$/, {
+      message: "Phone number must be in valid UK format",
+    }),
+  instagram: z
+    .string({
+      invalid_type_error: "Instagram handle must be a valid string",
+    })
+    .min(3, {
+      message: "Instagram handle must be a minimum of 3 characters long",
+    })
+    .max(30, {
+      message: "Instagram handle must be a maximum of 30 characters long",
+    })
+    .optional()
+    .or(z.literal("")),
+  businessEmail: z
+    .string({
+      required_error: "Email is required",
+      invalid_type_error: "Email must contain letters",
+    })
+    .email({
+      message: "Email has to be in a suitable format (example@domain.com)",
+    })
+    .max(256, { message: "Email must be a maximum of 256 characters long" }),
+});
+
 export { EditProfilePersonalSchema };

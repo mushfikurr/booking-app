@@ -1,6 +1,11 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { Session } from "next-auth";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FC } from "react";
+import NavigationMenuDropdown from "./NavigationMenuDropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   NavigationMenu,
@@ -11,20 +16,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
-import { LogOut, User2 } from "lucide-react";
-import { Separator } from "./ui/separator";
-import { signOut } from "next-auth/react";
-import { cn } from "@/lib/utils";
-import { FC } from "react";
-import { DefaultSession, Session } from "next-auth";
-import { usePathname, useRouter } from "next/navigation";
-import NavigationMenuDropdown from "./NavigationMenuDropdown";
-
-interface NavigationMenuAuthenticatedProps {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-}
 
 interface NavLinkProps {
   route: string;

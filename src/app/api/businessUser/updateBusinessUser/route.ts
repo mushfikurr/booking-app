@@ -1,6 +1,21 @@
 import { db } from "@/lib/db";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { hash } from "bcrypt-ts";
 import { NextRequest, NextResponse } from "next/server";
+
+// Checks if the values input are the same as the user model
+function compareValuesToModel(values: any, model: UserWithBusinessUser) {
+  for (const key in values) {
+    if (key in model) {
+      if (values[key] !== model[key]) {
+        return false;
+      }
+    } else {
+      console.error(`${key} is not in the model`);
+    }
+  }
+  return true;
+}
 
 export async function PUT(req: NextRequest) {
   if (req.method === "PUT") {
@@ -57,7 +72,17 @@ export async function PUT(req: NextRequest) {
         const data = hashedPassword
           ? { ...values.formValues, hashedPassword }
           : { ...values.formValues };
-        console.log(data);
+
+        // Check if the values are the same, and if they are prevent updating the user
+        if (compareValuesToModel(values.formValues, isUnique)) {
+          return NextResponse.json(
+            {
+              error: "The values entered are the same as previous",
+            },
+            { status: 400 }
+          );
+        }
+
         // Update personal details
         const updatedUser = await db.user.update({
           where: { id: userId },
@@ -73,7 +98,7 @@ export async function PUT(req: NextRequest) {
         }
       } else {
         const isUnique = await db.businessUser.findFirst({
-          where: { businessEmail: values.formValues.businessEmail },
+          where: { userId },
         });
         if (!isUnique) {
           return NextResponse.json(
@@ -84,9 +109,19 @@ export async function PUT(req: NextRequest) {
             { status: 400 }
           );
         }
+
+        // Check if the values are the same, and if they are prevent updating the user
+        if (compareValuesToModel(values.formValues, isUnique)) {
+          return NextResponse.json(
+            {
+              error: "The values entered are the same as previous",
+            },
+            { status: 400 }
+          );
+        }
         // Update business details
         const updatedBusinessUser = await db.businessUser.update({
-          where: { id: userId },
+          where: { userId },
           data: { ...values.formValues },
         });
         if (updatedBusinessUser) {

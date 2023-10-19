@@ -2,7 +2,7 @@
 
 import {
   getUserWithBusinessDataFromClient,
-  updatePersonalUser,
+  updatePersonalDetailsForUser,
 } from "@/lib/clientQuery";
 import { EditProfilePersonalSchema } from "@/lib/form/edit-profile-schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -25,7 +25,7 @@ export default function EditProfilePersonalForm({
 }: {
   prefetchedUser: UserWithBusinessUser;
 }) {
-  const { data, isLoading, isFetching, refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ["user"],
     async () => {
       return await getUserWithBusinessDataFromClient(prefetchedUser.id);
@@ -33,12 +33,13 @@ export default function EditProfilePersonalForm({
     { initialData: prefetchedUser }
   );
 
-  console.log(isFetching);
-
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (payload: z.infer<typeof EditProfilePersonalSchema>) => {
-      return updatePersonalUser(data.id || prefetchedUser.id, payload);
+      return updatePersonalDetailsForUser(
+        data.id || prefetchedUser.id,
+        payload
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries(["user"]);
@@ -55,7 +56,7 @@ export default function EditProfilePersonalForm({
     try {
       await mutation.mutateAsync(values);
       toast({
-        description: "Successfully updated user!",
+        description: "Successfully updated personal details for your account!",
       });
     } catch (err) {
       return (err as AxiosError).response?.data;

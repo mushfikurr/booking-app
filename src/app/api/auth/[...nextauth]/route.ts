@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         if (!user || !user?.hashedPassword) {
           throw new Error(
             JSON.stringify({
-              error: "User does not exist",
+              error: "This email is not registered",
               field: "email",
             })
           );
