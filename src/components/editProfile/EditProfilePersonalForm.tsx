@@ -104,7 +104,7 @@ export default function EditProfilePersonalForm({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground font-medium mb-2">
-          Fields marked with an aesterisks are displayed to customers
+          Fields marked with an aesterisk (*) are displayed to customers
         </p>
         <CaptureForm {...captureFormProps} />
       </CardContent>
