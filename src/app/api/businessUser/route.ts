@@ -10,7 +10,9 @@ export async function POST(req: NextRequest) {
         where: { id: userId },
         include: { businessUser: true },
       });
-      return NextResponse.json(user, { status: 200 });
+      const userWithoutHashedPassword = { ...user };
+      delete userWithoutHashedPassword["hashedPassword"];
+      return NextResponse.json(userWithoutHashedPassword, { status: 200 });
     } catch (error) {
       return NextResponse.json(
         {
