@@ -4,6 +4,15 @@ import { db } from "./db";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Prisma } from "@prisma/client";
 
+const getOpeningHoursData = cache(async (businessId: string | undefined) => {
+  if (!businessId) {
+    console.error("No business id...");
+    return undefined;
+  }
+  const data = await db.openingHour.findMany({ where: { businessId } });
+  return data;
+});
+
 const getUserWithBusinessData = cache(async () => {
   const data = await getServerSession(authOptions);
   const user = data?.user;
@@ -20,4 +29,4 @@ export type GetUserWithBusinessDataReturn = Prisma.PromiseReturnType<
   typeof getUserWithBusinessData
 >;
 
-export { getUserWithBusinessData };
+export { getUserWithBusinessData, getOpeningHoursData };

@@ -2,6 +2,7 @@ import EditProfileContactForm from "@/components/editProfile/EditProfileContactF
 import EditFormNavigation from "@/components/editProfile/EditProfileFormNavigation";
 import EditProfileLocationForm from "@/components/editProfile/EditProfileLocationForm";
 import EditProfilePersonalForm from "@/components/editProfile/EditProfilePersonalForm";
+import OpeningHours from "@/components/openingHours/OpeningHours";
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,
@@ -29,6 +30,9 @@ export default async function DashboardEditProfilePage({
       )}
       {currentEditPage === "contact" && (
         <EditProfileContactForm prefetchedUser={prefetchedUser} />
+      )}
+      {currentEditPage === "openinghours" && (
+        <OpeningHours businessId={prefetchedUser?.businessUser?.id} />
       )}
     </div>
   );

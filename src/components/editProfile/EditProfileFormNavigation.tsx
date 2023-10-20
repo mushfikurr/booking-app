@@ -1,6 +1,6 @@
 "use client";
 
-import { Building2, Smartphone, User } from "lucide-react";
+import { Building2, Clock4, Smartphone, User } from "lucide-react";
 import Link from "next/link";
 import { ReactNode } from "react";
 import {
@@ -78,6 +78,11 @@ export default function EditFormNavigation({
       displayName: "Contact",
       route: "contact",
       icon: <Smartphone className="h-4 w-4" />,
+    },
+    {
+      displayName: "Opening Hours",
+      route: "openinghours",
+      icon: <Clock4 className="h-4 w-4" />,
     },
   ];
 

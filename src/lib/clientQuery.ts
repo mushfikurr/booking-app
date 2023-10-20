@@ -15,6 +15,13 @@ export const getUserWithBusinessDataFromClient = async (userId: string) => {
   return resp.data;
 };
 
+export const getOpeningHoursFromClient = async (businessId: string) => {
+  const resp = await axios.post("/api/openingHour", {
+    businessUserId: businessId,
+  });
+  return resp.data;
+};
+
 export const updateLocationDetailsForUser = async (
   userId: string,
   values: z.infer<typeof EditProfileLocationSchema>
