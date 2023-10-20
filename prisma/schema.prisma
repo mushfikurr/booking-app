@@ -56,7 +56,7 @@ model OpeningHour {
   id         Int          @id @default(autoincrement())
   businessId String
   business   BusinessUser @relation(fields: [businessId], references: [id])
-  dayOfWeek  String
+  dayOfWeek  String       @unique
   startTime  DateTime
   endTime    DateTime
 

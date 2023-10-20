@@ -1,10 +1,14 @@
 "use client";
 
-import { getOpeningHoursFromClient } from "@/lib/clientQuery";
+import { getOpeningHoursFromClient, newOpeningHour } from "@/lib/clientQuery";
 import { TimeRangeSchema } from "@/lib/form/time-range-schema";
 import { cn, getTimeFromDatetime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import {
+  UseMutationResult,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { Check, DoorClosed, DoorOpen } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ZodError } from "zod";
@@ -35,32 +39,46 @@ function TimeRange({
   weekState,
   updateTime,
   day,
+  mutateOpenHour,
 }: {
   day: DAYS_OF_WEEK;
   weekState: WeekSchedule;
   updateTime: (dayOfWeek: DAYS_OF_WEEK, key: string, time: string) => void;
+  mutateOpenHour: UseMutationResult<OpeningHour, Error, DayMutation, unknown>;
 }) {
   const { isOpen, toTime, fromTime } = weekState[day];
   const [errorState, setErrorState] = useState<(string | ZodError<any>)[]>([]);
 
-  const onSubmit = async () => {
-    try {
-      const valuesToBeParsed = { from: fromTime, to: toTime };
-      const resp = await TimeRangeSchema.parseAsync(valuesToBeParsed);
-    } catch (err) {
-      setErrorState([]);
-      const zodErrors = (err as ZodError).flatten().fieldErrors;
-      for (const key in zodErrors) {
-        if (zodErrors.hasOwnProperty(key)) {
-          const errors = zodErrors[key];
-          if (errors) {
-            for (const zodError of errors) {
-              setErrorState((prevValues) => [...prevValues, zodError]);
-            }
+  const handleSchemaErrors = (err: ZodError) => {
+    setErrorState([]);
+    const zodErrors = err.flatten().fieldErrors;
+    for (const key in zodErrors) {
+      if (zodErrors.hasOwnProperty(key)) {
+        const errors = zodErrors[key];
+        if (errors) {
+          for (const zodError of errors) {
+            setErrorState((prevValues) => [...prevValues, zodError]);
           }
         }
       }
     }
+  };
+
+  const onSubmit = async () => {
+    const valuesToBeParsed = { from: fromTime, to: toTime };
+    TimeRangeSchema.parseAsync(valuesToBeParsed)
+      .then(async () => {
+        await mutateOpenHour.mutateAsync({
+          isOpen,
+          toTime,
+          fromTime,
+          dayOfWeek: day,
+        });
+        console.log("OK");
+      })
+      .catch((err) => {
+        handleSchemaErrors(err);
+      });
   };
 
   const prevFromValueRef = useRef(fromTime);
@@ -169,12 +187,14 @@ function OpeningHoursForDay({
   openDay,
   isLoading,
   updateTime,
+  mutateOpenHour,
 }: {
   day: DAYS_OF_WEEK;
   weekState: WeekSchedule;
   openDay: (dayOfWeek: DAYS_OF_WEEK, open: boolean) => void;
   isLoading: boolean;
   updateTime: (dayOfWeek: DAYS_OF_WEEK, key: string, time: string) => void;
+  mutateOpenHour: UseMutationResult<OpeningHour, Error, DayMutation, unknown>;
 }) {
   const { isOpen } = weekState[day];
   return (
@@ -199,6 +219,7 @@ function OpeningHoursForDay({
           !isOpen && "bg-muted"
         )}
       >
+        {mutateOpenHour.isLoading && "loading..."}
         <div
           className={cn(
             "flex gap-3 w-full",
@@ -219,6 +240,7 @@ function OpeningHoursForDay({
                     day={day}
                     weekState={weekState}
                     updateTime={updateTime}
+                    mutateOpenHour={mutateOpenHour}
                   />
                 )}
               </div>
@@ -235,6 +257,10 @@ interface DayInfo {
   isOpen: boolean;
   fromTime: string;
   toTime: string;
+}
+
+interface DayMutation extends DayInfo {
+  dayOfWeek: DAYS_OF_WEEK;
 }
 
 interface WeekSchedule {
@@ -302,6 +328,24 @@ export default function OpeningHoursDisplay({
     { initialData: openingHours }
   );
 
+  const mutateOpenHour = useMutation<OpeningHour, Error, DayMutation>(
+    ["openingHour"],
+    async (mutationData) => {
+      const { fromTime, toTime, dayOfWeek } = mutationData;
+      if (businessId) {
+        return await newOpeningHour(businessId, dayOfWeek, {
+          from: fromTime,
+          to: toTime,
+        });
+      }
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
+
   useEffect(() => {
     if (data.openingHours && data.openingHours.length > 0) {
       for (const openingHour of data.openingHours) {
@@ -359,6 +403,7 @@ export default function OpeningHoursDisplay({
             weekState={weekState}
             isLoading={isLoading}
             updateTime={updateTime}
+            mutateOpenHour={mutateOpenHour}
           />
         ))}
       </CardContent>

@@ -9,6 +9,7 @@ import {
   EditProfileLocationSchema,
   EditProfilePersonalSchema,
 } from "./form/edit-profile-schema";
+import { TimeRangeSchema } from "./form/time-range-schema";
 
 export const getUserWithBusinessDataFromClient = async (userId: string) => {
   const resp = await axios.post("/api/businessUser", { userId });
@@ -18,6 +19,20 @@ export const getUserWithBusinessDataFromClient = async (userId: string) => {
 export const getOpeningHoursFromClient = async (businessId: string) => {
   const resp = await axios.post("/api/openingHour", {
     businessUserId: businessId,
+  });
+  return resp.data;
+};
+
+export const newOpeningHour = async (
+  businessId: string,
+  dayOfWeek: string,
+  values: z.infer<typeof TimeRangeSchema>
+) => {
+  const resp = await axios.post("/api/openingHour/new", {
+    businessId: businessId,
+    fromTime: values.from,
+    toTime: values.to,
+    dayOfWeek,
   });
   return resp.data;
 };
