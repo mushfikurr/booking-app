@@ -63,10 +63,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isLoading ? (
-          <React.Fragment>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <div className="flex gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
             <span>{children}</span>
-          </React.Fragment>
+          </div>
         ) : (
           <React.Fragment>{children}</React.Fragment>
         )}
@@ -76,4 +76,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+const LoadingIconButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant,
+      children,
+      isLoading,
+      size,
+      asChild = false,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        disabled={isLoading}
+        ref={ref}
+        {...props}
+      >
+        <React.Fragment>
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </React.Fragment>
+      </Comp>
+    );
+  }
+);
+Button.displayName = "LoadingIconButton";
+
+export { Button, LoadingIconButton, buttonVariants };

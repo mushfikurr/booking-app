@@ -11,6 +11,15 @@ type PrismaError =
   | PrismaClientKnownRequestError
   | PrismaClientInitializationError;
 
+function convertHHMMtoISOString(time: string) {
+  const [hours, minutes] = time.split(":");
+
+  const dateObj = new Date();
+  dateObj.setHours(parseInt(hours, 10));
+  dateObj.setMinutes(parseInt(minutes, 10));
+  return dateObj.toISOString();
+}
+
 export async function POST(req: NextRequest) {
   if (req.method !== "POST") {
     return NextResponse.json(
@@ -28,24 +37,12 @@ export async function POST(req: NextRequest) {
       where: { dayOfWeek },
     });
 
+    const startTimeISO = convertHHMMtoISOString(fromTime);
+    const endTimeISO = convertHHMMtoISOString(toTime);
+
     // If it already exists, edit it
     if (doesOpeningHourExist) {
       const id = doesOpeningHourExist.id;
-
-      const [fromHours, fromMinutes] = fromTime.split(":");
-      const [toHours, toMinutes] = toTime.split(":");
-
-      const startTime = new Date();
-      startTime.setHours(parseInt(fromHours, 10));
-      startTime.setMinutes(parseInt(fromMinutes, 10));
-
-      const endTime = new Date();
-      endTime.setHours(parseInt(toHours, 10));
-      endTime.setMinutes(parseInt(toMinutes, 10));
-
-      // Use toISOString method to get ISO strings
-      const startTimeISO = startTime.toISOString();
-      const endTimeISO = endTime.toISOString();
 
       const updatedOpeningHour = await db.openingHour.update({
         where: { id },
@@ -61,8 +58,8 @@ export async function POST(req: NextRequest) {
       const newOpeningHour = await db.openingHour.create({
         data: {
           dayOfWeek,
-          startTime: fromTime,
-          endTime: toTime,
+          startTime: startTimeISO,
+          endTime: endTimeISO,
           businessId,
         },
       });

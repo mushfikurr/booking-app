@@ -12,7 +12,7 @@ import {
 } from "../ui/card";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import {
-  getUserWithBusinessDataFromClient,
+  getUserWithBusinessDataFromServer,
   updateContactDetailsForUser,
 } from "@/lib/clientQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ export default function EditProfileContactForm({
   const { data, isLoading, refetch } = useQuery(
     ["user"],
     async () => {
-      return await getUserWithBusinessDataFromClient(prefetchedUser.id);
+      return await getUserWithBusinessDataFromServer(prefetchedUser.id);
     },
     { initialData: prefetchedUser }
   );

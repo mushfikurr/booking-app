@@ -11,12 +11,12 @@ import {
 } from "./form/edit-profile-schema";
 import { TimeRangeSchema } from "./form/time-range-schema";
 
-export const getUserWithBusinessDataFromClient = async (userId: string) => {
+export const getUserWithBusinessDataFromServer = async (userId: string) => {
   const resp = await axios.post("/api/businessUser", { userId });
   return resp.data;
 };
 
-export const getOpeningHoursFromClient = async (businessId: string) => {
+export const getOpeningHoursFromServer = async (businessId: string) => {
   const resp = await axios.post("/api/openingHour", {
     businessUserId: businessId,
   });
@@ -33,6 +33,15 @@ export const newOpeningHour = async (
     fromTime: values.from,
     toTime: values.to,
     dayOfWeek,
+  });
+  return resp.data;
+};
+
+export const deleteOpeningHour = async (openingHourId: number) => {
+  const resp = await axios.delete("/api/openingHour/delete", {
+    data: {
+      id: openingHourId,
+    },
   });
   return resp.data;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  getUserWithBusinessDataFromClient,
+  getUserWithBusinessDataFromServer,
   updatePersonalDetailsForUser,
 } from "@/lib/clientQuery";
 import { EditProfilePersonalSchema } from "@/lib/form/edit-profile-schema";
@@ -28,7 +28,7 @@ export default function EditProfilePersonalForm({
   const { data, isLoading, refetch } = useQuery(
     ["user"],
     async () => {
-      return await getUserWithBusinessDataFromClient(prefetchedUser.id);
+      return await getUserWithBusinessDataFromServer(prefetchedUser.id);
     },
     { initialData: prefetchedUser }
   );

@@ -7,5 +7,10 @@ export default async function OpeningHours({
   businessId: string | undefined;
 }) {
   const openingHoursForBusinessUser = await getOpeningHoursData(businessId);
-  return <OpeningHoursDisplay businessId={businessId} openingHours={openingHoursForBusinessUser} />;
+  return (
+    <OpeningHoursDisplay
+      businessId={businessId}
+      prefetchedOpeningHours={openingHoursForBusinessUser}
+    />
+  );
 }
