@@ -13,10 +13,10 @@ export const TimeRangeSchema = z
       }),
     to: z
       .string({
-        invalid_type_error: "Todtime needs to be a number",
+        invalid_type_error: "To time needs to be a number",
         required_error: "To is required",
       })
-      .regex(/([01]?[0-9]|2[0-3]):[0-5][0-9]/, {
+      .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
         // regex for 24-hour
         message: "To time must be in 24-hour format (HH:MM)",
       }),

@@ -6,13 +6,13 @@ import {
   deleteOpeningHour,
 } from "@/lib/clientQuery";
 import { TimeRangeSchema } from "@/lib/form/time-range-schema";
-import { getTimeFromDatetime } from "@/lib/utils";
+import { cn, getTimeFromDatetime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DoorClosed, DoorOpen, Loader2 } from "lucide-react";
 import { Updater, useImmer } from "use-immer";
 import { FC, useEffect } from "react";
-import z from "zod";
+import z, { ZodError } from "zod";
 import {
   Card,
   CardContent,
@@ -24,6 +24,8 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Toggle } from "../ui/toggle";
 import { Button } from "../ui/button";
+import { FieldError } from "react-hook-form";
+import { toast } from "../ui/use-toast";
 
 enum DAYS {
   MONDAY = "Monday",
@@ -40,14 +42,25 @@ interface OpeningHoursDisplayProps {
   prefetchedOpeningHours?: OpeningHour[];
 }
 
+interface FieldErrors {
+  to?: ZodError[];
+  from?: ZodError[];
+}
+
+interface InputField {
+  startTime?: string;
+  endTime?: string;
+  error?: Error | FieldErrors;
+}
+
 interface InputState {
-  [DAYS.MONDAY]: { startTime?: string; endTime?: string };
-  [DAYS.TUESDAY]: { startTime?: string; endTime?: string };
-  [DAYS.WEDNESDAY]: { startTime?: string; endTime?: string };
-  [DAYS.THURSDAY]: { startTime?: string; endTime?: string };
-  [DAYS.FRIDAY]: { startTime?: string; endTime?: string };
-  [DAYS.SATURDAY]: { startTime?: string; endTime?: string };
-  [DAYS.SUNDAY]: { startTime?: string; endTime?: string };
+  [DAYS.MONDAY]: InputField;
+  [DAYS.TUESDAY]: InputField;
+  [DAYS.WEDNESDAY]: InputField;
+  [DAYS.THURSDAY]: InputField;
+  [DAYS.FRIDAY]: InputField;
+  [DAYS.SATURDAY]: InputField;
+  [DAYS.SUNDAY]: InputField;
 }
 
 export default function OpeningHoursDisplay({
@@ -63,6 +76,16 @@ export default function OpeningHoursDisplay({
     DAYS.SATURDAY,
     DAYS.SUNDAY,
   ];
+
+  const [inputState, updateInputState] = useImmer<InputState>({
+    [DAYS.MONDAY]: {},
+    [DAYS.TUESDAY]: {},
+    [DAYS.WEDNESDAY]: {},
+    [DAYS.THURSDAY]: {},
+    [DAYS.FRIDAY]: {},
+    [DAYS.SATURDAY]: {},
+    [DAYS.SUNDAY]: {},
+  });
 
   const { data } = useQuery<OpeningHour[], Error>(
     ["openingHour"],
@@ -83,18 +106,47 @@ export default function OpeningHoursDisplay({
     return undefined;
   };
 
-  const [inputState, updateInputState] = useImmer<InputState>({
-    [DAYS.MONDAY]: {},
-    [DAYS.TUESDAY]: {},
-    [DAYS.WEDNESDAY]: {},
-    [DAYS.THURSDAY]: {},
-    [DAYS.FRIDAY]: {},
-    [DAYS.SATURDAY]: {},
-    [DAYS.SUNDAY]: {},
-  });
+  const onSubmit = async () => {
+    for (const key of Object.keys(inputState)) {
+      const inputField = inputState[key as keyof InputState];
+      if (inputField.startTime && inputField.endTime) {
+        try {
+          await TimeRangeSchema.parseAsync({
+            from: inputField.startTime,
+            to: inputField.endTime,
+          });
+        } catch (err) {
+          if (err instanceof ZodError) {
+            const zodErrors = err.flatten().fieldErrors;
+            console.log(zodErrors);
+            updateInputState((state) => {
+              state[key as keyof InputState].error = zodErrors;
+            });
+            toast({
+              title: "Error changing opening hours",
+              description:
+                "Please check the values you have set and try again.",
+              variant: "destructive",
+            });
+          } else {
+            const error = err as Error;
+            updateInputState((state) => {
+              state[key as keyof InputState].error = error;
+            });
+            toast({
+              title: "Error changing opening hours",
+              description:
+                "Please try again in a few minutes. If the error still persists, contact an admin.",
+              variant: "destructive",
+            });
+          }
+        }
+      }
+    }
+  };
 
   return (
-    <Card>
+    <Card className="animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
       <CardHeader className="space-y-0">
         <CardTitle className="text-lg font-medium">Opening hours</CardTitle>
         <CardDescription>
@@ -114,14 +166,16 @@ export default function OpeningHoursDisplay({
                   day={day}
                   data={dataForDay}
                   isOpen={!!dataForDay}
-                  inputState={inputState}
+                  inputState={inputState[day as keyof InputState]}
                   updateInputState={updateInputState}
                 />
               );
             })}
           </div>
           <div>
-            <Button>Submit</Button>
+            <Button onClick={onSubmit} type="submit">
+              Submit
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -134,7 +188,7 @@ interface DayOpeningHoursProps {
   data?: Partial<OpeningHour>;
   isOpen: boolean;
   businessId?: string;
-  inputState: InputState;
+  inputState: InputField;
   updateInputState: Updater<InputState>;
 }
 
@@ -222,58 +276,109 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
       console.error(err);
     }
   };
+
   const isLoadingStates = openMutation.isLoading || closeMutation.isLoading;
+  const hasErrors = Object.keys(inputState?.error ?? {}).length > 0;
+  const fromInputStateErrors = (inputState?.error as FieldErrors)?.from;
+  const toInputStateErrors = (inputState?.error as FieldErrors)?.to;
+  const clearErrors = (fromOrTo: "from" | "to") => {
+    if (hasErrors) {
+      updateInputState((state) => {
+        delete (state[day as keyof InputState].error as FieldErrors)[fromOrTo];
+      });
+    }
+  };
 
   return (
-    <div className="flex items-center gap-4">
-      <div>
-        <Toggle
-          pressed={isOpen}
-          onClick={onToggle}
-          variant="outline"
-          className="flex justify-center"
-        >
-          {isLoadingStates ? <Loader2 className="animate-spin" /> : toggleIcon}
-        </Toggle>
-      </div>
-
-      {isOpen ? (
-        <div className="flex items-center gap-4 border border-border w-full p-3 rounded-sm">
-          <div className="flex-grow">
-            <h5 className="uppercase text-xs text-muted-foreground font-semibold">
-              {isOpen ? "Open" : "Closed"}
-            </h5>
-            <h5 className="text-md font-medium">{dayOfWeek}</h5>
-          </div>
-          <div className="flex gap-3 items-center">
-            <Label htmlFor="startTime">From</Label>
-            <Input
-              id="startTime"
-              className="w-20 text-center"
-              value={inputState[day as keyof InputState]?.startTime}
-              onChange={(e) => {
-                updateInputState((state) => {
-                  state[day as keyof InputState].startTime = e.target.value;
-                });
-              }}
-            />
-            <Label htmlFor="endTime">To</Label>
-            <Input
-              id="endTime"
-              className="w-20 text-center"
-              value={inputState[day as keyof InputState]?.endTime}
-              onChange={(e) => {
-                updateInputState((state) => {
-                  state[day as keyof InputState].endTime = e.target.value;
-                });
-              }}
-            />
-          </div>
+    <>
+      <div className="flex items-center gap-4">
+        <div>
+          <Toggle
+            pressed={isOpen}
+            onClick={onToggle}
+            variant="outline"
+            className="flex justify-center"
+          >
+            {isLoadingStates ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              toggleIcon
+            )}
+          </Toggle>
         </div>
-      ) : (
-        <DayOpeningHoursClosed day={day} isOpen={isOpen} />
+
+        {isOpen ? (
+          <div className="flex items-center gap-4 border border-border w-full p-3 rounded-sm">
+            <div className="flex-grow">
+              <h5 className="uppercase text-xs text-muted-foreground font-semibold">
+                {isOpen ? "Open" : "Closed"}
+              </h5>
+              <h5 className="text-md font-medium">{dayOfWeek}</h5>
+            </div>
+            <div className="flex gap-3 items-center">
+              <Label htmlFor="startTime">From</Label>
+              <Input
+                id="startTime"
+                className={cn(
+                  "w-20 text-center",
+                  fromInputStateErrors &&
+                    fromInputStateErrors?.length > 0 &&
+                    "border-destructive"
+                )}
+                value={inputState?.startTime}
+                onChange={(e) => {
+                  updateInputState((state) => {
+                    state[day as keyof InputState].startTime = e.target.value;
+                  });
+                  if (hasErrors) {
+                    clearErrors("from");
+                  }
+                }}
+              />
+              <Label htmlFor="endTime">To</Label>
+              <Input
+                id="endTime"
+                className={cn(
+                  "w-20 text-center",
+                  toInputStateErrors &&
+                    toInputStateErrors?.length > 0 &&
+                    "border-destructive"
+                )}
+                value={inputState?.endTime}
+                onChange={(e) => {
+                  updateInputState((state) => {
+                    state[day as keyof InputState].endTime = e.target.value;
+                  });
+                  if (hasErrors) {
+                    clearErrors("to");
+                  }
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <DayOpeningHoursClosed day={day} isOpen={isOpen} />
+        )}
+      </div>
+      {hasErrors && (
+        <div className="flex flex-col gap-3 ml-auto">
+          {fromInputStateErrors && fromInputStateErrors?.length > 0 && (
+            <div className="ml-auto p-2 bg-destructive text-destructive-foreground rounded-sm text-xs animate-in slide-in-from-right-4 fade-in ease-in-out">
+              {fromInputStateErrors?.map((formError) => (
+                <p key={formError.toString()}>{formError.toString()}</p>
+              ))}
+            </div>
+          )}
+          {toInputStateErrors && toInputStateErrors?.length > 0 && (
+            <div className="ml-auto p-2 bg-destructive text-destructive-foreground rounded-sm text-xs animate-in slide-in-from-right-4 fade-in ease-in-out">
+              {toInputStateErrors?.map((formError) => (
+                <p key={formError.toString()}>{formError.toString()}</p>
+              ))}
+            </div>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
