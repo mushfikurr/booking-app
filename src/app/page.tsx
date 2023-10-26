@@ -6,7 +6,7 @@ import haircut from "../../public/assets/haircut-2.jpg";
 
 export default function Home() {
   return (
-    <main className="container max-w-5xl">
+    <main className="container max-w-5xl mx-auto h-full pt-28 antialiased mb-16">
       <div className="flex flex-col gap-8">
         <div className="flex items-center rounded-lg sm:border border-border z-10">
           <div className="flex flex-col gap-4 p-4 sm:p-16">

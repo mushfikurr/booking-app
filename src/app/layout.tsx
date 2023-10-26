@@ -23,12 +23,12 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "min-h-screen pt-16 antialiased light bg-background text-foreground"
+          "min-h-screen antialiased light bg-background text-foreground"
         )}
       >
         <Providers>
           <Navbar />
-          <div className="container max-w-7xl mx-auto h-full pt-12 antialiased mb-16">
+          <div className="">
             {children}
             <Toaster />
           </div>
