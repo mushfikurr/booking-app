@@ -63,7 +63,7 @@ const SUBMENU_PROPS: SubmenuProps[] = [
       {
         title: "Opening Hours",
         Icon: Clock,
-        link: "/editProfile/openingHours",
+        link: "/editProfile/openinghours",
       },
     ],
   },

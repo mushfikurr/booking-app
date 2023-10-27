@@ -2,7 +2,7 @@
 
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { Users } from "lucide-react";
-import OverviewCard from "./OverviewCard";
+import OverviewCard from "./StatisticCard";
 
 interface ExpectedCustomerCardProps {
   user?: UserWithBusinessUser;

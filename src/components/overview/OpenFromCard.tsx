@@ -1,15 +1,32 @@
 "use client";
 
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { OpeningHour } from "@prisma/client";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
-import OverviewCard from "./OverviewCard";
+import OverviewCard from "./StatisticCard";
+import { useQuery } from "@tanstack/react-query";
+import { getOpeningHoursFromServer } from "@/lib/clientQuery";
+import { getTimeFromDatetime } from "@/lib/utils";
 
 interface OpenFromCardProps {
-  user?: UserWithBusinessUser;
+  prefetchedOpeningHours?: OpeningHour[];
+  businessId: string;
 }
 
-export default function OpenFromCard({ user }: OpenFromCardProps) {
+export default function OpenFromCard({
+  prefetchedOpeningHours,
+  businessId,
+}: OpenFromCardProps) {
+  const { data } = useQuery<OpeningHour[], Error>(
+    ["openingHour"],
+    async () => {
+      if (!businessId) throw Error("No business ID");
+      const response = await getOpeningHoursFromServer(businessId);
+      return response.openingHours;
+    },
+    { initialData: prefetchedOpeningHours }
+  );
+
   const weekday = [
     "Sunday",
     "Monday",
@@ -31,6 +48,23 @@ export default function OpenFromCard({ user }: OpenFromCardProps) {
     setDate(newDate);
   };
 
+  const currentOpeningHour = data?.find(
+    (obj) => obj.dayOfWeek === date.split(",")[0]
+  );
+  const displayedTime = () => {
+    if (currentOpeningHour?.startTime && currentOpeningHour?.endTime) {
+      const formattedStartTime = getTimeFromDatetime(
+        JSON.parse(JSON.stringify(currentOpeningHour.startTime))
+      );
+      const formattedEndTime = getTimeFromDatetime(
+        JSON.parse(JSON.stringify(currentOpeningHour.endTime))
+      );
+
+      return `${formattedStartTime} - ${formattedEndTime}`;
+    }
+    return "No time set";
+  };
+
   useEffect(() => {
     const interval = setInterval(updateDate, 1000);
 
@@ -42,7 +76,7 @@ export default function OpenFromCard({ user }: OpenFromCardProps) {
   return (
     <OverviewCard
       subheading="Open from"
-      main={"09:00-17:00"}
+      main={displayedTime()}
       description={date}
       Icon={Clock}
     ></OverviewCard>
