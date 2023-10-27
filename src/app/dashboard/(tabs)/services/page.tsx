@@ -6,9 +6,5 @@ import { BusinessUser } from "@prisma/client";
 export default async function DashboardServices() {
   // TODO: Move services component to page.tsx
   const user = await getUserWithBusinessData();
-  return (
-    <TabsContent value="services">
-      <Services user={user} />
-    </TabsContent>
-  );
+  return <Services user={user} />;
 }

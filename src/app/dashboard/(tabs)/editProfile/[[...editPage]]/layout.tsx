@@ -12,13 +12,11 @@ export default async function EditProfileLayout({
   const user: UserWithBusinessUser = await getUserWithBusinessData();
 
   return (
-    <TabsContent value="editProfile">
-      <div className="space-y-6">
-        <div className="flex gap-6">
-          <>{children}</>
-          <EditProfilePicture user={user} />
-        </div>
+    <div className="space-y-6">
+      <div className="flex gap-6">
+        <>{children}</>
+        <EditProfilePicture user={user} />
       </div>
-    </TabsContent>
+    </div>
   );
 }
