@@ -3,6 +3,8 @@
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/lib/hooks";
 import {
+  ArrowLeft,
+  ArrowRight,
   Calendar,
   ChevronDown,
   ChevronLeft,
@@ -97,29 +99,29 @@ export default function Sidebar({
   }
 
   return (
-    <div className="bg-accent/50 min-w-[230px] max-w-sm space-y-6 w-full h-full z-1 min-h-screen overflow-hidden sticky top-0 left-0 pt-20">
-      <div className="px-12 py-8 pb-0">
+    <div className="bg-accent/50 max-w-[300px] min-w-fit space-y-6 w-full h-full z-1 min-h-screen overflow-hidden sticky top-0 left-0 pt-14">
+      <div className="px-8 py-10 pb-0">
         <span className="flex justify-between gap-2 items-center">
           <h1 className="text-2xl font-bold tracking-tight leading-none">
             Dashboard
           </h1>
-          <Button
-            variant="ghost"
+
+          <ArrowLeft
             onClick={() => setCondensedSidebar(true)}
-            className="p-0"
-          >
-            <ChevronLeft className="text-muted-foreground hover:text-foreground transition duration-200 ease-in-out cursor-pointer" />
-          </Button>
+            className="text-muted-foreground hover:text-foreground transition duration-200 ease-in-out cursor-pointer"
+          />
         </span>
       </div>
-      {SUBMENU_PROPS.map((submenu) => (
-        <Submenu
-          headerText={submenu.headerText}
-          HeaderIcon={submenu.HeaderIcon}
-          menuItems={submenu.menuItems}
-          key={submenu.headerText}
-        />
-      ))}
+      <div className="space-y-5">
+        {SUBMENU_PROPS.map((submenu) => (
+          <Submenu
+            headerText={submenu.headerText}
+            HeaderIcon={submenu.HeaderIcon}
+            menuItems={submenu.menuItems}
+            key={submenu.headerText}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -133,9 +135,9 @@ function Submenu({ HeaderIcon, headerText, menuItems }: SubmenuProps) {
       onOpenChange={() => {
         setIsOpen(!isOpen);
       }}
-      className="space-y-3 w-full h-full"
+      className="space-y-2 w-full h-full"
     >
-      <CollapsibleTrigger className="w-full h-full px-12">
+      <CollapsibleTrigger className="w-full h-full px-8">
         <div className="flex w-full items-center justify-between h-full">
           <span className="flex items-center gap-5">
             <h2 className="font-medium text-lg">{headerText}</h2>
@@ -174,7 +176,7 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
   const renderSelected = () => {
     if (isSelected) {
       return (
-        <li className="flex gap-4 items-center bg-accent-foreground/5 text-foreground px-2 sm:px-8 rounded-sm py-2 transition duration-200 ease-in-out cursor-pointer leading-none group">
+        <li className="flex gap-4 items-center bg-accent-foreground/5 text-foreground px-2 sm:px-4 rounded-sm py-2 transition duration-200 ease-in-out cursor-pointer leading-none group">
           <Icon className={cn(childrenTransitionClassnames)} />
           <p
             className={cn("text-sm font-medium", childrenTransitionClassnames)}
@@ -185,7 +187,7 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
       );
     }
     return (
-      <li className="flex gap-4 items-center hover:bg-accent-foreground/5 text-muted-foreground hover:text-foreground px-2 sm:px-8 rounded-sm py-2 transition duration-200 ease-in-out cursor-pointer leading-none group">
+      <li className="flex gap-4 items-center hover:bg-accent-foreground/5 text-muted-foreground hover:text-foreground px-2 sm:px-4 rounded-sm py-2 transition duration-200 ease-in-out cursor-pointer leading-none group">
         <Icon className={cn(childrenTransitionClassnames)} />
         <p className={cn("text-sm font-medium", childrenTransitionClassnames)}>
           {title}
@@ -211,7 +213,7 @@ function CondensedSidebar({
   setCondensedSidebar: (condensed: boolean) => void;
 }) {
   return (
-    <div className="flex flex-col items-center bg-accent/50 min-w-[4rem] max-w-[8rem] gap-8 h-full z-10 min-h-screen overflow-hidden sticky top-0 left-0 pt-20">
+    <div className="flex flex-col items-center bg-accent/50 min-w-[4rem] max-w-[8rem] gap-6 h-full z-10 min-h-screen overflow-hidden sticky top-0 left-0 pt-20">
       {isMobile ? (
         <Sheet>
           <SheetTrigger>
@@ -226,8 +228,12 @@ function CondensedSidebar({
           </SheetContent>
         </Sheet>
       ) : (
-        <Button variant="ghost" className="px-3 rounded-sm">
-          <ChevronRight onClick={() => setCondensedSidebar(false)} />
+        <Button
+          variant="ghost"
+          className="px-3 rounded-sm"
+          onClick={() => setCondensedSidebar(false)}
+        >
+          <ArrowRight />
         </Button>
       )}
 

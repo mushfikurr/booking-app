@@ -21,9 +21,11 @@ export default async function Layout({
   return (
     <div className="flex min-h-screen w-full">
       <Sidebar />
-      <div className="container flex-grow max-w-full flex flex-col gap-5 pt-20 px-8 md:px-12 md:pt-28 md:pb-14">
-        {children}
-      </div>
+      <Suspense>
+        <div className="container flex-grow max-w-full flex flex-col gap-5 pt-20 px-8 md:px-12 md:pt-28 md:pb-14">
+          {children}
+        </div>
+      </Suspense>
     </div>
   );
 }

@@ -17,6 +17,7 @@ import OpenFromCard from "./OpenFromCard";
 import OverviewBookings from "./OverviewBookings";
 import { getBookingsData, getOpeningHoursData } from "@/lib/serverQuery";
 import { Booking } from "@prisma/client";
+import { Suspense } from "react";
 
 export default async function Overview({
   user,
@@ -37,7 +38,7 @@ export default async function Overview({
       ButtonIcon: Scissors,
     },
     {
-      title: "Manage bookings",
+      title: "Manage your bookings",
       description:
         "View and edit bookings that customers have made at your business.",
       navigateUrl: "/dashboard/bookings",
@@ -58,14 +59,18 @@ export default async function Overview({
           <EstimatedRevenueCard user={user} />
         </div>
 
-        <OverviewBookings
-          prefetchedBookingsData={bookings as Booking[]}
-          businessUserId={user?.businessUser?.id}
-        />
+        <Suspense fallback={<h1>Hello</h1>}>
+          <OverviewBookings
+            prefetchedBookingsData={bookings as Booking[]}
+            businessUserId={user?.businessUser?.id}
+          />
+        </Suspense>
       </div>
       <Card className="drop-shadow-sm max-w-md max-h-full">
         <CardHeader>
-          <CardTitle>Manage your business</CardTitle>
+          <CardTitle className="text-xl leading-none">
+            Manage your business
+          </CardTitle>
           <CardDescription>
             Things you can do to make your business come alive!
           </CardDescription>

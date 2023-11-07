@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
@@ -28,36 +28,38 @@ export function ServiceCard({
   const displayedEstimatedTime = humanizeDuration(service.estimatedTime * 1000);
 
   return (
-    <div className="border border-border rounded-lg drop-shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
-      <div className="p-6 h-full flex flex-col justify-center space-y-5">
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col justify-center">
-            <h3 className="text-sm font-semibold tracking-wide max-w-[150px]">
-              {service.name}
-            </h3>
-            {service.price && (
-              <p className="text-muted-foreground text-sm">
-                {service.description}
-              </p>
-            )}
-          </div>
-          <div className="flex gap-1">
-            <div className="rounded-sm">
-              <h2 className="text-xl font-medium">£{displayedPrice}</h2>
+    <div className="block max-md:space-y-6 lg:grid grid-cols-3 gap-6 h-fit">
+      <div className="border border-border rounded-lg drop-shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
+        <div className="p-6 h-full flex flex-col justify-center space-y-5">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col justify-center">
+              <h3 className="text-sm font-semibold tracking-wide max-w-[150px]">
+                {service.name}
+              </h3>
+              {service.price && (
+                <p className="text-muted-foreground text-sm">
+                  {service.description}
+                </p>
+              )}
+            </div>
+            <div className="flex gap-1">
+              <div className="rounded-sm">
+                <h2 className="text-xl font-medium">£{displayedPrice}</h2>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-between">
-          <span className="flex gap-3 items-center">
-            <Clock className="h-5 w-5 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">
-              {displayedEstimatedTime}
-            </p>
-          </span>
-          <div className="bg-accent rounded-md flex text-muted-foreground border border-border">
-            <EditServiceButton service={service} />
-            <Separator orientation="vertical" />
-            <RemoveServiceButton service={service} />
+          <div className="flex justify-between">
+            <span className="flex gap-3 items-center">
+              <Clock className="h-5 w-5 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                {displayedEstimatedTime}
+              </p>
+            </span>
+            <div className="bg-accent rounded-md flex text-muted-foreground border border-border">
+              <EditServiceButton service={service} />
+              <Separator orientation="vertical" />
+              <RemoveServiceButton service={service} />
+            </div>
           </div>
         </div>
       </div>

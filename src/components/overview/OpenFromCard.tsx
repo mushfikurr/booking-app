@@ -17,7 +17,7 @@ export default function OpenFromCard({
   prefetchedOpeningHours,
   businessId,
 }: OpenFromCardProps) {
-  const { data } = useQuery<OpeningHour[], Error>(
+  const { data, isLoading } = useQuery<OpeningHour[], Error>(
     ["openingHour"],
     async () => {
       if (!businessId) throw Error("No business ID");
@@ -26,6 +26,10 @@ export default function OpenFromCard({
     },
     { initialData: prefetchedOpeningHours }
   );
+
+  if (isLoading) {
+    console.log(isLoading);
+  }
 
   const weekday = [
     "Sunday",
@@ -40,8 +44,8 @@ export default function OpenFromCard({
 
   const updateDate = () => {
     const dateObj = new Date();
-    const hour = dateObj.getHours();
-    const minute = dateObj.getMinutes();
+    const hour = dateObj.getHours().toString().padStart(2, "0");
+    const minute = dateObj.getMinutes().toString().padStart(2, "0");
     const day = dateObj.getDay();
 
     const newDate = `${weekday[day]}, ${hour}:${minute}`;
@@ -79,6 +83,7 @@ export default function OpenFromCard({
       main={displayedTime()}
       description={date}
       Icon={Clock}
+      isLoading={isLoading}
     ></OverviewCard>
   );
 }

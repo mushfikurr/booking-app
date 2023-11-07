@@ -1,13 +1,7 @@
 import { db } from "@/lib/db";
-import { PlusCircle } from "lucide-react";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +12,6 @@ import {
 } from "../ui/dialog";
 import NewServiceForm from "./NewServiceForm";
 import ServicesDisplay from "./ServicesDisplay";
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
 
 export default async function Services({
   user,
@@ -30,44 +23,36 @@ export default async function Services({
   });
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="max-h-2xl">
-        <Card className="max-w-sm animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
-          <CardHeader>
-            <CardTitle>Create a new service</CardTitle>
-            <CardDescription>
-              This allows you to advertise your services for bookings, and name
-              a price for your services.{" "}
-            </CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  <PlusCircle className="mr-2 h-5 w-5" />
-                  Create
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create a new service</DialogTitle>
-                  <DialogDescription>
-                    This allows you to advertise your services for bookings, and
-                    name a price for your services.
-                  </DialogDescription>
-                </DialogHeader>
-                <NewServiceForm businessUser={user.businessUser} />
-              </DialogContent>
-            </Dialog>
-          </CardFooter>
-        </Card>
+    <div className="flex flex-col gap-12 h-full">
+      <div className="space-y-3">
+        <div className="flex gap-12 items-center">
+          <h1 className="text-2xl font-semibold tracking-tight">Services</h1>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="gap-2 items-center font-medium text-sm leading-none">
+                <Plus className="h-5 w-5 text-primary-foreground" />
+                <p className="translate-y-[0px]">Add service</p>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add a new service</DialogTitle>
+                <DialogDescription>
+                  This allows you to advertise your services for bookings, and
+                  name a price for your services.
+                </DialogDescription>
+              </DialogHeader>
+              <NewServiceForm businessUser={user.businessUser} />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-      <div className="flex-grow sm:grid md:grid-cols-3 gap-6 sm:grid-cols-2 max-sm:space-y-6">
-        <ServicesDisplay
-          prefetchedServicesData={services}
-          businessUserId={user?.businessUser.id}
-        />
-      </div>
+
+      <ServicesDisplay
+        prefetchedServicesData={services}
+        businessUserId={user?.businessUser.id}
+      />
     </div>
   );
 }

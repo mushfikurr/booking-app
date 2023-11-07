@@ -146,7 +146,7 @@ export default function OpeningHoursDisplay({
   };
 
   return (
-    <Card className="animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
+    <Card className="animate-in fade-in duration-300 ease-in-out">
       <CardHeader className="space-y-0">
         <CardTitle className="text-lg font-medium">Opening hours</CardTitle>
         <CardDescription>

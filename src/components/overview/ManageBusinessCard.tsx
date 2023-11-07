@@ -1,7 +1,7 @@
+import { cn } from "@/lib/utils";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Button, buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/button";
 
 export interface ManageBusinessCardProps {
   title: string;
@@ -19,7 +19,7 @@ export default function ManageBusinessCard({
   ButtonIcon,
 }: ManageBusinessCardProps) {
   return (
-    <div className="p-8 border border-border bg-accent text-accent-foreground rounded-sm space-y-1 min-h-fit group">
+    <div className="p-5 border border-accent/90 hover:bg-accent/70 transition-all duration-300 ease-in-out text-accent-foreground rounded-sm flex flex-col gap-1 min-h-fit group">
       <span className="flex gap-2 items-center">
         <h3 className="text-xl font-semibold tracking-tight leading-none">
           {title}
@@ -27,16 +27,19 @@ export default function ManageBusinessCard({
         <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-all duration-200 ease-out text-muted group-hover:text-foreground" />
       </span>
 
-      <div className="space-y-3">
-        <p className="text-muted-foreground text-sm group-hover:text-foreground/80 transition-colors">
+      <div className="flex flex-col gap-3">
+        <p className="text-foreground/80 text-sm group-hover:text-foreground transition-colors">
           {description}
         </p>
 
         <Link
-          className={cn(buttonVariants(), "flex items-center gap-2 w-fit")}
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "flex items-center gap-2 w-fit h-fit"
+          )}
           href={navigateUrl}
         >
-          {ButtonIcon && <ButtonIcon className="h-4 w-4 text-muted" />}
+          {ButtonIcon && <ButtonIcon className="h-4 w-4" />}
           {buttonText}
         </Link>
       </div>
