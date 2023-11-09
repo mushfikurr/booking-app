@@ -12,6 +12,8 @@ import {
 } from "../ui/dialog";
 import NewServiceForm from "./NewServiceForm";
 import ServicesDisplay from "./ServicesDisplay";
+import { Suspense } from "react";
+import FullPageSkeleton from "../FullPageSkeleton";
 
 export default async function Services({
   user,
@@ -23,16 +25,16 @@ export default async function Services({
   });
 
   return (
-    <div className="flex flex-col gap-12 h-full">
+    <div className="flex flex-col gap-5 h-full">
       <div className="space-y-3">
         <div className="flex gap-12 items-center">
           <h1 className="text-2xl font-semibold tracking-tight">Services</h1>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="gap-2 items-center font-medium text-sm leading-none">
+              <Button className="gap-2 items-center font-semibold leading-none">
                 <Plus className="h-5 w-5 text-primary-foreground" />
-                <p className="translate-y-[0px]">Add service</p>
+                <p className="translate-y-[0px] text-xs">Add service</p>
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -49,10 +51,12 @@ export default async function Services({
         </div>
       </div>
 
-      <ServicesDisplay
-        prefetchedServicesData={services}
-        businessUserId={user?.businessUser.id}
-      />
+      <Suspense fallback={<FullPageSkeleton />}>
+        <ServicesDisplay
+          prefetchedServicesData={services}
+          businessUserId={user?.businessUser.id}
+        />
+      </Suspense>
     </div>
   );
 }

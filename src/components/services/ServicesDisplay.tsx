@@ -63,10 +63,15 @@ export default function ServicesDisplay({
   }
 
   return (
-    <>
-      {services?.map((service: Service) => (
-        <ServiceCard key={service.id} service={service} isLoading={isLoading} />
+    <div className="grid grid-auto-fit-lg h-fit gap-6">
+      {services?.map((service: Service, idx: number) => (
+        <ServiceCard
+          key={service.id}
+          service={service}
+          isLoading={isLoading}
+          delayId={idx}
+        />
       ))}
-    </>
+    </div>
   );
 }

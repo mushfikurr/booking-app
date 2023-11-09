@@ -48,15 +48,18 @@ export default async function Overview({
   ];
 
   return (
-    <div className="block space-y-10 lg:space-y-0 lg:flex gap-10">
-      <div className="flex flex-col gap-10 flex-grow">
-        <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-8 w-full">
-          <OpenFromCard
-            prefetchedOpeningHours={openingHours}
-            businessId={businessId}
-          />
-          <ExpectedCustomerCard user={user} />
-          <EstimatedRevenueCard user={user} />
+    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6">
+      <div className="flex flex-col gap-6 flex-grow">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-semibold">Overview</h1>
+          <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-8 w-full">
+            <OpenFromCard
+              prefetchedOpeningHours={openingHours}
+              businessId={businessId}
+            />
+            <ExpectedCustomerCard user={user} />
+            <EstimatedRevenueCard user={user} />
+          </div>
         </div>
 
         <Suspense fallback={<h1>Hello</h1>}>

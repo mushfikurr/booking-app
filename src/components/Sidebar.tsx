@@ -186,6 +186,7 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
         </li>
       );
     }
+
     return (
       <li className="flex gap-4 items-center hover:bg-accent-foreground/5 text-muted-foreground hover:text-foreground px-2 sm:px-4 rounded-sm py-2 transition duration-200 ease-in-out cursor-pointer leading-none group">
         <Icon className={cn(childrenTransitionClassnames)} />
@@ -197,11 +198,9 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
   };
 
   return (
-    <>
-      <Link href={"/dashboard/" + link} passHref>
-        {renderSelected()}
-      </Link>
-    </>
+    <Link href={"/dashboard/" + link} passHref>
+      {renderSelected()}
+    </Link>
   );
 }
 

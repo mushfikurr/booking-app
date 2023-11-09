@@ -45,6 +45,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@shrutibalasa/tailwind-grid-auto-fit": "^1.1.0",
     "@types/node": "^20.7.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
