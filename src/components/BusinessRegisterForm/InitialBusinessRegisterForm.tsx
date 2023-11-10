@@ -13,20 +13,14 @@ export default function InitialForm() {
 
   if (currentPage !== 0) return;
   return (
-    <div className="flex flex-col space-y-5 py-1">
+    <div className="flex flex-col space-y-5 py-1 w-full">
       <div className="space-y-3">
         <div className="space-y-1">
-          <h1 className="font-bold text-3xl">Welcome!</h1>
+          <h1 className="font-semibold text-3xl">Welcome!</h1>
           <h2 className="text-lead">
             Lets get started with creating your business account
           </h2>
         </div>
-        <Link
-          href="/login"
-          className="flex items-center font-semibold text-xs uppercase hover:text-foreground/80 transition-colors duration-150 text-foreground/60 leading-snug gap-2"
-        >
-          Already have an account?
-        </Link>
       </div>
 
       <div className="flex-grow">

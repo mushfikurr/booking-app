@@ -51,7 +51,7 @@ export default async function Overview({
     <div className="block space-y-6 lg:space-y-0 lg:flex gap-6">
       <div className="flex flex-col gap-6 flex-grow">
         <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-semibold">Overview</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
           <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-8 w-full">
             <OpenFromCard
               prefetchedOpeningHours={openingHours}

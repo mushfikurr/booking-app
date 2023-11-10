@@ -1,32 +1,21 @@
 import BusinessRegisterForm from "@/components/BusinessRegisterForm/BusinessRegisterForm";
 import RegisterForm from "@/components/RegisterForm";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building2, UserCircle2 } from "lucide-react";
+import { ArrowRight, Building2, UserCircle2 } from "lucide-react";
+import Link from "next/link";
 
 const Register = async () => {
   return (
-    <div className="flex justify-center">
-      <Tabs defaultValue="personal" className="flex flex-col items-center">
-        <TabsList className="grid sm:w-[400px] grid-cols-2 mb-2">
-          <TabsTrigger value="personal">
-            <UserCircle2 className="mr-2 w-4 h-4" />
-            Personal
-          </TabsTrigger>
-          <TabsTrigger value="business">
-            <Building2 className="mr-2 w-4 h-4" />
-            Business
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="personal">
-          <div className="container flex items-center w-full flex-col space-y-6 py-8 sm:min-w-[600px] sm:w-[600px] border border-border rounded-lg">
-            <RegisterForm />
-          </div>
-        </TabsContent>
-        <TabsContent value="business">
-          <BusinessRegisterForm />
-        </TabsContent>
-      </Tabs>
-    </div>
+    <>
+      <Link
+        href="/register/business"
+        className="mb-6 inline-flex gap-4 text-sm items-center font-medium text-foreground/70 hover:text-foreground transition-colors duration-200 ease-in-out group"
+      >
+        <p>Register a business account</p>
+        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
+      </Link>
+      <RegisterForm />
+    </>
   );
 };
 

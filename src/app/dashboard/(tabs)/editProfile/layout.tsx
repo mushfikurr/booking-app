@@ -16,7 +16,7 @@ export default async function EditProfileLayout({
       : userNameSplit[0][0];
   return (
     <div className="space-y-10">
-      <div className="flex max-sm:gap-6 gap-12 h-fit w-full max-sm:">
+      <div className="flex max-sm:gap-6 gap-12 h-fit w-full max-sm:flex-col max-sm:items-center">
         <Avatar className="h-24 w-24 md:h-36 md:w-36">
           <AvatarImage className="" />
           <AvatarFallback className="text-3xl">{initials}</AvatarFallback>

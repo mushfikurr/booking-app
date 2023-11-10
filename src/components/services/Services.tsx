@@ -27,13 +27,13 @@ export default async function Services({
   return (
     <div className="flex flex-col gap-5 h-full">
       <div className="space-y-3">
-        <div className="flex gap-12 items-center">
+        <div className="flex gap-12 items-baseline">
           <h1 className="text-2xl font-semibold tracking-tight">Services</h1>
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="gap-2 items-center font-semibold leading-none">
-                <Plus className="h-5 w-5 text-primary-foreground" />
+              <Button className="gap-2 items-center font-semibold leading-none p-3 py-2">
+                <Plus className="h-4 w-4" />
                 <p className="translate-y-[0px] text-xs">Add service</p>
               </Button>
             </DialogTrigger>

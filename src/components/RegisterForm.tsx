@@ -41,7 +41,7 @@ const RegisterForm = () => {
   const captureFormProps: CaptureFormProps = {
     title: "Register an account",
     description:
-      "Create a new account with us to unlock features such as booking, reviewing, and more!",
+      "",
     schema: RegistrationSchema,
     onSubmit,
     isLoading,

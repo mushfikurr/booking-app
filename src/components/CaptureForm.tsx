@@ -101,12 +101,10 @@ export const CaptureForm: FC<CaptureFormProps> = ({
 
   return (
     <div className="space-y-6">
-      {title && description && (
-        <div className="gap-4 space-y-1 leading-snug items-center">
-          {title && <h1 className="font-bold text-2xl">{title}</h1>}
-          {description && <h3 className="text-foreground/80">{description}</h3>}
-        </div>
-      )}
+      <div className="gap-4 space-y-1 leading-snug items-center">
+        {title && <h1 className="font-semibold text-3xl">{title}</h1>}
+        {description && <h3 className="text-foreground/80">{description}</h3>}
+      </div>
 
       {form.formState.errors?.root?.serverError && (
         <CaptureFormServerAlert

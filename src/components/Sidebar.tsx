@@ -99,7 +99,7 @@ export default function Sidebar({
   }
 
   return (
-    <div className="bg-accent/50 max-w-[300px] min-w-fit space-y-6 w-full h-full z-1 min-h-screen overflow-hidden sticky top-0 left-0 pt-14">
+    <div className="bg-accent/50 max-w-[300px] min-w-fit space-y-6 w-full max-h-full z-1 min-h-screen overflow-hidden sticky top-0 left-0 pt-14">
       <div className="px-8 py-10 pb-0">
         <span className="flex justify-between gap-2 items-center">
           <h1 className="text-2xl font-bold tracking-tight leading-none">
@@ -112,7 +112,7 @@ export default function Sidebar({
           />
         </span>
       </div>
-      <div className="space-y-5">
+      <div className="space-y-5 h-auto">
         {SUBMENU_PROPS.map((submenu) => (
           <Submenu
             headerText={submenu.headerText}
@@ -135,7 +135,7 @@ function Submenu({ HeaderIcon, headerText, menuItems }: SubmenuProps) {
       onOpenChange={() => {
         setIsOpen(!isOpen);
       }}
-      className="space-y-2 w-full h-full"
+      className="space-y-2 h-auto"
     >
       <CollapsibleTrigger className="w-full h-full px-8">
         <div className="flex w-full items-center justify-between h-full">
@@ -151,7 +151,7 @@ function Submenu({ HeaderIcon, headerText, menuItems }: SubmenuProps) {
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="transition-all overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        <ul className="space-y-2 mx-4">
+        <ul className="space-y-2 h-auto mx-4">
           {menuItems.map((menuItem) => (
             <SubmenuItem
               title={menuItem.title}

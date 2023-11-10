@@ -53,7 +53,7 @@ const Review: FC<ReviewProps> = ({ forms }) => {
   return (
     <div className="space-y-6 flex flex-col h-full w-full">
       <div className="gap-4 space-y-1 leading-snug items-center">
-        <h1 className="font-bold text-2xl">Review</h1>
+        <h1 className="font-semibold text-2xl">Review</h1>
         <h3 className="text-foreground/80">Are all the details correct?</h3>
       </div>
       <div className="flex flex-col justify-between h-full gap-5">
