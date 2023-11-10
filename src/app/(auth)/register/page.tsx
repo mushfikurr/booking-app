@@ -1,7 +1,5 @@
-import BusinessRegisterForm from "@/components/BusinessRegisterForm/BusinessRegisterForm";
 import RegisterForm from "@/components/RegisterForm";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowRight, Building2, UserCircle2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const Register = async () => {

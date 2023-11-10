@@ -1,6 +1,8 @@
-import { db } from "@/lib/db";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { getBookingsData, getOpeningHoursData } from "@/lib/serverQuery";
+import { Booking } from "@prisma/client";
 import { Calendar, Scissors } from "lucide-react";
+import { Suspense } from "react";
 import {
   Card,
   CardContent,
@@ -15,9 +17,6 @@ import ManageBusinessCard, {
 } from "./ManageBusinessCard";
 import OpenFromCard from "./OpenFromCard";
 import OverviewBookings from "./OverviewBookings";
-import { getBookingsData, getOpeningHoursData } from "@/lib/serverQuery";
-import { Booking } from "@prisma/client";
-import { Suspense } from "react";
 
 export default async function Overview({
   user,

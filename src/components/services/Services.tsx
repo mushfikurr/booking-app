@@ -1,6 +1,8 @@
 import { db } from "@/lib/db";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { Plus } from "lucide-react";
+import { Suspense } from "react";
+import FullPageSkeleton from "../FullPageSkeleton";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -12,8 +14,6 @@ import {
 } from "../ui/dialog";
 import NewServiceForm from "./NewServiceForm";
 import ServicesDisplay from "./ServicesDisplay";
-import { Suspense } from "react";
-import FullPageSkeleton from "../FullPageSkeleton";
 
 export default async function Services({
   user,

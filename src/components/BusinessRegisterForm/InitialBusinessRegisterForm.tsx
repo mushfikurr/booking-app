@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
-import { usePageContext } from "./BusinessRegisterPageContext";
 import { Activity, CalendarPlus, MessageCircle } from "lucide-react";
+import { ReactNode } from "react";
 import { Button } from "../ui/button";
-import Link from "next/link";
+import { usePageContext } from "./BusinessRegisterPageContext";
 
 const RenderIcon = ({ children }: { children: ReactNode }) => {
   return <span className="bg-primary rounded-full p-2">{children}</span>;

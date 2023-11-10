@@ -1,8 +1,8 @@
+import { DateDropdown, LocationDropdown } from "@/components/Dropdown";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import haircut from "../../public/assets/haircut-2.jpg";
-import { DateDropdown, LocationDropdown } from "@/components/Dropdown";
 
 export default function Home() {
   return (

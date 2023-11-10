@@ -1,10 +1,8 @@
-import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RouteTabs } from "@/components/ui/tabs-with-route";
+import Sidebar from "@/components/Sidebar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import { Suspense } from "react";
-import Sidebar from "@/components/Sidebar";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Layout({
   children,

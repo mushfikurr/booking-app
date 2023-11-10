@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Clock, Pencil, Trash } from "lucide-react";
 import {
@@ -11,7 +12,6 @@ import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
 import RemoveServiceDialogContent from "./RemoveServiceDialogContent";
 import UpdateServiceForm from "./UpdateServiceForm";
-import { cn } from "@/lib/utils";
 const humanizeDuration = require("humanize-duration");
 
 export function ServiceCard({

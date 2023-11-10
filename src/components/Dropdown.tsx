@@ -1,7 +1,6 @@
 "use client";
 
 import { Calendar, ChevronDown, MapPin } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import {
   Command,
   CommandEmpty,
@@ -9,6 +8,7 @@ import {
   CommandInput,
   CommandItem,
 } from "./ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export function LocationDropdown() {
   return (

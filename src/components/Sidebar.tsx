@@ -1,14 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
   ArrowRight,
   Calendar,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Contact,
   GanttChart,
@@ -18,7 +16,7 @@ import {
   Menu,
   Scissors,
   Smartphone,
-  User2,
+  User2
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

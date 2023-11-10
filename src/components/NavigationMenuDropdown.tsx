@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { NavigationMenuLink } from "./ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { LogOut, User2 } from "lucide-react";
-import { Separator } from "./ui/separator";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import { NavigationMenuLink } from "./ui/navigation-menu";
+import { Separator } from "./ui/separator";
 
 export default function NavigationMenuDropdown({
   isBusinessUser,

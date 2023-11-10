@@ -52,6 +52,7 @@
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "postcss": "latest",
     "prisma": "^5.3.1",
     "tailwindcss": "latest",

@@ -3,7 +3,6 @@
 import { Booking } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Skeleton } from "../ui/skeleton";
 
 const getBookings = async (businessUserId: string) => {
   const resp = await axios.post("/api/booking", { businessUserId });

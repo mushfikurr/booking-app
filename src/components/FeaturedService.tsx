@@ -1,5 +1,5 @@
-import { FC } from "react";
 import { ArrowRight } from "lucide-react";
+import { FC } from "react";
 
 interface FeaturedServiceProps {
   id: number;
