@@ -1,4 +1,3 @@
-import EditProfilePersonalForm from "@/components/editProfile/EditProfilePersonalForm";
 import OpeningHours from "@/components/openingHours/OpeningHours";
 import {
   GetUserWithBusinessDataReturn,
