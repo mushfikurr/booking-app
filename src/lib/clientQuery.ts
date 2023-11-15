@@ -10,6 +10,8 @@ import {
   EditProfilePersonalSchema,
 } from "./form/edit-profile-schema";
 import { TimeRangeSchema } from "./form/time-range-schema";
+import { OpeningHour } from "@prisma/client";
+import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
 
 export const getUserWithBusinessDataFromServer = async (userId: string) => {
   const resp = await axios.post("/api/businessUser", { userId });
@@ -44,6 +46,17 @@ export const deleteOpeningHour = async (openingHourId: number) => {
     },
   });
   return resp.data;
+};
+
+export const updateManyOpeningHour = async (
+  businessId: string,
+  listOfOpeningHours: OpeningHoursInputState
+) => {
+  const resp = await axios.post("/api/openingHour/many", {
+    businessId,
+    listOfOpeningHours,
+  });
+  return resp;
 };
 
 export const updateLocationDetailsForUser = async (

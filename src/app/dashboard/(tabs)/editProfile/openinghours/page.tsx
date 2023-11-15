@@ -1,6 +1,7 @@
-import OpeningHours from "@/components/openingHours/OpeningHours";
+import OpeningHoursDisplay from "@/components/openingHours/OpeningHoursDisplay";
 import {
   GetUserWithBusinessDataReturn,
+  getOpeningHoursData,
   getUserWithBusinessData,
 } from "@/lib/serverQuery";
 
@@ -8,5 +9,13 @@ export default async function OpeningHoursPage() {
   const prefetchedUser: GetUserWithBusinessDataReturn =
     await getUserWithBusinessData();
 
-  return <OpeningHours businessId={prefetchedUser?.businessUser?.id} />;
+  const openingHoursForBusinessUser = await getOpeningHoursData(
+    prefetchedUser?.businessUser?.id
+  );
+  return (
+    <OpeningHoursDisplay
+      businessId={prefetchedUser?.businessUser?.id}
+      prefetchedOpeningHours={openingHoursForBusinessUser}
+    />
+  );
 }

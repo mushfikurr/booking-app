@@ -68,7 +68,7 @@ export default async function Overview({
           />
         </Suspense>
       </div>
-      <Card className="hidden lg:block lg:w-fit drop-shadow-sm max-w-md h-full min-w-sm">
+      <Card className="hidden lg:block drop-shadow-sm h-full max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl leading-none">Quick actions</CardTitle>
         </CardHeader>

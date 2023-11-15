@@ -97,7 +97,7 @@ export default function Sidebar({
   }
 
   return (
-    <div className="bg-accent/50 max-w-[300px] min-w-fit space-y-6 w-full max-h-full z-1 h-full sticky top-0 left-0 pt-14">
+    <div className="bg-accent/50 max-w-[300px] min-w-fit space-y-6 w-full min-h-screen h-full z-1 sticky top-0 left-0 pt-14">
       <div className="px-8 py-10 pb-0">
         <span className="flex justify-between gap-2 items-center">
           <h1 className="text-2xl font-bold tracking-tight leading-none">

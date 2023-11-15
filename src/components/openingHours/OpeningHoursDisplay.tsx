@@ -4,6 +4,7 @@ import {
   deleteOpeningHour,
   getOpeningHoursFromServer,
   newOpeningHour,
+  updateManyOpeningHour,
 } from "@/lib/clientQuery";
 import { TimeRangeSchema } from "@/lib/form/time-range-schema";
 import { cn, getTimeFromDatetime } from "@/lib/utils";
@@ -50,9 +51,10 @@ interface InputField {
   startTime?: string;
   endTime?: string;
   error?: Error | FieldErrors;
+  open?: boolean;
 }
 
-interface InputState {
+export interface OpeningHoursInputState {
   [DAYS.MONDAY]: InputField;
   [DAYS.TUESDAY]: InputField;
   [DAYS.WEDNESDAY]: InputField;
@@ -76,7 +78,7 @@ export default function OpeningHoursDisplay({
     DAYS.SUNDAY,
   ];
 
-  const [inputState, updateInputState] = useImmer<InputState>({
+  const [inputState, updateInputState] = useImmer<OpeningHoursInputState>({
     [DAYS.MONDAY]: {},
     [DAYS.TUESDAY]: {},
     [DAYS.WEDNESDAY]: {},
@@ -85,6 +87,7 @@ export default function OpeningHoursDisplay({
     [DAYS.SATURDAY]: {},
     [DAYS.SUNDAY]: {},
   });
+  const queryClient = useQueryClient();
 
   const { data } = useQuery<OpeningHour[], Error>(
     ["openingHour"],
@@ -94,6 +97,28 @@ export default function OpeningHoursDisplay({
       return response.openingHours;
     },
     { initialData: prefetchedOpeningHours }
+  );
+
+  const submitMutation = useMutation<any, Error>(
+    ["openingHour"],
+    async () => {
+      if (!businessId) throw Error("No business ID");
+      const response = await updateManyOpeningHour(businessId, inputState);
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["openingHour"]);
+        toast({ description: "Successfully updated opening hours." });
+      },
+      onError: () => {
+        queryClient.invalidateQueries(["openingHour"]);
+        toast({
+          description: "Error updating opening hours.",
+          variant: "destructive",
+        });
+      },
+    }
   );
 
   const getDataForDay = (day: string) => {
@@ -106,8 +131,9 @@ export default function OpeningHoursDisplay({
   };
 
   const onSubmit = async () => {
+    let anyErrors = false;
     for (const key of Object.keys(inputState)) {
-      const inputField = inputState[key as keyof InputState];
+      const inputField = inputState[key as keyof OpeningHoursInputState];
       if (inputField.startTime && inputField.endTime) {
         try {
           await TimeRangeSchema.parseAsync({
@@ -115,11 +141,12 @@ export default function OpeningHoursDisplay({
             to: inputField.endTime,
           });
         } catch (err) {
+          anyErrors = true;
           if (err instanceof ZodError) {
             const zodErrors = err.flatten().fieldErrors;
             console.log(zodErrors);
             updateInputState((state) => {
-              state[key as keyof InputState].error = zodErrors;
+              state[key as keyof OpeningHoursInputState].error = zodErrors;
             });
             toast({
               title: "Error changing opening hours",
@@ -130,7 +157,7 @@ export default function OpeningHoursDisplay({
           } else {
             const error = err as Error;
             updateInputState((state) => {
-              state[key as keyof InputState].error = error;
+              state[key as keyof OpeningHoursInputState].error = error;
             });
             toast({
               title: "Error changing opening hours",
@@ -140,6 +167,13 @@ export default function OpeningHoursDisplay({
             });
           }
         }
+      }
+    }
+    if (!anyErrors) {
+      try {
+        submitMutation.mutate();
+      } catch (err) {
+        console.log(err);
       }
     }
   };
@@ -165,14 +199,18 @@ export default function OpeningHoursDisplay({
                   day={day}
                   data={dataForDay}
                   isOpen={!!dataForDay}
-                  inputState={inputState[day as keyof InputState]}
+                  inputState={inputState[day as keyof OpeningHoursInputState]}
                   updateInputState={updateInputState}
                 />
               );
             })}
           </div>
           <div>
-            <Button onClick={onSubmit} type="submit">
+            <Button
+              onClick={onSubmit}
+              type="submit"
+              isLoading={submitMutation.isLoading}
+            >
               Submit
             </Button>
           </div>
@@ -188,7 +226,7 @@ interface DayOpeningHoursProps {
   isOpen: boolean;
   businessId?: string;
   inputState: InputField;
-  updateInputState: Updater<InputState>;
+  updateInputState: Updater<OpeningHoursInputState>;
 }
 
 const DayOpeningHours: FC<DayOpeningHoursProps> = ({
@@ -237,10 +275,14 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
   defaultEndTime.setHours(17);
   defaultEndTime.setMinutes(15);
 
-  const defaultData: Partial<OpeningHour> = {
+  interface DefaultData extends Partial<OpeningHour> {
+    isOpen: boolean;
+  }
+  const defaultData: DefaultData = {
     dayOfWeek: day,
     startTime: defaultStartTime,
     endTime: defaultEndTime,
+    isOpen: false,
   };
 
   const { dayOfWeek, startTime, endTime } = data ?? defaultData;
@@ -253,8 +295,11 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
 
   useEffect(() => {
     updateInputState((state) => {
-      state[day as keyof InputState].startTime = formattedStartTime as string;
-      state[day as keyof InputState].endTime = formattedEndTime as string;
+      state[day as keyof OpeningHoursInputState].startTime =
+        formattedStartTime as string;
+      state[day as keyof OpeningHoursInputState].endTime =
+        formattedEndTime as string;
+      state[day as keyof OpeningHoursInputState].open = isOpen;
     });
   }, [data]);
 
@@ -283,7 +328,9 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
   const clearErrors = (fromOrTo: "from" | "to") => {
     if (hasErrors) {
       updateInputState((state) => {
-        delete (state[day as keyof InputState].error as FieldErrors)[fromOrTo];
+        delete (
+          state[day as keyof OpeningHoursInputState].error as FieldErrors
+        )[fromOrTo];
       });
     }
   };
@@ -327,7 +374,8 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
                 value={inputState?.startTime}
                 onChange={(e) => {
                   updateInputState((state) => {
-                    state[day as keyof InputState].startTime = e.target.value;
+                    state[day as keyof OpeningHoursInputState].startTime =
+                      e.target.value;
                   });
                   if (hasErrors) {
                     clearErrors("from");
@@ -346,7 +394,8 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
                 value={inputState?.endTime}
                 onChange={(e) => {
                   updateInputState((state) => {
-                    state[day as keyof InputState].endTime = e.target.value;
+                    state[day as keyof OpeningHoursInputState].endTime =
+                      e.target.value;
                   });
                   if (hasErrors) {
                     clearErrors("to");
