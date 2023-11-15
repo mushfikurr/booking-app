@@ -19,9 +19,9 @@ export default function ManageBusinessCard({
   ButtonIcon,
 }: ManageBusinessCardProps) {
   return (
-    <div className="p-5 border border-accent/90 hover:bg-accent/70 transition-all duration-300 ease-in-out text-accent-foreground rounded-sm flex flex-col gap-1 min-h-fit group">
+    <div className="p-5 border border-accent/90 hover:bg-accent/70 transition-all duration-300 ease-in-out text-accent-foreground rounded-sm flex flex-col gap-2 min-h-fit group">
       <span className="flex gap-2 items-center">
-        <h3 className="text-xl font-semibold tracking-tight leading-none">
+        <h3 className="text-xl font-medium tracking-tight leading-none">
           {title}
         </h3>
         <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-all duration-200 ease-out text-muted group-hover:text-foreground" />

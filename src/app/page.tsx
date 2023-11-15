@@ -10,8 +10,8 @@ export default function Home() {
       <div className="flex flex-col gap-8">
         <div className="flex items-center rounded-3xl sm:border border-border z-10 overflow-clip relative bg-primary drop-shadow-md">
           <div className="w-full h-full bg-gradient-to-r from-black to-black/20 hover:to-black/5 group/header transition duration-300 ease-in-out">
-            <div className="flex flex-col gap-8 p-4 sm:p-16">
-              <h1 className="flex flex-col justify-center text-3xl sm:text-5xl font-medium tracking-tight flex-grow text-primary-foreground">
+            <div className="flex flex-col gap-8 p-6 sm:p-16">
+              <h1 className="flex flex-col justify-center items-center sm:items-start text-4xl sm:text-5xl font-medium tracking-tight flex-grow text-primary-foreground">
                 Booking made{" "}
                 <span>
                   <h5 className="text-primary-foreground font-bold animate-in fade-in slide-in-from-bottom-2 duration-700 ease-in-out">

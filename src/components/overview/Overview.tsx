@@ -47,7 +47,7 @@ export default async function Overview({
   ];
 
   return (
-    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6">
+    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 h-full">
       <div className="flex flex-col gap-6 flex-grow">
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
@@ -68,14 +68,9 @@ export default async function Overview({
           />
         </Suspense>
       </div>
-      <Card className="drop-shadow-sm max-w-md max-h-full">
+      <Card className="hidden lg:block lg:w-fit drop-shadow-sm max-w-md h-full min-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl leading-none">
-            Manage your business
-          </CardTitle>
-          <CardDescription>
-            Things you can do to make your business come alive!
-          </CardDescription>
+          <CardTitle className="text-xl leading-none">Quick actions</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
