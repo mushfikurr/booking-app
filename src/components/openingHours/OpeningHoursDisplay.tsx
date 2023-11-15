@@ -1,18 +1,19 @@
 "use client";
 
 import {
+  deleteOpeningHour,
   getOpeningHoursFromServer,
   newOpeningHour,
-  deleteOpeningHour,
 } from "@/lib/clientQuery";
 import { TimeRangeSchema } from "@/lib/form/time-range-schema";
 import { cn, getTimeFromDatetime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DoorClosed, DoorOpen, Loader2 } from "lucide-react";
-import { Updater, useImmer } from "use-immer";
 import { FC, useEffect } from "react";
+import { Updater, useImmer } from "use-immer";
 import z, { ZodError } from "zod";
+import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -23,8 +24,6 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Toggle } from "../ui/toggle";
-import { Button } from "../ui/button";
-import { FieldError } from "react-hook-form";
 import { toast } from "../ui/use-toast";
 
 enum DAYS {
@@ -146,7 +145,7 @@ export default function OpeningHoursDisplay({
   };
 
   return (
-    <Card className="animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
+    <Card className="animate-in fade-in duration-300 ease-in-out min-w-fit">
       <CardHeader className="space-y-0">
         <CardTitle className="text-lg font-medium">Opening hours</CardTitle>
         <CardDescription>

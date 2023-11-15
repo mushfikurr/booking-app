@@ -8,6 +8,9 @@ import { CaptureForm } from "./CaptureForm";
 import { Icons } from "./Icons";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Separator } from "./ui/separator";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -47,10 +50,9 @@ const LoginForm = () => {
   };
 
   const captureFormProps = {
-    title: "Welcome back!",
+    title: "Login",
     isLoading,
-    description:
-      "With your personal account you can find and book services with ease.",
+    description: "",
     schema: LoginSchema,
     formFields: [
       {
@@ -71,24 +73,31 @@ const LoginForm = () => {
   };
 
   return (
-    <>
+    <div className="space-y-6">
+      <Link
+        href="/register"
+        className="inline-flex gap-4 text-sm items-center font-medium text-foreground/70 hover:text-foreground transition-colors duration-200 ease-in-out group"
+      >
+        <p>Need an account?</p>
+        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
+      </Link>
       <CaptureForm {...captureFormProps}>
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
+        <div className="flex flex-col gap-4">
+          <Separator className="mt-2" />
+          <h3 className="mt-3 text-accent-foreground text-sm font-medium">
+            Or continue with
+          </h3>
+          <Button
+            className="flex gap-1 w-full"
+            variant="secondary"
+            type="submit"
+          >
+            <Icons.google className="h-4 w-4" />
+            Google
+          </Button>
         </div>
-        <Button className="flex gap-1 w-full" variant="secondary" type="submit">
-          <Icons.google className="h-4 w-4" />
-          Google
-        </Button>
       </CaptureForm>
-    </>
+    </div>
   );
 };
 

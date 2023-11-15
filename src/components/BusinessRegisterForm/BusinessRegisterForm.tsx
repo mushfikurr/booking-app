@@ -149,11 +149,7 @@ function BusinessRegisterFormWithProvider() {
           <Stepper />
         </div>
       )}
-      <div
-        className={cn(
-          "flex-grow container flex gap-8 py-8 sm:min-w-[550px] sm:w-[550px] border border-border rounded-lg"
-        )}
-      >
+      <div className={cn("flex-grow flex gap-8 rounded-lg")}>
         <InitialForm />
         {forms.map((form, idx) => {
           const CaptureFormProps = { ...form, pageNumber: idx + 1 };
@@ -250,7 +246,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
   return (
     <div className="space-y-6 w-full">
       <div className="gap-4 space-y-1 leading-snug items-center">
-        <h1 className="font-bold text-2xl">{title}</h1>
+        <h1 className="font-semibold text-2xl">{title}</h1>
         <h3 className="text-foreground/80">{description}</h3>
       </div>
 

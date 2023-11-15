@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
-import { usePageContext } from "./BusinessRegisterPageContext";
 import { Activity, CalendarPlus, MessageCircle } from "lucide-react";
+import { ReactNode } from "react";
 import { Button } from "../ui/button";
-import Link from "next/link";
+import { usePageContext } from "./BusinessRegisterPageContext";
 
 const RenderIcon = ({ children }: { children: ReactNode }) => {
   return <span className="bg-primary rounded-full p-2">{children}</span>;
@@ -13,20 +12,14 @@ export default function InitialForm() {
 
   if (currentPage !== 0) return;
   return (
-    <div className="flex flex-col space-y-5 py-1">
+    <div className="flex flex-col space-y-5 py-1 w-full">
       <div className="space-y-3">
         <div className="space-y-1">
-          <h1 className="font-bold text-3xl">Welcome!</h1>
+          <h1 className="font-semibold text-3xl">Welcome!</h1>
           <h2 className="text-lead">
             Lets get started with creating your business account
           </h2>
         </div>
-        <Link
-          href="/login"
-          className="flex items-center font-semibold text-xs uppercase hover:text-foreground/80 transition-colors duration-150 text-foreground/60 leading-snug gap-2"
-        >
-          Already have an account?
-        </Link>
       </div>
 
       <div className="flex-grow">

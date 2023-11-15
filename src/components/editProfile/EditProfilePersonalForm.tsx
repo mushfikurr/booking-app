@@ -90,7 +90,7 @@ export default function EditProfilePersonalForm({
     onSubmit,
   };
   return (
-    <Card className=" drop-shadow-sm animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
+    <Card className="rounded-lg animate-in fade-in duration-300 ease-in-out">
       <CardHeader className="flex flex-row justify-between">
         <div>
           <CardTitle className="text-lg font-medium">

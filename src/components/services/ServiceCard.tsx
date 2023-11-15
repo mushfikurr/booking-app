@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Clock, Pencil, Trash } from "lucide-react";
 import {
@@ -5,7 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Skeleton } from "../ui/skeleton";
@@ -15,9 +16,11 @@ const humanizeDuration = require("humanize-duration");
 
 export function ServiceCard({
   service,
+  delayId,
   isLoading,
 }: {
   service: Service;
+  delayId: number;
   isLoading: boolean;
 }) {
   if (isLoading) {
@@ -28,14 +31,18 @@ export function ServiceCard({
   const displayedEstimatedTime = humanizeDuration(service.estimatedTime * 1000);
 
   return (
-    <div className="border border-border rounded-lg drop-shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
+    <div
+      className={cn(
+        "h-fit border border-border rounded-lg drop-shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out"
+      )}
+    >
       <div className="p-6 h-full flex flex-col justify-center space-y-5">
         <div className="flex justify-between items-center">
           <div className="flex flex-col justify-center">
-            <h3 className="text-sm font-semibold tracking-wide max-w-[150px]">
+            <h3 className="text-sm font-semibold tracking-wide">
               {service.name}
             </h3>
-            {service.price && (
+            {service.description && (
               <p className="text-muted-foreground text-sm">
                 {service.description}
               </p>
@@ -67,36 +74,32 @@ export function ServiceCard({
 
 function EditServiceButton({ service }: { service: Service }) {
   return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <div className="hover:text-foreground hover:bg-background rounded-l-md transition duration-200 ease-in-out cursor-pointer">
-            <Pencil className="h-4 w-4 mx-3 my-2" />
-          </div>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Editing {service.name}</DialogTitle>
-          </DialogHeader>
-          <UpdateServiceForm service={service} />
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="hover:text-foreground hover:bg-background rounded-l-md transition duration-200 ease-in-out cursor-pointer">
+          <Pencil className="h-4 w-4 mx-3 my-2" />
+        </div>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Editing {service.name}</DialogTitle>
+        </DialogHeader>
+        <UpdateServiceForm service={service} />
+      </DialogContent>
+    </Dialog>
   );
 }
 
 function RemoveServiceButton({ service }: { service: Service }) {
   return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>
-          <div className="hover:text-destructive hover:bg-background rounded-r-md transition duration-200 ease-in-out cursor-pointer">
-            <Trash className="h-4 w-4 mx-3 my-2" />
-          </div>
-        </DialogTrigger>
-        <RemoveServiceDialogContent service={service} />
-      </Dialog>
-    </>
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="hover:text-destructive hover:bg-background rounded-r-md transition duration-200 ease-in-out cursor-pointer">
+          <Trash className="h-4 w-4 mx-3 my-2" />
+        </div>
+      </DialogTrigger>
+      <RemoveServiceDialogContent service={service} />
+    </Dialog>
   );
 }
 

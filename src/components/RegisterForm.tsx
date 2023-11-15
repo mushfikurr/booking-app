@@ -1,12 +1,12 @@
 "use client";
 
 import { RegistrationSchema } from "@/lib/form/register-form-schema";
-import * as z from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useToast } from "./ui/use-toast";
 import { useState } from "react";
+import * as z from "zod";
 import { CaptureForm, CaptureFormProps } from "./CaptureForm";
+import { useToast } from "./ui/use-toast";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -41,7 +41,7 @@ const RegisterForm = () => {
   const captureFormProps: CaptureFormProps = {
     title: "Register an account",
     description:
-      "Create a new account with us to unlock features such as booking, reviewing, and more!",
+      "",
     schema: RegistrationSchema,
     onSubmit,
     isLoading,

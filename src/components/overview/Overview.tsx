@@ -1,5 +1,8 @@
-import { db } from "@/lib/db";
-import { BusinessUser, Prisma, User } from "@prisma/client";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { getBookingsData, getOpeningHoursData } from "@/lib/serverQuery";
+import { Booking } from "@prisma/client";
+import { Calendar, Scissors } from "lucide-react";
+import { Suspense } from "react";
 import {
   Card,
   CardContent,
@@ -7,52 +10,83 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import NoServicesCard from "./NoServicesCard";
+import EstimatedRevenueCard from "./EstimatedRevenueCard";
+import ExpectedCustomerCard from "./ExpectedCustomerCard";
+import ManageBusinessCard, {
+  ManageBusinessCardProps,
+} from "./ManageBusinessCard";
+import OpenFromCard from "./OpenFromCard";
 import OverviewBookings from "./OverviewBookings";
-import RundownStatistics from "./RundownStatistics";
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
 
 export default async function Overview({
   user,
 }: {
   user?: UserWithBusinessUser | null;
 }) {
-  const services = await db.service.findMany({
-    where: { businessUserId: user?.businessUser?.id },
-  });
-  const bookings = await db.booking.findMany({
-    where: { businessUserId: user?.businessUser?.id },
-  });
+  const businessId = user?.businessUser?.id;
+  const bookings = await getBookingsData(businessId);
+  const openingHours = await getOpeningHoursData(businessId);
 
-  const firstName = user?.name?.split(" ")[0];
+  const manageBusinessCards: ManageBusinessCardProps[] = [
+    {
+      title: "Create a service",
+      description:
+        "Services allow customers to find out about what you offer, how much it may cost, and how long it may take.",
+      navigateUrl: "/dashboard/services",
+      buttonText: "Navigate to services",
+      ButtonIcon: Scissors,
+    },
+    {
+      title: "Manage your bookings",
+      description:
+        "View and edit bookings that customers have made at your business.",
+      navigateUrl: "/dashboard/bookings",
+      buttonText: "Manage bookings",
+      ButtonIcon: Calendar,
+    },
+  ];
 
   return (
-    <div className="space-y-6">
-      <div className="hidden sm:block">
-        <div className="flex gap-6">
-          <NoServicesCard
-            prefetchedServicesData={services}
+    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 h-full">
+      <div className="flex flex-col gap-6 flex-grow">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
+          <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-8 w-full">
+            <OpenFromCard
+              prefetchedOpeningHours={openingHours}
+              businessId={businessId}
+            />
+            <ExpectedCustomerCard user={user} />
+            <EstimatedRevenueCard user={user} />
+          </div>
+        </div>
+
+        <Suspense fallback={<h1>Hello</h1>}>
+          <OverviewBookings
+            prefetchedBookingsData={bookings as Booking[]}
             businessUserId={user?.businessUser?.id}
           />
-          <Card className="max-w-xl animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out w-full">
-            <CardHeader className="pb-2 space-y-1">
-              <CardTitle>Hello {firstName}!</CardTitle>
-              <CardDescription>
-                Here&apos;s your rundown for today
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-sm space-y-2">
-              <RundownStatistics />
-            </CardContent>
-          </Card>
-          {/* <ExtraStatisticCards /> */}
-        </div>
+        </Suspense>
       </div>
-
-      <OverviewBookings
-        prefetchedBookingsData={bookings}
-        businessUserId={user?.businessUser?.id}
-      />
+      <Card className="hidden lg:block lg:w-fit drop-shadow-sm max-w-md h-full min-w-sm">
+        <CardHeader>
+          <CardTitle className="text-xl leading-none">Quick actions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {manageBusinessCards.map((card) => (
+              <ManageBusinessCard
+                key={card.title}
+                title={card.title}
+                description={card.description}
+                buttonText={card.buttonText}
+                navigateUrl={card.navigateUrl}
+                ButtonIcon={card.ButtonIcon}
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

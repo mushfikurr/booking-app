@@ -1,8 +1,8 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
 import { db } from "./db";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { Prisma } from "@prisma/client";
 
 const getOpeningHoursData = cache(async (businessId: string | undefined) => {
   if (!businessId) {
@@ -10,6 +10,17 @@ const getOpeningHoursData = cache(async (businessId: string | undefined) => {
     return undefined;
   }
   const data = await db.openingHour.findMany({ where: { businessId } });
+  return data;
+});
+
+const getBookingsData = cache(async (businessId: string) => {
+  if (!businessId) {
+    console.error("No business id...");
+    return undefined;
+  }
+  const data = await db.booking.findMany({
+    where: { businessUserId: businessId },
+  });
   return data;
 });
 
@@ -29,4 +40,5 @@ export type GetUserWithBusinessDataReturn = Prisma.PromiseReturnType<
   typeof getUserWithBusinessData
 >;
 
-export { getUserWithBusinessData, getOpeningHoursData };
+export { getBookingsData, getOpeningHoursData, getUserWithBusinessData };
+

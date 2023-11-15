@@ -1,6 +1,11 @@
 "use client";
 
-import { AlertCircle, ChevronLeft } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertCircle } from "lucide-react";
+import { FC, ReactNode } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ZodTypeAny, z } from "zod";
+import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Button } from "./ui/button";
 import {
   Form,
@@ -12,11 +17,6 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { AnyZodObject, ZodType, ZodTypeAny, z } from "zod";
-import { FC, ReactNode } from "react";
-import { SubmitHandler, UseFormSetError, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 
 export interface CaptureFormField {
   name: string;
@@ -101,12 +101,10 @@ export const CaptureForm: FC<CaptureFormProps> = ({
 
   return (
     <div className="space-y-6">
-      {title && description && (
-        <div className="gap-4 space-y-1 leading-snug items-center">
-          {title && <h1 className="font-bold text-2xl">{title}</h1>}
-          {description && <h3 className="text-foreground/80">{description}</h3>}
-        </div>
-      )}
+      <div className="gap-4 space-y-1 leading-snug items-center">
+        {title && <h1 className="font-semibold text-3xl">{title}</h1>}
+        {description && <h3 className="text-foreground/80">{description}</h3>}
+      </div>
 
       {form.formState.errors?.root?.serverError && (
         <CaptureFormServerAlert
