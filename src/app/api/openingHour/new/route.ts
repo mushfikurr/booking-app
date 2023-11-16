@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const doesOpeningHourExist = await db.openingHour.findFirst({
-      where: { dayOfWeek },
+      where: { dayOfWeek, businessId },
     });
 
     const startTimeISO = convertHHMMtoISOString(fromTime);
@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
     // If it already exists, edit it
     if (doesOpeningHourExist) {
       const id = doesOpeningHourExist.id;
-
       const updatedOpeningHour = await db.openingHour.update({
         where: { id },
         data: {
@@ -52,6 +51,7 @@ export async function POST(req: NextRequest) {
           endTime: endTimeISO,
         },
       });
+
       return NextResponse.json(updatedOpeningHour, { status: 200 });
     } else {
       // If it does not exist, create a new one
@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
           businessId,
         },
       });
+
       return NextResponse.json(newOpeningHour, { status: 200 });
     }
   } catch (err) {
