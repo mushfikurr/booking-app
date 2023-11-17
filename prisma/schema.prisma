@@ -70,6 +70,7 @@ model BusinessUser {
   postcode       String
   phoneNumber    String
   instagram      String?
+  profileId      String        @unique
   businessEmail  String        @unique
   userId         String        @unique
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)

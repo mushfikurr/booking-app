@@ -92,6 +92,18 @@ export const BusinessRegistrationLocationSchema = z.object({
 });
 
 export const BusinessRegistrationContactSchema = z.object({
+  profileId: z
+    .string({ invalid_type_error: "Profile ID must be a string" })
+    .min(5, {
+      message: "Profile ID must be at minimum 5 characters long",
+    })
+    .max(40, {
+      message: "Profile ID can only be at maximum 40 characters long",
+    })
+    .regex(/^[a-z]+(?:-[a-z]+)*(?:-\d+)?(?<!-)$/, {
+      message:
+        "Profile ID must only match the following characters: a-z. Multiple words can be strung together with a hyphen (i.e. john-doe-store). Numbers can be used at the end with a hyphen (i.e. john-doe-store-4)",
+    }),
   phoneNumber: z
     .string({ invalid_type_error: "Phone number must be a valid string" })
     .min(11, {
@@ -122,9 +134,6 @@ export const BusinessRegistrationContactSchema = z.object({
     })
     .max(256, { message: "Email must be a maximum of 256 characters long" }),
 });
-
-type DataItem = Record<string, any>;
-type SchemaItem = z.ZodSchema<any>;
 
 export function validateAllFormValuesAndMerge(
   formData: { [key: number]: object },

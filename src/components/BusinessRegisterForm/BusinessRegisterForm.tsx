@@ -42,6 +42,19 @@ const doesEmailExistForUser = async (
   }
 };
 
+const doesProfileExistForBusinessUser = async (
+  values: z.infer<typeof BusinessRegistrationContactSchema>
+) => {
+  const resp = await axios.post("/api/register/attributeExists/business", {
+    attribute: "profileId",
+    attributeName: "profileId",
+    value: values.profileId,
+  });
+  if (resp.data.exists) {
+    return { error: "This profile ID already exists.", field: "profileId" };
+  }
+};
+
 export const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 0,
@@ -81,9 +94,16 @@ export const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 1,
     title: "Contact details",
+    customValidation: doesProfileExistForBusinessUser,
     description: "Allow users to get in touch for fast access",
     schema: BusinessRegistrationContactSchema,
     formFields: [
+      {
+        name: "profileId",
+        label: "Profile ID",
+        description:
+          "Profile ID used to find your profile page on BookingApp. Must contain only characters, with hyphens only joining words.",
+      },
       {
         name: "phoneNumber",
         label: "Phone Number",
@@ -235,7 +255,6 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
       return;
     }
     const valuesToBeSubmitted: z.infer<typeof schema> = { ...values };
-    // Simulate some loading for user feedback
     // pageNumber - 1 as we do the pages with a +1 offset (as the initial page has no inputs)
     pushToAllFormValues(valuesToBeSubmitted, pageNumber - 1);
     nextPage();
