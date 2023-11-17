@@ -1,15 +1,14 @@
-import { hash } from "bcrypt-ts";
 import { db } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
 import {
   BusinessRegistrationContactSchema,
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
 } from "@/lib/form/register-form-schema";
-import { BusinessUser, User } from "@prisma/client";
+import { hash } from "bcrypt-ts";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-async function createUser({
+async function validateUser({
   name,
   email,
   password,
@@ -17,7 +16,7 @@ async function createUser({
   name: string;
   email: string;
   password: string;
-}): Promise<User | null> {
+}) {
   try {
     const exist = await db.user.findUnique({
       where: {
@@ -31,62 +30,54 @@ async function createUser({
 
     const hashedPassword = await hash(password, 10);
 
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        hashedPassword,
-      },
-    });
-
-    return user;
+    return {
+      name,
+      email,
+      hashedPassword,
+    };
   } catch (err) {
     console.error(err);
     return null;
   }
 }
 
-async function createBusinessUserData({
-  userId,
+async function validateBusinessUser({
   streetAddress1,
   streetAddress2,
   postcode,
   phoneNumber,
   instagram,
   businessEmail,
+  profileId,
 }: {
-  userId: string;
   streetAddress1: string;
-  streetAddress2?: string | undefined;
+  streetAddress2?: string;
   postcode: string;
   phoneNumber: string;
-  instagram?: string | undefined;
+  instagram?: string;
   businessEmail: string;
-}): Promise<BusinessUser | null> {
+  profileId: string;
+}) {
   try {
     const exist = await db.businessUser.findUnique({
       where: {
-        userId,
+        profileId,
       },
     });
 
     if (exist) {
-      throw new Error("Email address already exists for business user");
+      throw new Error("Profile ID already exists.");
     }
 
-    const businessUser = await db.businessUser.create({
-      data: {
-        userId,
-        streetAddress1,
-        streetAddress2,
-        postcode,
-        phoneNumber,
-        instagram,
-        businessEmail,
-      },
-    });
-
-    return businessUser;
+    return {
+      streetAddress1,
+      streetAddress2,
+      postcode,
+      phoneNumber,
+      instagram,
+      businessEmail,
+      profileId,
+    };
   } catch (err) {
     console.error(err);
     return null;
@@ -101,6 +92,7 @@ export async function POST(request: NextRequest) {
     ...BusinessRegistrationPersonalSchema._def.schema.shape,
   });
   const result = combinedSchema.safeParse(body);
+
   if (!result.success) {
     if (result.error.formErrors.fieldErrors) {
       console.log("ERROR - FieldError\n");
@@ -119,39 +111,54 @@ export async function POST(request: NextRequest) {
       );
     }
   }
-  console.log("VALIDATION SUCCESS\n");
-  console.log(result.data);
+
+  type ResultType = typeof result.data;
+  const resultData: ResultType = result.data;
 
   try {
-    const userData = {
+    const { name, email, password, ...businessUserData } = resultData;
+    const validatedUser = await validateUser({
       name: result.data.name,
       email: result.data.email,
       password: result.data.password,
-    };
-    const user = await createUser(userData);
-    if (!user) {
-      return NextResponse.json(
-        { error: "The personal email address used already exists." },
-        { status: 500 }
-      );
-    }
-
-    const userId = user.id;
-    const { name, email, password, confirmPassword, ...businessUserData } =
-      result.data;
-    console.log("businessUserData", businessUserData);
-    const businessUser = await createBusinessUserData({
-      userId,
+    });
+    const validatedBusinessUser = await validateBusinessUser({
       ...businessUserData,
     });
-    if (!businessUser) {
-      return NextResponse.json(
-        { error: "Error creating businessUser." },
-        { status: 500 }
-      );
-    }
 
-    return NextResponse.json({ ...user, ...businessUser }, { status: 200 });
+    return await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          email: validatedUser?.email,
+          hashedPassword: validatedUser?.hashedPassword,
+          name: validatedUser?.name,
+        },
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "There was an error creating the user." },
+          { status: 500 }
+        );
+      }
+
+      const businessUser = await tx.businessUser.create({
+        // @ts-ignore - Ignore mismatching datatypes from schema to prisma
+        data: {
+          userId: user.id,
+          ...validatedBusinessUser,
+        },
+      });
+
+      if (!businessUser) {
+        return NextResponse.json(
+          { error: "There was an error creating the business user." },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({ ...user, ...businessUser }, { status: 200 });
+    });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: err }, { status: 500 });
