@@ -1,3 +1,10 @@
 export default function Profile() {
-  return <p>profile</p>;
+  const fakeData = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  return (
+    <div className="text-7xl">
+      {fakeData.map((num) => (
+        <p>{num}</p>
+      ))}
+    </div>
+  );
 }

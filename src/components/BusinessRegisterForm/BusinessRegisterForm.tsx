@@ -59,7 +59,8 @@ export const forms: MultiCaptureFormProps[] = [
   {
     pageNumber: 0,
     title: "Personal details",
-    description: "Lets get to know you",
+    description:
+      "Lets get to know you. These details will be used for logging in and personal identification.",
     customValidation: doesEmailExistForUser,
     schema: BusinessRegistrationPersonalSchema,
     formFields: [
@@ -95,7 +96,7 @@ export const forms: MultiCaptureFormProps[] = [
     pageNumber: 1,
     title: "Contact details",
     customValidation: doesProfileExistForBusinessUser,
-    description: "Allow users to get in touch for fast access",
+    description: "Allow users to get in touch for fast access.",
     schema: BusinessRegistrationContactSchema,
     formFields: [
       {
@@ -250,6 +251,7 @@ const MultiCaptureForm: FC<MultiCaptureFormProps> = ({
   async function onSubmit(values: z.infer<typeof schema>) {
     setIsLoading(true);
     const customValidation = await customValidationHandler(values);
+    console.log(customValidation);
     if (customValidation) {
       setIsLoading(false);
       return;

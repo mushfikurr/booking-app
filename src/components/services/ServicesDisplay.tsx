@@ -15,11 +15,11 @@ const getServices = async (businessUserId: string) => {
 function EmptyServices() {
   const squares = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   return (
-    <div className="h-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-4 relative md:pb-20 animate-in fade-in duration-500 ease-out">
+    <div className="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-4 relative animate-in fade-in duration-500 ease-out">
       {squares.map((squareNum) => (
         <div
           key={squareNum}
-          className="h-full w-full bg-accent/60 rounded-lg animate-in zoom-in-90 duration-500"
+          className="h-full bg-accent/60 rounded-lg animate-in zoom-in-90 duration-500"
         />
       ))}
       <div className="absolute h-full w-full md:pb-20 flex md:items-center max-sm:pt-8 justify-center">

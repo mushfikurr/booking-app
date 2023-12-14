@@ -61,7 +61,7 @@ export default async function Overview({
           </div>
         </div>
 
-        <Suspense fallback={<h1>Hello</h1>}>
+        <Suspense>
           <OverviewBookings
             prefetchedBookingsData={bookings as Booking[]}
             businessUserId={user?.businessUser?.id}

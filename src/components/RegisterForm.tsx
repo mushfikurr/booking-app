@@ -40,8 +40,7 @@ const RegisterForm = () => {
 
   const captureFormProps: CaptureFormProps = {
     title: "Register an account",
-    description:
-      "",
+    description: "",
     schema: RegistrationSchema,
     onSubmit,
     isLoading,

@@ -55,10 +55,10 @@ model User {
 model OpeningHour {
   id         Int          @id @default(autoincrement())
   businessId String
-  business   BusinessUser @relation(fields: [businessId], references: [id])
-  dayOfWeek  String       
+  dayOfWeek  String
   startTime  DateTime
   endTime    DateTime
+  business   BusinessUser @relation(fields: [businessId], references: [id])
 
   @@index([businessId])
 }
@@ -98,9 +98,9 @@ model Service {
 model Booking {
   id             String       @id @default(cuid())
   date           DateTime
-  services       Service[]
   userId         String
   businessUserId String
+  services       Service[]
   user           User?        @relation(fields: [userId], references: [id])
   businessUser   BusinessUser @relation(fields: [businessUserId], references: [id])
 
@@ -114,4 +114,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model BookingToService {
+  A String
+  B String
+
+  @@unique([A, B], map: "_BookingToService_AB_unique")
+  @@index([B], map: "_BookingToService_B_index")
+  @@map("_BookingToService")
 }

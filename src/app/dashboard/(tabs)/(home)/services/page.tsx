@@ -52,7 +52,7 @@ export default async function ServicesPage() {
         </div>
       </div>
 
-      <Suspense fallback={<FullPageSkeleton />}>
+      <Suspense>
         <ServicesDisplay
           prefetchedServicesData={services}
           businessUserId={user.businessUser.id}

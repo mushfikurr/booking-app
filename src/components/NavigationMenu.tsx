@@ -64,6 +64,12 @@ export const NavigationMenuAuthenticated = ({
 }: {
   user: Session["user"];
 }) => {
+  const userNameSplit = user?.name ? user?.name?.split(" ") : "";
+  const initials =
+    userNameSplit.length > 1
+      ? userNameSplit[0][0] + userNameSplit[1][0]
+      : userNameSplit[0][0];
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -72,11 +78,7 @@ export const NavigationMenuAuthenticated = ({
             <div className="flex gap-4 items-center mr-2">
               <Avatar className="w-7 h-7 text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground">
                 <AvatarImage alt={`${user?.name}'s Profile Picture`} />
-                <AvatarFallback>
-                  {user?.name &&
-                    user?.name.split(" ")[0][0] +
-                      (user?.name.split(" ")[1][0] ?? "")}
-                </AvatarFallback>
+                <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">
                 <p className="text-foreground/80 transition-colors duration-150 ease-in-out group-hover:text-foreground font-semibold">
