@@ -72,7 +72,7 @@ const LoginForm = () => {
 
   return (
     <div className="space-y-6">
-      <TextLink href="">Need an account?</TextLink>
+      <TextLink href="/register">Need an account?</TextLink>
       <CaptureForm {...captureFormProps}>
         <div className="flex flex-col gap-4">
           <Separator className="mt-2" />
