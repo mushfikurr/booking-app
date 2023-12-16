@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import haircut from "../../public/assets/haircut-2.jpg";
+import { TextLink } from "@/components/TextLink";
 
 export default function Home() {
   return (
@@ -40,10 +41,9 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-3 group">
-          <span className="w-full flex gap-6 items-center">
-            <h2 className="text-md font-semibold">Featured services</h2>
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition duration-200 ease-in-out" />
-          </span>
+          <TextLink href="" className="text-foreground text-lg">
+            Featured services
+          </TextLink>
 
           <div className="sm:grid grid-cols-3 gap-8">
             <div className="flex flex-col border border-border rounded-lg py-4 group/item">

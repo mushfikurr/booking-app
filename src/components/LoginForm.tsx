@@ -6,11 +6,10 @@ import { useState } from "react";
 import * as z from "zod";
 import { CaptureForm } from "./CaptureForm";
 import { Icons } from "./Icons";
+import { TextLink } from "./TextLink";
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import { Separator } from "./ui/separator";
+import { useToast } from "./ui/use-toast";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -73,13 +72,7 @@ const LoginForm = () => {
 
   return (
     <div className="space-y-6">
-      <Link
-        href="/register"
-        className="inline-flex gap-4 text-sm items-center font-medium text-foreground/70 hover:text-foreground transition-colors duration-200 ease-in-out group"
-      >
-        <p>Need an account?</p>
-        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200 ease-out" />
-      </Link>
+      <TextLink href="">Need an account?</TextLink>
       <CaptureForm {...captureFormProps}>
         <div className="flex flex-col gap-4">
           <Separator className="mt-2" />
