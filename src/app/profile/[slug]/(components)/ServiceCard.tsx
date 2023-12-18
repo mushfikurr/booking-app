@@ -45,7 +45,7 @@ export function ServiceCard({
       <button
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "h-[inherit] border-l border-border px-8 rounded-none text-sm",
+          "h-[inherit] border-l border-border px-8 rounded-none text-sm font-normal",
           "max-sm:border-l-0 max-sm:border-t max-sm:py-4"
         )}
       >

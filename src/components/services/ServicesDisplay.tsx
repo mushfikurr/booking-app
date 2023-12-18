@@ -23,7 +23,7 @@ function EmptyServices() {
         />
       ))}
       <div className="absolute h-full w-full md:pb-20 flex md:items-center max-sm:pt-8 justify-center">
-        <h3 className="text-md lg:text-xl tracking-tighter text-foreground/50 select-none font-semibold text-center">
+        <h3 className="text-md lg:text-xl tracking-tight text-foreground/50 select-none font-semibold text-center">
           There aren't any services at the moment.
         </h3>
       </div>

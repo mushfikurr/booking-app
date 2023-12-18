@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import haircut from "../../../../public/assets/haircut-2.jpg";
+import haircut from "@/../public/assets/haircut-2.jpg";
 
 export function HeaderImage() {
   return (

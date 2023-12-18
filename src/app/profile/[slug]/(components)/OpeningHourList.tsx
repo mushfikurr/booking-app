@@ -14,13 +14,12 @@ const daysOfWeek = [
 
 export function OpeningHourList() {
   const days: OpeningHourProps[] = [
-    { day: "Monday", startTime: "9:00 AM", endTime: "5:00 PM" },
+    { day: "Monday", startTime: "9:00", endTime: "5:00" },
     { day: "Tuesday" },
-    { day: "Wednesday", startTime: "9:00 AM", endTime: "5:00 PM" },
-    { day: "Thursday", startTime: "9:00 AM", endTime: "5:00 PM" },
-    { day: "Friday", startTime: "9:00 AM", endTime: "5:00 PM" },
-    { day: "Saturday", startTime: "10:00 AM", endTime: "3:00 PM" },
-    { day: "Sunday", startTime: "12:00 PM", endTime: "4:00 PM" },
+    { day: "Thursday", startTime: "9:00", endTime: "17:00" },
+    { day: "Friday", startTime: "9:00", endTime: "17:00" },
+    { day: "Saturday", startTime: "10:00", endTime: "15:00" },
+    { day: "Sunday", startTime: "12:00", endTime: "16:00" },
   ];
 
   return (
@@ -47,7 +46,7 @@ interface OpeningHourProps {
   endTime?: string;
 }
 
-function OpeningHour({ day, startTime, endTime }: OpeningHourProps) {
+function OpeningHour({ day, startTime, endTime }: Readonly<OpeningHourProps>) {
   const today = daysOfWeek[new Date().getDay()];
   const isToday = today === day;
   const hourRange =
@@ -57,13 +56,21 @@ function OpeningHour({ day, startTime, endTime }: OpeningHourProps) {
     <div className="flex justify-between items-center text-sm gap-2">
       <span className="inline-flex items-center gap-1">
         <ChevronsRight
-          className={cn("hidden text-muted-foreground h-4 w-4", {
+          className={cn({
+            "hidden text-foreground h-4 w-4": true,
             block: isToday,
           })}
         />
-        <p>{day}</p>
+        <p
+          className={cn({
+            "text-foreground/80": true,
+            "text-foreground": isToday,
+          })}
+        >
+          {day}
+        </p>
       </span>
-      <p className="text-foreground/80">{hourRange}</p>
+      <p className="text-muted-foreground">{hourRange}</p>
     </div>
   );
 }

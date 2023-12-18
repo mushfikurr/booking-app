@@ -1,16 +1,20 @@
 import { cn } from "@/lib/utils";
-import { LogOut, LucideIcon, User2 } from "lucide-react";
+import {
+  Activity,
+  LogOut,
+  LucideIcon,
+  User2
+} from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { NavigationMenuLink } from "./ui/navigation-menu";
-import { Separator } from "./ui/separator";
 
 const routes = [
   {
     Icon: User2,
-    title: "Dashboard",
-    href: "/dashboard/overview",
+    title: "Profile",
+    href: "/profile",
   },
   {
     Icon: LogOut,
@@ -23,7 +27,7 @@ const routes = [
 ];
 
 const businessRoutes = [
-  { Icon: User2, title: "Profile", href: "/profile" },
+  { Icon: Activity, title: "Dashboard", href: "/dashboard/overview" },
   ...routes.slice(1),
 ];
 
