@@ -9,7 +9,7 @@ export function HeaderImage() {
         src={haircut}
         fill
         alt="Header image for the business"
-        className="object-cover rounded-xl"
+        className="object-cover rounded-xl drop-shadow-lg"
       />
     </AspectRatio>
   );

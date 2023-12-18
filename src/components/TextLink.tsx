@@ -26,7 +26,7 @@ export function TextLink({ className, Icon, href, children }: TextLinkProps) {
       </span>
       <ArrowRight
         className={cn(
-          "h-4 w-4 opacity-0 -translate-x-1 align-center",
+          "h-4 w-4 -translate-x-1 align-center",
           "group-hover/textlink:opacity-100 group-hover/textlink:translate-x-0",
           "transition-transform duration-200 ease-out"
         )}

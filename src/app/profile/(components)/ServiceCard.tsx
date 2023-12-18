@@ -16,7 +16,7 @@ export function ServiceCard({
   return (
     <div
       className={cn(
-        "border border-border rounded-lg flex items-stretch min-w-full",
+        "border border-border rounded-lg flex items-stretch min-w-full drop-shadow-sm",
         "max-sm:flex-col"
       )}
     >

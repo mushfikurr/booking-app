@@ -2,7 +2,7 @@ import { BusinessAbout } from "./(components)/BusinessAbout";
 import { BusinessTitle } from "./(components)/BusinessTitle";
 import { HeaderImage } from "./(components)/HeaderImage";
 import { Reviews } from "./(components)/ReviewList";
-import { ServicesDisplay } from "./(components)/ServicesDisplay";
+import { ServicesDisplay } from "./(components)/ServiceList";
 
 export default function Profile() {
   const businessTitle = "Fade City";

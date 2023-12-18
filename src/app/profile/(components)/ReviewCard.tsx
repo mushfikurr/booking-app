@@ -3,7 +3,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export function ReviewCard({ name, review, reviewDate }: DummyReview) {
   return (
-    <div className="flex border border-border rounded-lg p-4 gap-5">
+    <div className="flex border border-border rounded-lg p-4 gap-5 drop-shadow-sm">
       <Avatar className="h-10 w-10">
         <AvatarImage src="http://picsum.photos/64" />
       </Avatar>

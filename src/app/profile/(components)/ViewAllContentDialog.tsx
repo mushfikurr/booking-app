@@ -22,7 +22,7 @@ export function ViewAllContent({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span
+        <button
           className={cn(
             "inline-flex gap-1 items-center text-sm font-medium text-foreground/60 transition duration-200 ease-in-out group",
             "hover:text-foreground hover:cursor-pointer"
@@ -35,7 +35,7 @@ export function ViewAllContent({
             )}
           />
           <p>View All</p>
-        </span>
+        </button>
       </DialogTrigger>
       <DialogContent className={cn(classNames, "gap-6 sm:max-w-2xl")}>
         <DialogHeader>
