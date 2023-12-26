@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { cn } from "@/lib/utils";
 import { MapPin } from "lucide-react";
-import { StartBooking } from "./MultiStepBooking";
+import { StartBooking } from "./BookingDialog";
 
 interface BusinessTitleProps {
   businessUser: UserWithBusinessUser;
