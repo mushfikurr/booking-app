@@ -2,15 +2,10 @@
 
 import { Service } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import FullPageSkeleton from "../FullPageSkeleton";
 import { useToast } from "../ui/use-toast";
 import { ServiceCard } from "./ServiceCard";
-
-const getServices = async (businessUserId: string) => {
-  const resp = await axios.post("/api/service", { businessUserId });
-  return resp.data;
-};
+import { getServices } from "@/lib/clientQuery";
 
 function EmptyServices() {
   const squares = [1, 2, 3, 4, 5, 6, 7, 8, 9];

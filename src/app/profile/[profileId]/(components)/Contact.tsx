@@ -2,12 +2,17 @@
 
 import { CollapsibleCard } from "@/components/CollapsibleCard";
 import { TextLink } from "@/components/TextLink";
+import { BusinessUser } from "@prisma/client";
 import { Instagram, LucideIcon, Mail, Phone } from "lucide-react";
 
-export default function Contact() {
-  const phoneNumber = { Icon: Phone, name: "07475169149", href: "" };
-  const email = { Icon: Mail, name: "fade.city@gmail.com", href: "" };
-  const instagram = { Icon: Instagram, name: "fade.city", href: "" };
+interface ContactProps {
+  businessUser: BusinessUser;
+}
+
+export default function Contact({ businessUser }: ContactProps) {
+  const phoneNumber = { Icon: Phone, name: businessUser.phoneNumber, href: "" };
+  const email = { Icon: Mail, name: businessUser.businessEmail, href: "" };
+  const instagram = { Icon: Instagram, name: businessUser.instagram, href: "" };
 
   return (
     <CollapsibleCard title="Contact">
@@ -22,11 +27,13 @@ export default function Contact() {
 
 interface ContactLinkProps {
   Icon: LucideIcon;
-  name: string;
+  name: string | null;
   href: string;
 }
 
 function ContactLink({ Icon, name, href }: ContactLinkProps) {
+  if (!name) return;
+  
   return (
     <TextLink className="justify-between font-normal" href={href}>
       <Icon className="h-5 w-5"></Icon>

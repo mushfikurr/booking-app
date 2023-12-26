@@ -1,6 +1,6 @@
 import { CollapsibleCard } from "@/components/CollapsibleCard";
 import { cn } from "@/lib/utils";
-import { CalendarDays, ChevronsRight } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 
 const daysOfWeek = [
   "Sunday",
@@ -70,7 +70,14 @@ function OpeningHour({ day, startTime, endTime }: Readonly<OpeningHourProps>) {
           {day}
         </p>
       </span>
-      <p className="text-muted-foreground">{hourRange}</p>
+      <p
+        className={cn({
+          "text-muted-foreground": true,
+          "text-foreground": isToday,
+        })}
+      >
+        {hourRange}
+      </p>
     </div>
   );
 }

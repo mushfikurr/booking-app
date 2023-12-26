@@ -4,7 +4,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/custom-dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 
@@ -30,18 +31,22 @@ export function ViewAllContent({
         >
           <ArrowUpRight
             className={cn(
-              "transition duration-150 ease-in-out scale-100",
-              "group-hover:scale-110"
+              "transition duration-75 ease-in-out scale-100",
+              "group-hover:scale-105"
             )}
           />
           <p>View All</p>
         </button>
       </DialogTrigger>
-      <DialogContent className={cn(classNames, "gap-6 sm:max-w-2xl")}>
+      <DialogContent
+        className={cn("overflow-clip max-h-[calc(100vh-10rem)]", classNames)}
+      >
         <DialogHeader>
           <DialogTitle className="text-xl">{title}</DialogTitle>
         </DialogHeader>
-        {children}
+        <ScrollArea>
+          <div className="flex flex-col gap-6 overflow-auto">{children}</div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

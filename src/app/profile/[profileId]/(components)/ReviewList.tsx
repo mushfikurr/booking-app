@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Empty } from "@/components/Empty";
 import { ReviewCard } from "./ReviewCard";
 import { ViewAllContent } from "./ViewAllContentDialog";
 
@@ -28,20 +28,31 @@ const dummyReviews: DummyReview[] = [
   },
 ];
 
-export function Reviews() {
+export async function Reviews() {
   const reviews = dummyReviews;
   const reviewCards = reviews.map((review) => (
     <ReviewCard key={review.name} {...review} />
   ));
+
+  if (!reviews.length) return <EmptyReviews />;
+
   return (
     <div className="space-y-3">
       <span className="inline-flex items-center justify-between w-full">
         <h2 className="font-medium text-2xl">Reviews</h2>
-        <ViewAllContent title="All reviews" children={reviewCards} />
+        <ViewAllContent title="All reviews">{reviewCards}</ViewAllContent>
       </span>
-      <Suspense>
-        <div className="flex flex-col gap-3.5">{reviewCards}</div>
-      </Suspense>
+
+      <div className="flex flex-col gap-3.5">{reviewCards}</div>
+    </div>
+  );
+}
+
+function EmptyReviews() {
+  return (
+    <div className="space-y-3">
+      <h2 className="font-medium text-2xl">Reviews</h2>
+      <Empty>There aren't any reviews to display at the moment.</Empty>
     </div>
   );
 }

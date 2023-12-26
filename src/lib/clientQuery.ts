@@ -2,6 +2,7 @@
 
 "use client";
 
+import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
 import axios from "axios";
 import { z } from "zod";
 import {
@@ -10,8 +11,12 @@ import {
   EditProfilePersonalSchema,
 } from "./form/edit-profile-schema";
 import { TimeRangeSchema } from "./form/time-range-schema";
-import { OpeningHour } from "@prisma/client";
-import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
+import { useQuery } from "@tanstack/react-query";
+
+export const getServices = async (businessUserId: string) => {
+  const resp = await axios.post("/api/service", { businessUserId });
+  return resp.data;
+};
 
 export const getUserWithBusinessDataFromServer = async (userId: string) => {
   const resp = await axios.post("/api/businessUser", { userId });

@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface BusinessAbout {
-  businessTitle: string;
+  businessTitle?: string | null;
   about: string;
 }
 

@@ -1,19 +1,21 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { BusinessUser, Prisma } from "@prisma/client";
+import { BusinessUser, Prisma, Service } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
 import { db } from "./db";
 
-const getOpeningHoursData = cache(async (businessId: string | undefined) => {
-  if (!businessId) {
-    console.error("No business id...");
-    return undefined;
+export const getOpeningHoursData = cache(
+  async (businessId: string | undefined) => {
+    if (!businessId) {
+      console.error("No business id...");
+      return undefined;
+    }
+    const data = await db.openingHour.findMany({ where: { businessId } });
+    return data;
   }
-  const data = await db.openingHour.findMany({ where: { businessId } });
-  return data;
-});
+);
 
-const getBookingsData = cache(async (businessId: string) => {
+export const getBookingsData = cache(async (businessId: string) => {
   if (!businessId) {
     console.error("No business id...");
     return undefined;
@@ -24,7 +26,7 @@ const getBookingsData = cache(async (businessId: string) => {
   return data;
 });
 
-const getUserWithBusinessData = cache(async () => {
+export const getUserWithBusinessData = cache(async () => {
   const data = await getServerSession(authOptions);
   const user = data?.user;
 
@@ -40,15 +42,18 @@ export const getBusinessUser = cache(
   async (businessUserQuery: Partial<BusinessUser>) => {
     const businessUser = await db.businessUser.findFirst({
       where: businessUserQuery,
+      include: { user: true },
     });
-    console.log(businessUser);
 
     return businessUser;
   }
 );
 
+export const getServices = cache(async (serviceQuery: Partial<Service>) => {
+  const services = await db.service.findMany({ where: serviceQuery });
+  return services;
+});
+
 export type GetUserWithBusinessDataReturn = Prisma.PromiseReturnType<
   typeof getUserWithBusinessData
 >;
-
-export { getBookingsData, getOpeningHoursData, getUserWithBusinessData };

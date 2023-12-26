@@ -8,9 +8,9 @@ export async function POST(req: NextRequest) {
       const { name, description, price, estimatedTime, businessUserId } = body;
       const [hours, minutes, seconds] = estimatedTime.split(":");
       const timeFormatToSeconds =
-        parseInt(hours, 10) * 3600 +
-        parseInt(minutes, 10) * 60 +
-        parseInt(seconds, 10);
+        estimatedTime.split(":").length == 2
+          ? parseInt(hours, 10) * 60
+          : parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60;
 
       try {
         const newService = await db.service.create({
@@ -19,7 +19,11 @@ export async function POST(req: NextRequest) {
             description,
             price,
             estimatedTime: timeFormatToSeconds,
-            businessUserId,
+            businessUser: {
+              connect: {
+                id: businessUserId,
+              },
+            },
           },
         });
         return NextResponse.json({ newService }, { status: 200 });
