@@ -1,5 +1,5 @@
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import FullPageSkeleton from "@/components/FullPageSkeleton";
 
 export default async function Loading() {
-  return <LoadingSkeleton className="h-full" />;
+  return <FullPageSkeleton />;
 }
