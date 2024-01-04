@@ -6,8 +6,8 @@ import { cn, daysOfWeek, getHMFromDateTime } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
-import { LoadingSkeleton } from "../LoadingSkeleton";
 import { Statistics } from "../Statistics";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 
 export function ChooseDate() {
   const {

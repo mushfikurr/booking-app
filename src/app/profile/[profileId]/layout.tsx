@@ -1,4 +1,4 @@
-import { getBusinessUser } from "@/lib/serverQuery";
+import { getBusinessUser } from "@/lib/query/serverQuery";
 import { cn } from "@/lib/utils";
 import { BusinessUser } from "@prisma/client";
 import { notFound } from "next/navigation";

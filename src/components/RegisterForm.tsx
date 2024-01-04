@@ -1,6 +1,6 @@
 "use client";
 
-import { RegistrationSchema } from "@/lib/form/register-form-schema";
+import { RegistrationSchema } from "@/lib/schema/register-form-schema";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

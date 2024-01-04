@@ -1,6 +1,6 @@
 "use client";
 
-import { getOpeningHoursFromServer } from "@/lib/clientQuery";
+import { getOpeningHoursFromServer } from "@/lib/query/clientQuery";
 import { getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ import OverviewCard from "./StatisticCard";
 
 interface OpenFromCardProps {
   prefetchedOpeningHours?: OpeningHour[];
-  businessId: string;
+  businessId: string | undefined;
 }
 
 export default function OpenFromCard({
@@ -26,10 +26,6 @@ export default function OpenFromCard({
     },
     { initialData: prefetchedOpeningHours }
   );
-
-  if (isLoading) {
-    console.log(isLoading);
-  }
 
   const weekday = [
     "Sunday",

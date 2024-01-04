@@ -5,8 +5,8 @@ import {
   getOpeningHoursFromServer,
   newOpeningHour,
   updateManyOpeningHour,
-} from "@/lib/clientQuery";
-import { TimeRangeSchema } from "@/lib/form/time-range-schema";
+} from "@/lib/query/clientQuery";
+import { TimeRangeSchema } from "@/lib/schema/time-range-schema";
 import { cn, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

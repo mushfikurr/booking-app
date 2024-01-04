@@ -2,7 +2,7 @@ import EditProfileLocationForm from "@/app/dashboard/(tabs)/editProfile/location
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,
-} from "@/lib/serverQuery";
+} from "@/lib/query/serverQuery";
 
 export default async function Location() {
   const prefetchedUser: GetUserWithBusinessDataReturn =

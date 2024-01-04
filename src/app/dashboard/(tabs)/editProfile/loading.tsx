@@ -1,13 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 
 export default async function Loading() {
-  return (
-    <div className="h-full w-full flex flex-col gap-5">
-      <Skeleton className="bg-text-foreground bg-accent h-full w-full rounded-lg animate-pulse">
-        <div className="p-256 flex items-center justify-center h-full w-full">
-          
-        </div>
-      </Skeleton>
-    </div>
-  );
+  return <LoadingSkeleton className="h-full" />;
 }

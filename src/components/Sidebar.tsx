@@ -235,14 +235,12 @@ function CondensedSidebar({
       )}
 
       {SUBMENU_PROPS.map((submenu, idx) => (
-        <>
-          <CondensedSubmenu
-            headerText={submenu.headerText}
-            HeaderIcon={submenu.HeaderIcon}
-            menuItems={submenu.menuItems}
-            key={submenu.headerText}
-          />
-        </>
+        <CondensedSubmenu
+          headerText={submenu.headerText}
+          HeaderIcon={submenu.HeaderIcon}
+          menuItems={submenu.menuItems}
+          key={submenu.headerText}
+        />
       ))}
     </div>
   );

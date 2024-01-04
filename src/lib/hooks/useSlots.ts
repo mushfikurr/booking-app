@@ -1,5 +1,5 @@
 import { OpeningHour, Service } from "@prisma/client";
-import { getOpeningHoursFromServer } from "../clientQuery";
+import { getOpeningHoursFromServer } from "../query/clientQuery";
 import { useQuery } from "@tanstack/react-query";
 import { daysOfWeek } from "../utils";
 

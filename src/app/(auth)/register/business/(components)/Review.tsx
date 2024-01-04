@@ -1,4 +1,4 @@
-import { validateAllFormValuesAndMerge } from "@/lib/form/register-form-schema";
+import { validateAllFormValuesAndMerge } from "@/lib/schema/register-form-schema";
 import axios from "axios";
 import { ChevronLeft, Contact2, MapPin, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";

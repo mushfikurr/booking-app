@@ -1,6 +1,6 @@
 "use client";
 
-import { BusinessRegistrationContactSchema } from "@/lib/form/register-form-schema";
+import { BusinessRegistrationContactSchema } from "@/lib/schema/register-form-schema";
 import { Smartphone } from "lucide-react";
 import {
   CaptureForm,
@@ -17,9 +17,9 @@ import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import {
   getUserWithBusinessDataFromServer,
   updateContactDetailsForUser,
-} from "@/lib/clientQuery";
+} from "@/lib/query/clientQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { EditProfileContactSchema } from "@/lib/form/edit-profile-schema";
+import { EditProfileContactSchema } from "@/lib/schema/edit-profile-schema";
 import { AxiosError } from "axios";
 import { toast } from "../../../../../../components/ui/use-toast";
 import { z } from "zod";

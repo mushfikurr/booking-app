@@ -1,12 +1,12 @@
-import { getBusinessUser } from "@/lib/serverQuery";
+import { getBusinessUser } from "@/lib/query/serverQuery";
 import { BusinessUser } from "@prisma/client";
 import { Suspense } from "react";
 import { BusinessAbout } from "./(components)/BusinessAbout";
 import { BusinessTitle } from "./(components)/BusinessTitle";
 import { HeaderImage } from "./(components)/HeaderImage";
-import { LoadingSkeleton } from "./(components)/LoadingSkeleton";
 import { Reviews } from "./(components)/ReviewList";
 import { ServiceList } from "./(components)/ServiceList";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 
 export default async function Profile({ params }: { params: any }) {
   const { profileId } = params;

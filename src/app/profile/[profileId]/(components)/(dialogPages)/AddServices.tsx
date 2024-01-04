@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useBookingDialogContext } from "../BookingDialogContext";
-import { getServices } from "@/lib/clientQuery";
+import { getServices } from "@/lib/query/clientQuery";
 import { Service } from "@prisma/client";
-import { LoadingSkeleton } from "../LoadingSkeleton";
 import { SelectableServiceCard } from "../ServiceCard";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { Empty } from "@/components/Empty";
 import { Button } from "@/components/ui/button";
 import { Statistics } from "../Statistics";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 
 export function ChooseServices() {
   const { setTitle, businessUser, services, setServices, setCurrentPageState } =

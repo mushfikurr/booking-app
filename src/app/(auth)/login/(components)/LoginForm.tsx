@@ -1,5 +1,5 @@
 "use client";
-import LoginSchema from "@/lib/form/login-form-schema";
+import LoginSchema from "@/lib/schema/login-form-schema";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -84,7 +84,7 @@ const LoginForm = () => {
             variant="secondary"
             type="submit"
           >
-            <Icons.google className="h-4 w-4" />
+            <Icons.Google className="h-4 w-4" />
             Google
           </Button>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { BusinessRegistrationLocationSchema } from "@/lib/form/register-form-schema";
+import { BusinessRegistrationLocationSchema } from "@/lib/schema/register-form-schema";
 import { Building2 } from "lucide-react";
 import {
   CaptureForm,
@@ -17,10 +17,10 @@ import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import {
   getUserWithBusinessDataFromServer,
   updateLocationDetailsForUser,
-} from "@/lib/clientQuery";
+} from "@/lib/query/clientQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import { EditProfileLocationSchema } from "@/lib/form/edit-profile-schema";
+import { EditProfileLocationSchema } from "@/lib/schema/edit-profile-schema";
 import { AxiosError } from "axios";
 import { toast } from "../../../../../../components/ui/use-toast";
 

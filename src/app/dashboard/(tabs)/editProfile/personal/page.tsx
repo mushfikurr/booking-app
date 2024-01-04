@@ -2,7 +2,7 @@ import EditProfilePersonalForm from "@/app/dashboard/(tabs)/editProfile/personal
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,
-} from "@/lib/serverQuery";
+} from "@/lib/query/serverQuery";
 
 export default async function Personal() {
   const prefetchedUser: GetUserWithBusinessDataReturn =

@@ -1,5 +1,5 @@
 "use client";
-import NewServiceSchema from "@/lib/form/new-service-schema";
+import NewServiceSchema from "@/lib/schema/new-service-schema";
 import { BusinessUser } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";

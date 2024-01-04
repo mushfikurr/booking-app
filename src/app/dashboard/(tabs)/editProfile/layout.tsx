@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getUserWithBusinessData } from "@/lib/serverQuery";
+import { getUserWithBusinessData } from "@/lib/query/serverQuery";
 import { ArrowRight } from "lucide-react";
 import { ReactNode, Suspense } from "react";
 

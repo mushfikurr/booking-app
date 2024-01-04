@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import FullPageSkeleton from "../../../../../../components/FullPageSkeleton";
 import { useToast } from "../../../../../../components/ui/use-toast";
 import { ServiceCard } from "./ServiceCard";
-import { getServices } from "@/lib/clientQuery";
+import { getServices } from "@/lib/query/clientQuery";
 
 function EmptyServices() {
   const squares = [1, 2, 3, 4, 5, 6, 7, 8, 9];

@@ -2,7 +2,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BusinessUser, Prisma, Service } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
-import { db } from "./db";
+import { db } from "../db";
 
 export const getOpeningHoursData = cache(
   async (businessId: string | undefined) => {
@@ -15,7 +15,7 @@ export const getOpeningHoursData = cache(
   }
 );
 
-export const getBookingsData = cache(async (businessId: string) => {
+export const getBookingsData = cache(async (businessId: string | undefined) => {
   if (!businessId) {
     console.error("No business id...");
     return undefined;

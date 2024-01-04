@@ -1,4 +1,3 @@
-import FullPageSkeleton from "@/components/FullPageSkeleton";
 import NewServiceForm from "@/app/dashboard/(tabs)/(home)/services/(components)/NewServiceForm";
 import ServicesDisplay from "@/app/dashboard/(tabs)/(home)/services/(components)/ServicesDisplay";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { db } from "@/lib/db";
-import { getUserWithBusinessData } from "@/lib/serverQuery";
+import { getUserWithBusinessData } from "@/lib/query/serverQuery";
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";

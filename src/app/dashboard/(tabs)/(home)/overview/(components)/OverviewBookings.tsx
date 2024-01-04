@@ -1,10 +1,11 @@
 "use client";
 
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { Booking } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const getBookings = async (businessUserId: string) => {
+const getBookings = async (businessUserId: string | undefined) => {
   const resp = await axios.post("/api/booking", { businessUserId });
   return resp.data;
 };
@@ -14,15 +15,17 @@ export default function OverviewBookings({
   businessUserId,
 }: {
   prefetchedBookingsData: Booking[];
-  businessUserId: string;
+  businessUserId: string | undefined;
 }) {
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ["booking"],
     async () => {
       return await getBookings(businessUserId);
     },
     { initialData: prefetchedBookingsData }
   );
+
+  if (isLoading) return <LoadingSkeleton className="h-full" />;
 
   if (data?.bookings?.length === 0) {
     return (

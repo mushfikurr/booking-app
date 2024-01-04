@@ -1,5 +1,5 @@
 "use client";
-import NewServiceSchema from "@/lib/form/new-service-schema";
+import NewServiceSchema from "@/lib/schema/new-service-schema";
 import { Service } from "@prisma/client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
@@ -84,11 +84,7 @@ const UpdateServiceForm = ({ service }: { service: Service }) => {
     onSubmit,
   };
 
-  return (
-    <>
-      <CaptureForm {...captureFormProps} />
-    </>
-  );
+  return <CaptureForm {...captureFormProps} />;
 };
 
 export default UpdateServiceForm;

@@ -20,7 +20,7 @@ import {
   BusinessRegistrationContactSchema,
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
-} from "@/lib/form/register-form-schema";
+} from "@/lib/schema/register-form-schema";
 import { ZodTypeAny, z } from "zod";
 import { FC, ReactNode, useEffect, useState } from "react";
 import InitialForm from "./InitialBusinessRegisterForm";

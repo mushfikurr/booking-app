@@ -9,8 +9,8 @@ import {
   EditProfileContactSchema,
   EditProfileLocationSchema,
   EditProfilePersonalSchema,
-} from "./form/edit-profile-schema";
-import { TimeRangeSchema } from "./form/time-range-schema";
+} from "../schema/edit-profile-schema";
+import { TimeRangeSchema } from "../schema/time-range-schema";
 
 export const getServices = async (businessUserId: string) => {
   const resp = await axios.post("/api/service", { businessUserId });

@@ -3,8 +3,8 @@
 import {
   getUserWithBusinessDataFromServer,
   updatePersonalDetailsForUser,
-} from "@/lib/clientQuery";
-import { EditProfilePersonalSchema } from "@/lib/form/edit-profile-schema";
+} from "@/lib/query/clientQuery";
+import { EditProfilePersonalSchema } from "@/lib/schema/edit-profile-schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Contact2 } from "lucide-react";

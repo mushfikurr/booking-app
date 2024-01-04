@@ -1,4 +1,4 @@
-import { getServices } from "@/lib/serverQuery";
+import { getServices } from "@/lib/query/serverQuery";
 import { BusinessUser } from "@prisma/client";
 import { BookingServiceCard } from "./ServiceCard";
 import { ViewAllContent } from "./ViewAllContentDialog";

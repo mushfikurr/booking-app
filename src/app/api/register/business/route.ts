@@ -3,7 +3,7 @@ import {
   BusinessRegistrationContactSchema,
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
-} from "@/lib/form/register-form-schema";
+} from "@/lib/schema/register-form-schema";
 import { hash } from "bcrypt-ts";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

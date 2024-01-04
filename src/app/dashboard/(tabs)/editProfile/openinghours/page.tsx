@@ -3,7 +3,7 @@ import {
   GetUserWithBusinessDataReturn,
   getOpeningHoursData,
   getUserWithBusinessData,
-} from "@/lib/serverQuery";
+} from "@/lib/query/serverQuery";
 
 export default async function OpeningHoursPage() {
   const prefetchedUser: GetUserWithBusinessDataReturn =
