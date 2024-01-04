@@ -1,5 +1,6 @@
+import { Slot } from "@/lib/hooks/useSlots";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import { BusinessUser, Service } from "@prisma/client";
+import { Service } from "@prisma/client";
 import {
   Dispatch,
   SetStateAction,
@@ -9,19 +10,27 @@ import {
   useState,
 } from "react";
 
-export type PageType = "addServices" | "chooseDate" | "chooseServices";
+export type PageType =
+  | "addServices"
+  | "chooseDate"
+  | "chooseServices"
+  | "reviewBooking";
 
 interface BookingDialogContextType {
   title: string;
   setTitle: Dispatch<SetStateAction<string>>;
 
   currentPage: PageType;
-  setCurrentPage: Dispatch<SetStateAction<PageType>>;
+  setCurrentPageState: (page: PageType) => void;
+  prevPage: () => void;
 
   businessUser: UserWithBusinessUser;
 
   services: Service[];
   setServices: Dispatch<SetStateAction<Service[]>>;
+
+  slot?: Slot;
+  setSlot: Dispatch<SetStateAction<Slot | undefined>>;
 }
 
 const BookingDialogContext = createContext<
@@ -30,35 +39,56 @@ const BookingDialogContext = createContext<
 
 interface BookingDialogProviderProps {
   children: React.ReactNode;
+  service?: Service;
   businessUser: UserWithBusinessUser;
 }
 
 export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
   children,
   businessUser,
+  service,
 }) => {
   const [title, setTitle] = useState<string>(`Add services`);
   const [currentPage, setCurrentPage] = useState<PageType>("addServices");
-  const [services, setServices] = useState<Service[]>([]);
+  const defaultServices: Service[] = service ? [service] : [];
+  const [services, setServices] = useState<Service[]>(defaultServices);
+  const [pageStack, setPageStack] = useState<PageType[]>([]);
+  const [slot, setSlot] = useState<Slot | undefined>();
+
+  const setCurrentPageState = (page: PageType) => {
+    setCurrentPage(page);
+    setPageStack((prevPage) => [...prevPage, page]);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(pageStack[pageStack.length - 2]);
+    setPageStack((prevPage) => [...prevPage].slice(0, -1));
+  };
 
   const contextValue = useMemo(
     () => ({
       title,
       setTitle,
       currentPage,
-      setCurrentPage,
+      setCurrentPageState,
+      prevPage,
       businessUser,
       services,
       setServices,
+      slot,
+      setSlot,
     }),
     [
       title,
       setTitle,
       currentPage,
-      setCurrentPage,
+      setCurrentPageState,
+      prevPage,
       businessUser,
       services,
       setServices,
+      slot,
+      setSlot,
     ]
   );
 

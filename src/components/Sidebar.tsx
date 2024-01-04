@@ -1,6 +1,6 @@
 "use client";
 
-import { useMediaQuery } from "@/lib/hooks";
+import { useMediaQuery } from "@/lib/hooks/hooks";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,

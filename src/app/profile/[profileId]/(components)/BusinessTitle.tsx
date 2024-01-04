@@ -37,9 +37,7 @@ export function BusinessTitle({
       </div>
 
       <StartBooking businessUser={businessUser}>
-        <Button className={cn("px-10 py-6", "max-sm:hidden")}>
-          Start booking
-        </Button>
+        <Button className={cn("px-10 py-6")}>Start booking</Button>
       </StartBooking>
     </div>
   );

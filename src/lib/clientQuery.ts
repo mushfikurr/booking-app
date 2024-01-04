@@ -11,7 +11,6 @@ import {
   EditProfilePersonalSchema,
 } from "./form/edit-profile-schema";
 import { TimeRangeSchema } from "./form/time-range-schema";
-import { useQuery } from "@tanstack/react-query";
 
 export const getServices = async (businessUserId: string) => {
   const resp = await axios.post("/api/service", { businessUserId });

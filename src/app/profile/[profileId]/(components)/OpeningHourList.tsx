@@ -1,16 +1,6 @@
 import { CollapsibleCard } from "@/components/CollapsibleCard";
-import { cn } from "@/lib/utils";
+import { Day, cn, daysOfWeek } from "@/lib/utils";
 import { ChevronsRight } from "lucide-react";
-
-const daysOfWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 export function OpeningHourList() {
   const days: OpeningHourProps[] = [
@@ -26,7 +16,7 @@ export function OpeningHourList() {
     <CollapsibleCard title="Opening Hours">
       <div className="flex flex-col gap-1 text-sm">
         {days.map((day) => (
-          <OpeningHour key={day} {...day} />
+          <OpeningHour {...day} />
         ))}
       </div>
     </CollapsibleCard>
@@ -34,14 +24,7 @@ export function OpeningHourList() {
 }
 
 interface OpeningHourProps {
-  day:
-    | "Monday"
-    | "Tuesday"
-    | "Wednesday"
-    | "Thursday"
-    | "Friday"
-    | "Saturday"
-    | "Sunday";
+  day: Day;
   startTime?: string;
   endTime?: string;
 }

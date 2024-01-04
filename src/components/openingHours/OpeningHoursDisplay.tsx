@@ -7,7 +7,7 @@ import {
   updateManyOpeningHour,
 } from "@/lib/clientQuery";
 import { TimeRangeSchema } from "@/lib/form/time-range-schema";
-import { cn, getTimeFromDatetime } from "@/lib/utils";
+import { cn, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DoorClosed, DoorOpen, Loader2 } from "lucide-react";
@@ -286,19 +286,13 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
   };
 
   const { dayOfWeek, startTime, endTime } = data ?? defaultData;
-  const formattedStartTime = getTimeFromDatetime(
-    JSON.parse(JSON.stringify(startTime))
-  );
-  const formattedEndTime = getTimeFromDatetime(
-    JSON.parse(JSON.stringify(endTime))
-  );
+  const formattedStartTime = getHMFromDateTime(startTime as Date);
+  const formattedEndTime = getHMFromDateTime(endTime as Date);
 
   useEffect(() => {
     updateInputState((state) => {
-      state[day as keyof OpeningHoursInputState].startTime =
-        formattedStartTime as string;
-      state[day as keyof OpeningHoursInputState].endTime =
-        formattedEndTime as string;
+      state[day as keyof OpeningHoursInputState].startTime = formattedStartTime;
+      state[day as keyof OpeningHoursInputState].endTime = formattedEndTime;
       state[day as keyof OpeningHoursInputState].open = isOpen;
     });
   }, [data]);
@@ -308,8 +302,8 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
     try {
       if (!isOpen) {
         const values = {
-          from: formattedStartTime as string,
-          to: formattedEndTime as string,
+          from: formattedStartTime,
+          to: formattedEndTime,
         };
         await openMutation.mutateAsync([day, values]);
       } else {

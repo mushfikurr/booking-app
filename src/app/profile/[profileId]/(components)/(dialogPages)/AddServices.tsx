@@ -1,108 +1,71 @@
-import { Clock, LucideIcon, Plus, Wallet2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { useBookingDialogContext } from "../BookingDialogContext";
+import { getServices } from "@/lib/clientQuery";
 import { Service } from "@prisma/client";
-import { Empty } from "@/components/Empty";
-import { RemovableServiceCard } from "../ServiceCard";
-import { cn } from "@/lib/utils";
+import { LoadingSkeleton } from "../LoadingSkeleton";
+import { SelectableServiceCard } from "../ServiceCard";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
+import { Empty } from "@/components/Empty";
 import { Button } from "@/components/ui/button";
+import { Statistics } from "../Statistics";
 
-export function AddServices() {
-  const { businessUser, services, setServices, setCurrentPage, setTitle } =
+export function ChooseServices() {
+  const { setTitle, businessUser, services, setServices, setCurrentPageState } =
     useBookingDialogContext();
+  setTitle("Choose services to add to your booking");
 
-  setTitle(`Add services to book with ${businessUser?.user.name}`);
+  const { data, isLoading, isError } = useQuery(["service"], async () => {
+    return await getServices(businessUser.id);
+  });
 
-  const handleRemoveService = (service: Service) => {
-    setServices(services.filter((o) => o.id !== service.id));
+  const isServiceInServices = (service: Service) =>
+    services.some((o) => o.id === service.id);
+
+  const addServiceToBooking = (service: Service) => {
+    if (isServiceInServices(service)) {
+      setServices(services.filter((o) => o.id !== service.id));
+    } else {
+      setServices([...services, service]);
+    }
   };
 
-  const serviceList = !services.length ? (
-    <Empty className="font-medium">
-      Start your booking by adding services.
-    </Empty>
-  ) : (
-    services.map((service) => (
-      <RemovableServiceCard
-        key={service.id}
-        service={service}
-        handleClick={() => handleRemoveService(service)}
-      />
-    ))
-  );
+  const handleDone = () => setCurrentPageState("addServices");
 
-  const handleAddService = () => setCurrentPage("chooseServices");
-  const totalCost = services.reduce(
-    (i, service) => i + parseFloat(service.price),
-    0
-  );
-  const totalWait =
-    services.reduce((i, service) => i + service.estimatedTime, 0) * 1000;
-
-  const humanizeDuration = require("humanize-duration");
-
-  const formattedTotalCost = `£${totalCost}`;
-  const formattedTotalWait = humanizeDuration(totalWait);
-
-  const statisticClassNames = {
-    "text-primary-foreground": services.length,
-    "text-primary-foreground/70": !services.length,
-  };
+  const serviceList =
+    !data || isLoading ? (
+      <LoadingSkeleton />
+    ) : (
+      data.services.map((service: Service) => (
+        <SelectableServiceCard
+          key={service.id}
+          service={service}
+          selected={isServiceInServices(service)}
+          handleClick={() => {
+            addServiceToBooking(service);
+          }}
+        />
+      ))
+    );
 
   return (
-    <>
-      <div className="flex flex-col gap-3 px-6">
-        <span className="inline-flex justify-between items-center">
-          <h2 className="text-xl font-medium">Services</h2>
-          <button
-            className={cn(
-              "inline-flex gap-3 text-muted-foreground items-center font-medium group/add-services",
-              "hover:text-foreground active:text-foreground",
-              "transition duration-200 ease-in-out"
-            )}
-            onClick={handleAddService}
-          >
-            <Plus className="h-4 w-4 group-hover/add-services:scale-105" />
-            <p className="text-sm">Add services</p>
-          </button>
-        </span>
-
-        <ScrollableArea>{serviceList}</ScrollableArea>
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-5 px-6">
+        <ScrollableArea>
+          {isError ? (
+            <Empty>There was an error fetching the services. Try again.</Empty>
+          ) : (
+            serviceList
+          )}
+        </ScrollableArea>
       </div>
       <BookingDialogFooter>
-        <div className="text-primary-foreground flex flex-wrap justify-between items-center gap-3">
-          <div className="flex items-center gap-6 select-none">
-            <Statistic Icon={Wallet2} className={cn(statisticClassNames)}>
-              {formattedTotalCost}
-            </Statistic>
-            <Statistic Icon={Clock} className={cn(statisticClassNames)}>
-              {formattedTotalWait}
-            </Statistic>
-          </div>
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-secondary-foreground"
-            disabled={!services.length}
-          >
-            Review booking
+        <div className="flex justify-between">
+          <Statistics services={services} />
+          <Button size="lg" onClick={handleDone}>
+            Done
           </Button>
         </div>
       </BookingDialogFooter>
-    </>
-  );
-}
-
-interface StatisticProps {
-  Icon: LucideIcon;
-  children: React.ReactNode;
-  className?: string;
-}
-function Statistic({ Icon, children, className }: StatisticProps) {
-  return (
-    <span className="inline-flex gap-3">
-      <Icon className="text-primary-foreground/70" />
-      <p className={cn(className)}>{children}</p>
-    </span>
+    </div>
   );
 }

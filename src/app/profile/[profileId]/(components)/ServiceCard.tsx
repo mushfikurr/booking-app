@@ -40,7 +40,7 @@ export function ServiceCardRoot({
     >
       <div
         className={cn(
-          "flex flex-col justify-center bg-primary text-primary-foreground rounded-l-lg items-end px-4 py-5 min-w-[110px]",
+          "flex flex-col justify-center bg-primary text-primary-foreground rounded-l-lg items-end px-4 py-4 min-w-[110px]",
           "max-sm:rounded-t-lg max-sm:rounded-b-none max-sm:py-4 max-sm:gap-3 max-sm:flex-row max-sm:items-start max-sm:justify-between max-sm:px-6"
         )}
       >
@@ -51,10 +51,10 @@ export function ServiceCardRoot({
       </div>
       <div
         className={cn(
-          "grow flex flex-col justify-center items-start px-4 py-5 border-t border-r border-border border-b rounded-r-lg",
+          "grow flex flex-col justify-center items-start px-4 py-4 border-t border-r border-border border-b rounded-r-lg",
           "transition duration-150 ease-in-out",
           borderClassname,
-          "max-sm:py-4"
+          "max-sm:py-4 max-sm:border-l"
         )}
       >
         <h3 className="text-sm">{name}</h3>
@@ -95,7 +95,7 @@ export function BookingServiceCard({
   );
 }
 
-interface SelectedServiceCardProps extends CustomServiceCardProps {
+interface SelectableServiceCardProps extends CustomServiceCardProps {
   selected?: boolean;
 }
 
@@ -103,7 +103,7 @@ export function SelectableServiceCard({
   service,
   handleClick,
   selected,
-}: SelectedServiceCardProps) {
+}: SelectableServiceCardProps) {
   const customSelected = selected ?? false;
   const [cardSelected, setCardSelected] = useState(customSelected);
 
@@ -117,6 +117,7 @@ export function SelectableServiceCard({
       service={service}
       handleClick={handleSelect}
       borderClassname={cn({
+        "max-sm:border max-sm:rounded-md max-sm:rounded-t-none": true,
         "hover:border-secondary-foreground/40": !selected,
         "border-secondary-foreground": selected,
       })}

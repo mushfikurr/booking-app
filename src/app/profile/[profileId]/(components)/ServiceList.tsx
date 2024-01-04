@@ -3,6 +3,7 @@ import { BusinessUser } from "@prisma/client";
 import { BookingServiceCard } from "./ServiceCard";
 import { ViewAllContent } from "./ViewAllContentDialog";
 import { Empty } from "@/components/Empty";
+import { StartBooking } from "./BookingDialog";
 
 interface ServicesDisplayProps {
   businessUser: BusinessUser;
@@ -11,7 +12,13 @@ interface ServicesDisplayProps {
 export async function ServiceList({ businessUser }: ServicesDisplayProps) {
   const services = await getServices({ businessUserId: businessUser.id });
   const serviceCards = services.map((service) => (
-    <BookingServiceCard key={service.id} service={service} />
+    <StartBooking
+      key={service.id}
+      businessUser={businessUser}
+      service={service}
+    >
+      <BookingServiceCard service={service} />
+    </StartBooking>
   ));
 
   if (!services.length) return <EmptyServicesList />;

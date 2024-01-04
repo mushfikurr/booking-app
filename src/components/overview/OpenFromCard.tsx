@@ -1,12 +1,12 @@
 "use client";
 
+import { getOpeningHoursFromServer } from "@/lib/clientQuery";
+import { getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import OverviewCard from "./StatisticCard";
-import { useQuery } from "@tanstack/react-query";
-import { getOpeningHoursFromServer } from "@/lib/clientQuery";
-import { getTimeFromDatetime } from "@/lib/utils";
 
 interface OpenFromCardProps {
   prefetchedOpeningHours?: OpeningHour[];
@@ -52,17 +52,15 @@ export default function OpenFromCard({
     setDate(newDate);
   };
 
-  const currentOpeningHour = data?.find(
-    (obj) => obj.dayOfWeek === date.split(",")[0]
-  );
+  const currentOpeningHour = data
+    ? data?.find((obj) => obj.dayOfWeek === date.split(",")[0])
+    : undefined;
   const displayedTime = () => {
     if (currentOpeningHour?.startTime && currentOpeningHour?.endTime) {
-      const formattedStartTime = getTimeFromDatetime(
-        JSON.parse(JSON.stringify(currentOpeningHour.startTime))
+      const formattedStartTime = getHMFromDateTime(
+        currentOpeningHour.startTime
       );
-      const formattedEndTime = getTimeFromDatetime(
-        JSON.parse(JSON.stringify(currentOpeningHour.endTime))
-      );
+      const formattedEndTime = getHMFromDateTime(currentOpeningHour.endTime);
 
       return `${formattedStartTime} - ${formattedEndTime}`;
     }
