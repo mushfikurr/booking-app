@@ -46,11 +46,11 @@ export default function ServicesDisplay({
     toast({ title: "Error getting services from the server." });
   }
 
-  const services = data?.services;
-
   if (isLoading) {
     return <FullPageSkeleton />;
   }
+
+  const services = data?.services;
 
   if (services?.length === 0) {
     return <EmptyServices />;

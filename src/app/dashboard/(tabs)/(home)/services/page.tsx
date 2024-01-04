@@ -1,5 +1,6 @@
 import NewServiceForm from "@/app/dashboard/(tabs)/(home)/services/(components)/NewServiceForm";
 import ServicesDisplay from "@/app/dashboard/(tabs)/(home)/services/(components)/ServicesDisplay";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,7 +52,7 @@ export default async function ServicesPage() {
         </div>
       </div>
 
-      <Suspense>
+      <Suspense fallback={<LoadingSkeleton className="h-full" />}>
         <ServicesDisplay
           prefetchedServicesData={services}
           businessUserId={user.businessUser.id}
