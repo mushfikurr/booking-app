@@ -1,6 +1,6 @@
 import { Activity, CalendarPlus, MessageCircle } from "lucide-react";
 import { ReactNode } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../../../../components/ui/button";
 import { usePageContext } from "./BusinessRegisterPageContext";
 
 const RenderIcon = ({ children }: { children: ReactNode }) => {

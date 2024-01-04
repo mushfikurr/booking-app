@@ -7,9 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { Separator } from "../ui/separator";
-import { Skeleton } from "../ui/skeleton";
+} from "../../../../../../components/ui/dialog";
+import { Separator } from "../../../../../../components/ui/separator";
+import { Skeleton } from "../../../../../../components/ui/skeleton";
 import RemoveServiceDialogContent from "./RemoveServiceDialogContent";
 import UpdateServiceForm from "./UpdateServiceForm";
 const humanizeDuration = require("humanize-duration");

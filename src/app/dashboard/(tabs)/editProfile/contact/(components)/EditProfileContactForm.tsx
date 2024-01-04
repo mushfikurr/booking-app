@@ -1,27 +1,30 @@
 "use client";
 
-import { BusinessRegistrationLocationSchema } from "@/lib/form/register-form-schema";
-import { Building2 } from "lucide-react";
-import { CaptureForm, CaptureFormProps } from "../CaptureForm";
+import { BusinessRegistrationContactSchema } from "@/lib/form/register-form-schema";
+import { Smartphone } from "lucide-react";
+import {
+  CaptureForm,
+  CaptureFormProps,
+} from "../../../../../../components/CaptureForm";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../../../../../components/ui/card";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import {
   getUserWithBusinessDataFromServer,
-  updateLocationDetailsForUser,
+  updateContactDetailsForUser,
 } from "@/lib/clientQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { z } from "zod";
-import { EditProfileLocationSchema } from "@/lib/form/edit-profile-schema";
+import { EditProfileContactSchema } from "@/lib/form/edit-profile-schema";
 import { AxiosError } from "axios";
-import { toast } from "../ui/use-toast";
+import { toast } from "../../../../../../components/ui/use-toast";
+import { z } from "zod";
 
-export default function EditProfileLocationForm({
+export default function EditProfileContactForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
@@ -36,11 +39,8 @@ export default function EditProfileLocationForm({
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (payload: z.infer<typeof EditProfileLocationSchema>) => {
-      return updateLocationDetailsForUser(
-        data.id || prefetchedUser.id,
-        payload
-      );
+    mutationFn: (payload: z.infer<typeof EditProfileContactSchema>) => {
+      return updateContactDetailsForUser(data.id || prefetchedUser.id, payload);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries(["user"]);
@@ -51,13 +51,11 @@ export default function EditProfileLocationForm({
     },
   });
 
-  const onSubmit = async (
-    values: z.infer<typeof EditProfileLocationSchema>
-  ) => {
+  const onSubmit = async (values: z.infer<typeof EditProfileContactSchema>) => {
     try {
       await mutation.mutateAsync(values);
       toast({
-        description: "Successfully updated location details for your account!",
+        description: "Successfully updated contact details for your account!",
       });
     } catch (err) {
       return (err as AxiosError).response?.data;
@@ -65,39 +63,38 @@ export default function EditProfileLocationForm({
   };
 
   const captureFormProps: CaptureFormProps = {
-    schema: BusinessRegistrationLocationSchema,
+    schema: BusinessRegistrationContactSchema,
     formFields: [
       {
-        name: "streetAddress1",
-        label: "Street Address 1 *",
-        defaultValue: data.businessUser.streetAddress1,
+        name: "phoneNumber",
+        label: "Phone Number *",
+        defaultValue: data.businessUser.phoneNumber,
       },
       {
-        name: "streetAddress2",
-        label: "Street Address 2 *",
-        defaultValue: data.businessUser.streetAddress2,
+        name: "instagram",
+        label: "Instagram Handle *",
+        defaultValue: data.businessUser.instagram,
       },
       {
-        name: "postcode",
-        label: "Postcode *",
-        defaultValue: data.businessUser.postcode,
+        name: "businessEmail",
+        label: "Business Email *",
+        defaultValue: data.businessUser.businessEmail,
       },
     ],
-    isLoading: mutation.isLoading || isLoading,
     onSubmit,
+    isLoading: mutation.isLoading || isLoading,
   };
   return (
     <Card className="rounded-lg animate-in fade-in duration-300 ease-in-out">
       <CardHeader className="flex flex-row justify-between">
         <div>
-          <CardTitle className="text-lg font-medium">
-            Location details
-          </CardTitle>
+          <CardTitle className="text-lg font-medium">Contact details</CardTitle>
           <CardDescription className="max-w-md">
-            These are your location details customers will use to locate you.
+            These are your contact details that customers will use to contact
+            you.
           </CardDescription>
         </div>
-        <Building2 className="h-7 w-7 text-muted-foreground" />
+        <Smartphone className="h-7 w-7 text-muted-foreground" />
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground font-medium mb-2">

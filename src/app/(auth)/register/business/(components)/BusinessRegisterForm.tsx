@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../../../../components/ui/button";
 import { PageProvider, usePageContext } from "./BusinessRegisterPageContext";
 import {
   Form,
@@ -11,8 +11,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "../../../../../components/ui/form";
+import { Input } from "../../../../../components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ import {
 import { ZodTypeAny, z } from "zod";
 import { FC, ReactNode, useEffect, useState } from "react";
 import InitialForm from "./InitialBusinessRegisterForm";
-import { CaptureFormField } from "../CaptureForm";
+import { CaptureFormField } from "../../../../../components/CaptureForm";
 import Stepper from "./Stepper";
 import Review from "./Review";
 import axios from "axios";

@@ -1,6 +1,6 @@
 import FullPageSkeleton from "@/components/FullPageSkeleton";
-import NewServiceForm from "@/components/services/NewServiceForm";
-import ServicesDisplay from "@/components/services/ServicesDisplay";
+import NewServiceForm from "@/app/dashboard/(tabs)/(home)/services/(components)/NewServiceForm";
+import ServicesDisplay from "@/app/dashboard/(tabs)/(home)/services/(components)/ServicesDisplay";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

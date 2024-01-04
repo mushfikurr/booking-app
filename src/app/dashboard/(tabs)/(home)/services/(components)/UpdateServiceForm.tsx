@@ -5,8 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
 import * as z from "zod";
-import { CaptureForm } from "../CaptureForm";
-import { useToast } from "../ui/use-toast";
+import { CaptureForm } from "../../../../../../components/CaptureForm";
+import { useToast } from "../../../../../../components/ui/use-toast";
 
 type NewServiceSchemaType = z.infer<typeof NewServiceSchema>;
 

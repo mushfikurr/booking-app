@@ -1,4 +1,4 @@
-import EditProfileLocationForm from "@/components/editProfile/EditProfileLocationForm";
+import EditProfileLocationForm from "@/app/dashboard/(tabs)/editProfile/location/(components)/EditProfileLocationForm";
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,

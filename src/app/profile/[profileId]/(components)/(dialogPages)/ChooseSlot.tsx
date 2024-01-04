@@ -58,10 +58,10 @@ export function ChooseDate() {
   };
 
   const doesCurrentSlotExist = slots.find((o) => o.id === currentSlot?.id);
-  const canContinue = currentSlot && doesCurrentSlotExist;
+  const canBookingContinue = currentSlot && doesCurrentSlotExist;
 
   const handleDone = () => {
-    if (canContinue) setCurrentPageState("reviewBooking");
+    if (canBookingContinue) setCurrentPageState("reviewBooking");
   };
 
   const renderMainContent = () => {
@@ -109,7 +109,7 @@ export function ChooseDate() {
       <BookingDialogFooter>
         <div className="flex justify-between gap-3">
           <Statistics services={services} />
-          <Button size="lg" onClick={handleDone} disabled={!canContinue}>
+          <Button size="lg" onClick={handleDone} disabled={!canBookingContinue}>
             Review booking
           </Button>
         </div>

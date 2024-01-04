@@ -1,4 +1,4 @@
-import BusinessRegisterForm from "@/components/BusinessRegisterForm/BusinessRegisterForm";
+import BusinessRegisterForm from "@/app/(auth)/register/business/(components)/BusinessRegisterForm";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

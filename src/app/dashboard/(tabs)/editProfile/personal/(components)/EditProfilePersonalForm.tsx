@@ -1,27 +1,29 @@
 "use client";
 
-import { BusinessRegistrationContactSchema } from "@/lib/form/register-form-schema";
-import { Smartphone } from "lucide-react";
-import { CaptureForm, CaptureFormProps } from "../CaptureForm";
+import {
+  getUserWithBusinessDataFromServer,
+  updatePersonalDetailsForUser,
+} from "@/lib/clientQuery";
+import { EditProfilePersonalSchema } from "@/lib/form/edit-profile-schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Contact2 } from "lucide-react";
+import { z } from "zod";
+import { UserWithBusinessUser } from "../../../../../../lib/relational-model-type";
+import {
+  CaptureForm,
+  CaptureFormProps,
+} from "../../../../../../components/CaptureForm";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import {
-  getUserWithBusinessDataFromServer,
-  updateContactDetailsForUser,
-} from "@/lib/clientQuery";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { EditProfileContactSchema } from "@/lib/form/edit-profile-schema";
-import { AxiosError } from "axios";
-import { toast } from "../ui/use-toast";
-import { z } from "zod";
+} from "../../../../../../components/ui/card";
+import { toast } from "../../../../../../components/ui/use-toast";
 
-export default function EditProfileContactForm({
+export default function EditProfilePersonalForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
@@ -36,8 +38,11 @@ export default function EditProfileContactForm({
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (payload: z.infer<typeof EditProfileContactSchema>) => {
-      return updateContactDetailsForUser(data.id || prefetchedUser.id, payload);
+    mutationFn: (payload: z.infer<typeof EditProfilePersonalSchema>) => {
+      return updatePersonalDetailsForUser(
+        data.id || prefetchedUser.id,
+        payload
+      );
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries(["user"]);
@@ -48,11 +53,13 @@ export default function EditProfileContactForm({
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof EditProfileContactSchema>) => {
+  const onSubmit = async (
+    values: z.infer<typeof EditProfilePersonalSchema>
+  ) => {
     try {
       await mutation.mutateAsync(values);
       toast({
-        description: "Successfully updated contact details for your account!",
+        description: "Successfully updated personal details for your account!",
       });
     } catch (err) {
       return (err as AxiosError).response?.data;
@@ -60,38 +67,43 @@ export default function EditProfileContactForm({
   };
 
   const captureFormProps: CaptureFormProps = {
-    schema: BusinessRegistrationContactSchema,
+    schema: EditProfilePersonalSchema,
     formFields: [
       {
-        name: "phoneNumber",
-        label: "Phone Number *",
-        defaultValue: data.businessUser.phoneNumber,
+        name: "name",
+        label: "Name *",
+        placeholder: "John Doe",
+        defaultValue: data.name,
       },
       {
-        name: "instagram",
-        label: "Instagram Handle *",
-        defaultValue: data.businessUser.instagram,
+        name: "email",
+        label: "Personal Email Address",
+        placeholder: "johndoe@gmail.com",
+        type: "email",
+        defaultValue: data.email,
       },
       {
-        name: "businessEmail",
-        label: "Business Email *",
-        defaultValue: data.businessUser.businessEmail,
+        name: "password",
+        label: "Password",
+        type: "password",
       },
+      { name: "confirmPassword", label: "Confirm Password", type: "password" },
     ],
-    onSubmit,
     isLoading: mutation.isLoading || isLoading,
+    onSubmit,
   };
   return (
     <Card className="rounded-lg animate-in fade-in duration-300 ease-in-out">
       <CardHeader className="flex flex-row justify-between">
         <div>
-          <CardTitle className="text-lg font-medium">Contact details</CardTitle>
+          <CardTitle className="text-lg font-medium">
+            Personal details
+          </CardTitle>
           <CardDescription className="max-w-md">
-            These are your contact details that customers will use to contact
-            you.
+            These are your personal details.
           </CardDescription>
         </div>
-        <Smartphone className="h-7 w-7 text-muted-foreground" />
+        <Contact2 className="h-7 w-7 text-muted-foreground"></Contact2>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground font-medium mb-2">

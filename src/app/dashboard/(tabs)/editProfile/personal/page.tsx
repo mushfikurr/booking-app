@@ -1,4 +1,4 @@
-import EditProfilePersonalForm from "@/components/editProfile/EditProfilePersonalForm";
+import EditProfilePersonalForm from "@/app/dashboard/(tabs)/editProfile/personal/(components)/EditProfilePersonalForm";
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,

@@ -2,8 +2,8 @@
 
 import { Service } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import FullPageSkeleton from "../FullPageSkeleton";
-import { useToast } from "../ui/use-toast";
+import FullPageSkeleton from "../../../../../../components/FullPageSkeleton";
+import { useToast } from "../../../../../../components/ui/use-toast";
 import { ServiceCard } from "./ServiceCard";
 import { getServices } from "@/lib/clientQuery";
 

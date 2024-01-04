@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "../../../../../../components/ui/button";
 
 export interface ManageBusinessCardProps {
   title: string;

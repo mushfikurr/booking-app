@@ -1,7 +1,7 @@
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { Trash } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../../components/ui/avatar";
+import { Button } from "../../../../../components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../../../../components/ui/card";
 
 interface EditProfilePictureProps {
   user: UserWithBusinessUser;

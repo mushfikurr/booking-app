@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../../../../../components/ui/card";
 import EstimatedRevenueCard from "./EstimatedRevenueCard";
 import ExpectedCustomerCard from "./ExpectedCustomerCard";
 import ManageBusinessCard, {

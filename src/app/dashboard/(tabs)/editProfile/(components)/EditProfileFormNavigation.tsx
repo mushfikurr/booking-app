@@ -9,7 +9,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "../ui/navigation-menu";
+} from "../../../../../components/ui/navigation-menu";
 
 const ActiveLink = ({
   icon,

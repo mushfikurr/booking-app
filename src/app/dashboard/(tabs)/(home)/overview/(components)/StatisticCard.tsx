@@ -1,7 +1,7 @@
 "use client";
 
 import { LucideIcon } from "lucide-react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../../../../../components/ui/skeleton";
 
 interface OverviewCardProps {
   subheading: string;

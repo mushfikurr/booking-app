@@ -3,8 +3,8 @@ import axios from "axios";
 import { ChevronLeft, Contact2, MapPin, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
+import { Button } from "../../../../../components/ui/button";
+import { useToast } from "../../../../../components/ui/use-toast";
 import { MultiCaptureFormProps } from "./BusinessRegisterForm";
 import { usePageContext } from "./BusinessRegisterPageContext";
 

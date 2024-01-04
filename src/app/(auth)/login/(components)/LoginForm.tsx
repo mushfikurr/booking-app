@@ -4,12 +4,12 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as z from "zod";
-import { CaptureForm } from "./CaptureForm";
-import { Icons } from "./Icons";
-import { TextLink } from "./TextLink";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { useToast } from "./ui/use-toast";
+import { CaptureForm } from "../../../../components/CaptureForm";
+import { Icons } from "../../../../components/Icons";
+import { TextLink } from "../../../../components/TextLink";
+import { Button } from "../../../../components/ui/button";
+import { Separator } from "../../../../components/ui/separator";
+import { useToast } from "../../../../components/ui/use-toast";
 
 const LoginForm = () => {
   const router = useRouter();

@@ -1,4 +1,4 @@
-import EditProfileContactForm from "@/components/editProfile/EditProfileContactForm";
+import EditProfileContactForm from "@/app/dashboard/(tabs)/editProfile/contact/(components)/EditProfileContactForm";
 import {
   GetUserWithBusinessDataReturn,
   getUserWithBusinessData,
