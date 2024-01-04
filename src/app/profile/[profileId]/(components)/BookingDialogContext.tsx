@@ -82,11 +82,9 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
       title,
       setTitle,
       currentPage,
-      setCurrentPageState,
       prevPage,
       businessUser,
       services,
-      setServices,
       slot,
       setSlot,
     ]
