@@ -25,7 +25,7 @@ const UpdateServiceForm = ({ service }: { service: Service }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["service"] });
     },
-    onSettled: (data, variables, context) => {
+    onSettled: () => {
       setIsLoading(false);
     },
     onError: (data: AxiosError) => {

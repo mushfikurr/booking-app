@@ -1,16 +1,15 @@
-import Overview from "@/app/dashboard/(tabs)/(home)/overview/(components)/Overview";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import {
   getBookingsData,
   getOpeningHoursData,
   getUserWithBusinessData,
 } from "@/lib/query/serverQuery";
-import OpenFromCard from "./(components)/OpenFromCard";
-import ExpectedCustomerCard from "./(components)/ExpectedCustomerCard";
-import EstimatedRevenueCard from "./(components)/EstimatedRevenueCard";
-import { Suspense } from "react";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import OverviewBookings from "./(components)/OverviewBookings";
 import { Booking } from "@prisma/client";
+import { Suspense } from "react";
+import EstimatedRevenueCard from "./(components)/EstimatedRevenueCard";
+import ExpectedCustomerCard from "./(components)/ExpectedCustomerCard";
+import OpenFromCard from "./(components)/OpenFromCard";
+import OverviewBookings from "./(components)/OverviewBookings";
 
 export default async function DashboardOverview() {
   const user = await getUserWithBusinessData();
@@ -19,7 +18,7 @@ export default async function DashboardOverview() {
   const openingHours = await getOpeningHoursData(businessId);
 
   return (
-    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 h-full">
+    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 min-h-screen">
       <div className="flex flex-col gap-6 flex-grow">
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
@@ -29,7 +28,7 @@ export default async function DashboardOverview() {
                 prefetchedOpeningHours={openingHours}
                 businessId={businessId}
               />
-              <ExpectedCustomerCard user={user} />
+              <ExpectedCustomerCard />
               <EstimatedRevenueCard user={user} />
             </div>
           </Suspense>

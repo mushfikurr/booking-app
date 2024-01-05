@@ -26,7 +26,7 @@ export default async function Overview({
               prefetchedOpeningHours={openingHours}
               businessId={businessId}
             />
-            <ExpectedCustomerCard user={user} />
+            <ExpectedCustomerCard />
             <EstimatedRevenueCard user={user} />
           </div>
         </div>

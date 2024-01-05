@@ -10,6 +10,16 @@ export function getHMFromDateTime(value: string | number | Date) {
   else return "";
 }
 
+export function convertStringToDatetime(time: string) {
+  const splitString = time.split(":");
+  const hours = splitString[0];
+  const minutes = splitString[1];
+  const dateTime = new Date();
+  dateTime.setHours(parseInt(hours));
+  dateTime.setMinutes(parseInt(minutes));
+  return dateTime;
+}
+
 export type Day =
   | "Sunday"
   | "Monday"

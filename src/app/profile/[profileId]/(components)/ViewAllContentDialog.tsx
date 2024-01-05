@@ -29,12 +29,7 @@ export function ViewAllContent({
             "hover:text-foreground hover:cursor-pointer"
           )}
         >
-          <ArrowUpRight
-            className={cn(
-              "transition duration-75 ease-in-out scale-100",
-              "group-hover:scale-105"
-            )}
-          />
+          <ArrowUpRight />
           <p>View All</p>
         </button>
       </DialogTrigger>

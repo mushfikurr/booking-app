@@ -10,16 +10,18 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { BusinessUser, Service } from "@prisma/client";
-import { PackagePlus } from "lucide-react";
-import { AddServices } from "./(dialogPages)/InitialViewService";
+import { ScissorsLineDashed } from "lucide-react";
 import { ChooseServices } from "./(dialogPages)/AddServices";
+import { ChooseDate } from "./(dialogPages)/ChooseSlot";
+import { AddServices } from "./(dialogPages)/InitialViewService";
+import { ReviewBooking } from "./(dialogPages)/ReviewBooking";
+import { BackButton } from "./BackButton";
 import {
   BookingDialogProvider,
   PageType,
   useBookingDialogContext,
 } from "./BookingDialogContext";
-import { ChooseDate } from "./(dialogPages)/ChooseSlot";
-import { ReviewBooking } from "./(dialogPages)/ReviewBooking";
+import { Statistics } from "./Statistics";
 
 interface StartBookingButtonProps {
   children: React.ReactNode;
@@ -66,10 +68,7 @@ function BookingDialog() {
       <DialogHeader className="bg-background p-6 pb-0">
         <DialogTitle>
           <div className="inline-flex gap-4 items-center">
-            <PackagePlus
-              className="h-9 w-9 text-foreground/70 block max-sm:hidden"
-              strokeWidth={1.5}
-            />
+            <ScissorsLineDashed className="h-7 w-7 block max-sm:hidden" />
             <span className="font-medium text-xl">{title}</span>
           </div>
         </DialogTitle>
@@ -79,14 +78,22 @@ function BookingDialog() {
   );
 }
 
+interface BookingDialogFooter {
+  services?: Service[];
+  children?: React.ReactNode;
+}
+
 export function BookingDialogFooter({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  ...props
+}: BookingDialogFooter) {
   return (
     <div className="border-t">
-      <div className="px-6 p-4">{children}</div>
+      <div className="px-6 py-3 flex justify-between">
+        <BackButton />
+        {props.services && <Statistics services={props.services} />}
+        {children}
+      </div>
     </div>
   );
 }

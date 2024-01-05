@@ -1,13 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { useBookingDialogContext } from "../BookingDialogContext";
+import { Empty } from "@/components/Empty";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { Button } from "@/components/ui/button";
 import { getServices } from "@/lib/query/clientQuery";
 import { Service } from "@prisma/client";
-import { SelectableServiceCard } from "../ServiceCard";
+import { useQuery } from "@tanstack/react-query";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
-import { Empty } from "@/components/Empty";
-import { Button } from "@/components/ui/button";
-import { Statistics } from "../Statistics";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { useBookingDialogContext } from "../BookingDialogContext";
+import { SelectableServiceCard } from "../ServiceCard";
 
 export function ChooseServices() {
   const { setTitle, businessUser, services, setServices, setCurrentPageState } =
@@ -58,13 +57,10 @@ export function ChooseServices() {
           )}
         </ScrollableArea>
       </div>
-      <BookingDialogFooter>
-        <div className="flex justify-between">
-          <Statistics services={services} />
-          <Button size="lg" onClick={handleDone}>
-            Done
-          </Button>
-        </div>
+      <BookingDialogFooter services={services}>
+        <Button size="lg" onClick={handleDone}>
+          Done
+        </Button>
       </BookingDialogFooter>
     </div>
   );

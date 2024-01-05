@@ -4,7 +4,7 @@ import {
   NavigationMenuAuthenticated,
   NavigationMenuUnauthenticated,
 } from "./NavigationMenu";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/(auth)/AuthOptions";
 
 async function NavbarWithProvider() {
   const data = await getServerSession(authOptions);

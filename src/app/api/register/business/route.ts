@@ -118,9 +118,9 @@ export async function POST(request: NextRequest) {
   try {
     const { name, email, password, ...businessUserData } = resultData;
     const validatedUser = await validateUser({
-      name: result.data.name,
-      email: result.data.email,
-      password: result.data.password,
+      name,
+      email,
+      password,
     });
     const validatedBusinessUser = await validateBusinessUser({
       ...businessUserData,

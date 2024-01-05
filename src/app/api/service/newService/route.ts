@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     try {
       const body = await req.json();
       const { name, description, price, estimatedTime, businessUserId } = body;
-      const [hours, minutes, seconds] = estimatedTime.split(":");
+      const [hours, minutes] = estimatedTime.split(":");
       const timeFormatToSeconds =
         estimatedTime.split(":").length == 2
           ? parseInt(hours, 10) * 60

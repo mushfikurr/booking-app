@@ -16,7 +16,7 @@ export function OpeningHourList() {
     <CollapsibleCard title="Opening Hours">
       <div className="flex flex-col gap-1 text-sm">
         {days.map((day) => (
-          <OpeningHour {...day} />
+          <OpeningHour key={day.day} {...day} />
         ))}
       </div>
     </CollapsibleCard>

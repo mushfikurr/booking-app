@@ -48,7 +48,7 @@ export default function OpenFromCard({
     setDate(newDate);
   };
 
-  const currentOpeningHour = data
+  const currentOpeningHour = Array.isArray(data)
     ? data?.find((obj) => obj.dayOfWeek === date.split(",")[0])
     : undefined;
   const displayedTime = () => {
@@ -69,7 +69,7 @@ export default function OpenFromCard({
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [updateDate]);
 
   return (
     <OverviewCard

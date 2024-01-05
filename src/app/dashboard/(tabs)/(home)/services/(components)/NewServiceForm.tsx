@@ -24,7 +24,7 @@ const NewServiceForm = ({ businessUser }: { businessUser: BusinessUser }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["service"] });
     },
-    onSettled: (data, variables, context) => {
+    onSettled: () => {
       setIsLoading(false);
     },
     onError: (data: AxiosError) => {

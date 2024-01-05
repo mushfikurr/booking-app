@@ -58,7 +58,7 @@ export default function OverviewCard({
         </div>
       </div>
       <div className="h-full">
-        <Icon className="h-8 w-8 text-foreground/50" />
+        <Icon className="h-7 w-7 text-foreground/50" />
       </div>
     </div>
   );

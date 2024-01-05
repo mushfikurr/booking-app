@@ -16,11 +16,9 @@ const humanizeDuration = require("humanize-duration");
 
 export function ServiceCard({
   service,
-  delayId,
   isLoading,
 }: {
   service: Service;
-  delayId: number;
   isLoading: boolean;
 }) {
   if (isLoading) {
