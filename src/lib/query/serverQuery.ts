@@ -1,8 +1,8 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BusinessUser, Prisma, Service } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { cache } from "react";
 import { db } from "../db";
+import { authOptions } from "@/app/(auth)/AuthOptions";
 
 export const getOpeningHoursData = cache(
   async (businessId: string | undefined) => {

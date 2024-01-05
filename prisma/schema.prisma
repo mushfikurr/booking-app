@@ -100,6 +100,8 @@ model Booking {
   date           DateTime
   userId         String
   businessUserId String
+  startTime      DateTime     @unique
+  endTime        DateTime
   services       Service[]
   user           User?        @relation(fields: [userId], references: [id])
   businessUser   BusinessUser @relation(fields: [businessUserId], references: [id])

@@ -11,6 +11,8 @@ import {
   EditProfilePersonalSchema,
 } from "../schema/edit-profile-schema";
 import { TimeRangeSchema } from "../schema/time-range-schema";
+import { Service } from "@prisma/client";
+import { Slot } from "../hooks/useSlots";
 
 export const getServices = async (businessUserId: string) => {
   const resp = await axios.post("/api/service", { businessUserId });
@@ -25,6 +27,19 @@ export const getUserWithBusinessDataFromServer = async (userId: string) => {
 export const getOpeningHoursFromServer = async (businessId: string) => {
   const resp = await axios.post("/api/openingHour", {
     businessUserId: businessId,
+  });
+  return resp.data;
+};
+
+export const newBooking = async (
+  services: Service[],
+  slot: Slot,
+  businessUserId: string
+) => {
+  const resp = await axios.post("/api/booking/new", {
+    services,
+    slot,
+    businessUserId,
   });
   return resp.data;
 };

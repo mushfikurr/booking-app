@@ -1,14 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
-import { daysOfWeek } from "@/lib/utils";
+import { cn, daysOfWeek } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import {
   Calendar,
-  Clock11,
+  Clock10,
   LucideIcon,
-  Pencil,
+  PencilRuler,
   PoundSterling,
 } from "lucide-react";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
@@ -17,8 +18,15 @@ import IconButton from "../IconButton";
 import { ServiceCardRoot } from "../ServiceCard";
 
 export function ReviewBooking() {
-  const { setTitle, services, slot, setCurrentPageState } =
-    useBookingDialogContext();
+  const {
+    setTitle,
+    services,
+    slot,
+    setCurrentPageState,
+    submit,
+    isLoading,
+    isError,
+  } = useBookingDialogContext();
   const { totalCost, totalWait } = useBookingStatistics(services);
   setTitle("Review booking details");
 
@@ -34,6 +42,7 @@ export function ReviewBooking() {
   const formattedDateTime = `${day}, ${slot?.from} - ${slot?.to}`;
 
   const handleEditServices = () => setCurrentPageState("chooseServices");
+  const handleEditSlot = () => setCurrentPageState("chooseDate");
 
   return (
     <>
@@ -41,33 +50,43 @@ export function ReviewBooking() {
         <div className="flex px-6 gap-6 max-sm:flex-col-reverse">
           <div className="space-y-3 flex-grow">
             <span className="inline-flex justify-between items-center w-full">
-              <h2 className="font-medium">Booked services</h2>
-              <IconButton Icon={Pencil} onClick={handleEditServices}>
-                Edit services
+              <h2 className="font-medium text-xl">Your services</h2>
+              <IconButton Icon={PencilRuler} onClick={handleEditServices}>
+                Edit
               </IconButton>
             </span>
             <ServiceList services={services} />
           </div>
-          <div className="space-y-5 bg-primary text-primary-foreground rounded-lg p-6">
-            <ReviewEntry
-              Icon={Calendar}
-              title={"We expect to see you on"}
-              value={formattedDateTime}
-            />
-            <ReviewEntry
-              Icon={PoundSterling}
-              title="Your services will cost"
-              value={totalCost}
-            />
-            <ReviewEntry Icon={Clock11} title="Set aside" value={totalWait} />
+          <div className="space-y-3">
+            <span className="inline-flex justify-between items-center w-full">
+              <h2 className="font-medium text-xl">Booking review</h2>
+              <IconButton Icon={PencilRuler} onClick={handleEditSlot}>
+                Edit
+              </IconButton>
+            </span>
+            <div className="border-border border rounded-lg h-fit">
+              <ReviewEntry
+                Icon={Calendar}
+                title={"We expect to see you on"}
+                value={formattedDateTime}
+              />
+              <Separator />
+              <ReviewEntry Icon={Clock10} title="Set aside" value={totalWait} />
+              <Separator />
+              <ReviewEntry
+                Icon={PoundSterling}
+                title="Your services will cost"
+                value={totalCost}
+              />
+            </div>
           </div>
         </div>
       </ScrollableArea>
 
       <BookingDialogFooter>
-        <div className="flex flex-wrap items-center justify-end">
-          <Button size="lg">Confirm</Button>
-        </div>
+        <Button isLoading={isLoading} size="lg" onClick={submit}>
+          Confirm
+        </Button>
       </BookingDialogFooter>
     </>
   );
@@ -77,20 +96,23 @@ interface ReviewEntryProps {
   value: string;
   title: string;
   Icon: LucideIcon;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-function ReviewEntry({ Icon, ...props }: ReviewEntryProps) {
+function ReviewEntry({ Icon, children, ...props }: ReviewEntryProps) {
   return (
-    <div className="flex gap-4">
-      <Icon className="text-primary-foreground/80" />
-      <span className="space-y-0.5">
-        <h2 className="text-primary-foreground/80 leading-none text-sm">
-          {props.title}
-        </h2>
-        <p className="text-lg flex items-center font-medium max-sm:text-base">
-          {props.value}
-        </p>
-      </span>
+    <div className="p-5">
+      {children}
+      <div className={cn("flex gap-6", props.className)}>
+        <Icon className="text-muted-foreground h-5 w-5" />
+        <span className="space-y-0.5">
+          <h2 className="text-muted-foreground leading-none text-sm">
+            {props.title}
+          </h2>
+          <p className="text-base flex items-center">{props.value}</p>
+        </span>
+      </div>
     </div>
   );
 }

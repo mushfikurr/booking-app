@@ -1,13 +1,11 @@
 import { Empty } from "@/components/Empty";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Plus } from "lucide-react";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import IconButton from "../IconButton";
 import { RemovableServiceCard } from "../ServiceCard";
-import { Statistics } from "../Statistics";
 
 export function AddServices() {
   const { businessUser, services, setServices, setCurrentPageState, setTitle } =
@@ -47,22 +45,14 @@ export function AddServices() {
 
         <ScrollableArea>{serviceList}</ScrollableArea>
       </div>
-      <BookingDialogFooter>
-        <div
-          className={cn(
-            "text-primary-foreground flex flex-wrap justify-between items-center gap-3",
-            "max-sm:gap-6"
-          )}
+      <BookingDialogFooter services={services}>
+        <Button
+          size="lg"
+          disabled={!services.length}
+          onClick={handleChooseDate}
         >
-          <Statistics services={services} />
-          <Button
-            size="lg"
-            disabled={!services.length}
-            onClick={handleChooseDate}
-          >
-            Find a slot
-          </Button>
-        </div>
+          Find a slot
+        </Button>
       </BookingDialogFooter>
     </>
   );

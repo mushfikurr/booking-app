@@ -8,6 +8,7 @@ import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import { Statistics } from "../Statistics";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { BackButton } from "../BackButton";
 
 export function ChooseDate() {
   const {
@@ -69,6 +70,7 @@ export function ChooseDate() {
     if (isError) return <Empty>There was an error retrieving the slots.</Empty>;
     if (!isOpeningHours)
       return <Empty>This business has not set it's open hours yet.</Empty>;
+    const slotOrSlots = slots.length > 1 || slots.length < 1 ? "slots" : "slot";
 
     return (
       <ScrollableArea>
@@ -89,7 +91,7 @@ export function ChooseDate() {
           />
           <div className="space-y-2 grow h-full max-sm:w-full">
             <p className="text-sm text-foreground">
-              {slots.length} slots available{" "}
+              {slots.length} {slotOrSlots} available{" "}
               {openingHour && (
                 <span className="font-medium text-foreground">
                   from {openingHour} to {closingHour}
@@ -106,13 +108,10 @@ export function ChooseDate() {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-5 px-6">{renderMainContent()}</div>
-      <BookingDialogFooter>
-        <div className="flex justify-between gap-3">
-          <Statistics services={services} />
-          <Button size="lg" onClick={handleDone} disabled={!canBookingContinue}>
-            Review booking
-          </Button>
-        </div>
+      <BookingDialogFooter services={services}>
+        <Button size="lg" onClick={handleDone} disabled={!canBookingContinue}>
+          Review booking
+        </Button>
       </BookingDialogFooter>
     </div>
   );

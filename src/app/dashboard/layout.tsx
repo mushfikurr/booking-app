@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../(auth)/AuthOptions";
 
 export default async function Layout({
   children,

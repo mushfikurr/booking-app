@@ -1,7 +1,5 @@
 import RegisterForm from "@/components/RegisterForm";
 import { TextLink } from "@/components/TextLink";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 
 const Register = async () => {
   return (
