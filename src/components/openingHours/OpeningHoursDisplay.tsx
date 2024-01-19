@@ -94,7 +94,7 @@ export default function OpeningHoursDisplay({
     async () => {
       if (!businessId) throw Error("No business ID");
       const response = await getOpeningHoursFromServer(businessId);
-      return response.openingHours;
+      return response;
     },
     { initialData: prefetchedOpeningHours }
   );

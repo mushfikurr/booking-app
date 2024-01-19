@@ -5,10 +5,10 @@ export async function POST(req: NextRequest) {
   if (req.method === "POST") {
     try {
       const body = await req.json();
-      const { businessUserId } = body;
+      const { businessUserId, ...query } = body;
 
-      const openingHours = await db.openingHour.findMany({
-        where: { businessId: businessUserId },
+      const openingHours = await db.openingHour.findFirst({
+        where: { businessId: businessUserId, ...query },
       });
       return NextResponse.json({ openingHours }, { status: 200 });
     } catch (error) {

@@ -6,11 +6,20 @@ import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import IconButton from "../IconButton";
 import { RemovableServiceCard } from "../ServiceCard";
+import { useEffect, useRef } from "react";
+import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
+import autoAnimate from "@formkit/auto-animate";
+import { NextButton } from "../NextButton";
 
 export function AddServices() {
   const { businessUser, services, setServices, setCurrentPageState, setTitle } =
     useBookingDialogContext();
   setTitle(`Booking with ${businessUser.user.name}`);
+
+  const scrollAreaRef = useRef<ScrollAreaElement>(null);
+  useEffect(() => {
+    scrollAreaRef.current && autoAnimate(scrollAreaRef.current);
+  }, [parent]);
 
   const handleRemoveService = (service: Service) => {
     setServices(services.filter((o) => o.id !== service.id));
@@ -31,7 +40,6 @@ export function AddServices() {
   );
 
   const handleAddService = () => setCurrentPageState("chooseServices");
-  const handleChooseDate = () => setCurrentPageState("chooseDate");
 
   return (
     <>
@@ -46,13 +54,9 @@ export function AddServices() {
         <ScrollableArea>{serviceList}</ScrollableArea>
       </div>
       <BookingDialogFooter services={services}>
-        <Button
-          size="lg"
-          disabled={!services.length}
-          onClick={handleChooseDate}
-        >
+        <NextButton nextPage="chooseDate" disabled={!services.length}>
           Find a slot
-        </Button>
+        </NextButton>
       </BookingDialogFooter>
     </>
   );

@@ -1,171 +1,163 @@
 import { Empty } from "@/components/Empty";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Slot, useSlots } from "@/lib/hooks/useSlots";
-import { cn, daysOfWeek, getHMFromDateTime } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import useSlots, { Slot } from "@/lib/hooks/useSlots";
+import useSlotsData from "@/lib/hooks/useSlotsData";
+import { cn, daysOfWeek, todayNoTime } from "@/lib/utils";
+import { Booking, OpeningHour } from "@prisma/client";
+import { useState } from "react";
+import { SelectSingleEventHandler } from "react-day-picker";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
-import { Statistics } from "../Statistics";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { BackButton } from "../BackButton";
+import { SelectableSlot } from "../SelectableDate";
+import IconButton from "../IconButton";
+import { RefreshCw } from "lucide-react";
+import { NextButton } from "../NextButton";
 
-export function ChooseDate() {
-  const {
-    setTitle,
-    businessUser,
-    services,
-    prevPage,
-    slot: currentSlot,
-    setSlot,
-    setCurrentPageState,
-  } = useBookingDialogContext();
+export default function ChooseSlot() {
+  const { setTitle, businessUser, services, slot, setCurrentPageState } =
+    useBookingDialogContext();
+  setTitle("Choose a slot in your booking");
 
-  const today = new Date();
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>(
-    currentSlot?.date ?? today
+  const today = todayNoTime();
+  const [selectedDay, setSelectedDay] = useState<Date>(
+    slot?.currentDay ?? today
   );
-  const { isLoading, slots, isError, isOpeningHours, currentDayOpeningHours } =
-    useSlots({
-      businessUserId: businessUser.id,
-      selectedServices: services,
-      selectedDay,
-    });
+  const slotsData = useSlotsData(businessUser.id, selectedDay);
 
-  setTitle("Choose date and time for your booking");
-
-  let openingHour = getHMFromDateTime(currentDayOpeningHours?.startTime) ?? "";
-  let closingHour = getHMFromDateTime(currentDayOpeningHours?.endTime) ?? "";
-
-  const renderSlots = () => {
-    if (!slots.length)
-      return (
-        <Empty className="h-full w-full">
-          There aren't any available slots to book.
-        </Empty>
-      );
-
-    return slots?.map((slot: Slot) => (
-      <SelectableSlot
-        key={slot.id}
-        {...slot}
-        handleClick={() => {
-          setSlot(slot);
-          setSelectedDay(slot.date);
-        }}
-        currentSlot={currentSlot}
-      />
-    ));
-  };
-
-  const doesCurrentSlotExist = slots.find((o) => o.id === currentSlot?.id);
-  const canBookingContinue = currentSlot && doesCurrentSlotExist;
-
-  const handleDone = () => {
-    if (canBookingContinue) setCurrentPageState("reviewBooking");
-  };
-
-  const renderMainContent = () => {
-    if (isLoading) return <LoadingSkeleton />;
-    if (isError) return <Empty>There was an error retrieving the slots.</Empty>;
-    if (!isOpeningHours)
-      return <Empty>This business has not set it's open hours yet.</Empty>;
-    const slotOrSlots = slots.length > 1 || slots.length < 1 ? "slots" : "slot";
-
-    return (
-      <ScrollableArea>
-        <div
-          className={cn(
-            "flex flex-row gap-6",
-            "max-sm:flex-col max-sm:items-center max-sm:gap-6"
-          )}
-        >
-          <Calendar
-            className="w-fit h-fit rounded-lg border border-border"
-            required
-            mode="single"
-            disabled={{ before: today }}
-            fromMonth={today}
-            selected={selectedDay}
-            onSelect={setSelectedDay}
-          />
-          <div className="space-y-2 grow h-full max-sm:w-full">
-            <p className="text-sm text-foreground">
-              {slots.length} {slotOrSlots} available{" "}
-              {openingHour && (
-                <span className="font-medium text-foreground">
-                  from {openingHour} to {closingHour}
-                </span>
-              )}
-            </p>
-            {renderSlots()}
-          </div>
-        </div>
-      </ScrollableArea>
-    );
+  const handleDaySelect = (day: Date | undefined, selectedDay: Date) => {
+    setSelectedDay(selectedDay);
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col gap-5 px-6">{renderMainContent()}</div>
+    <>
+      <ScrollableArea className="px-6 w-full">
+        <div className="">
+          <div
+            className={cn("flex gap-6", "max-sm:flex-col max-sm:items-center")}
+          >
+            <CalendarView
+              selectedDay={selectedDay}
+              setSelectedDay={handleDaySelect}
+            />
+            <div className={cn("grow", "max-sm:w-full")}>
+              <SlotsView
+                bookings={slotsData.bookings}
+                openingHour={slotsData.openingHours}
+                selectedDay={selectedDay}
+                isLoading={slotsData.isLoading}
+                isError={slotsData.isError}
+                refetchData={slotsData.refetchData}
+              />
+            </div>
+          </div>
+        </div>
+      </ScrollableArea>
       <BookingDialogFooter services={services}>
-        <Button size="lg" onClick={handleDone} disabled={!canBookingContinue}>
-          Review booking
-        </Button>
+        <NextButton nextPage="reviewBooking" disabled={!slot}>
+          Review
+        </NextButton>
       </BookingDialogFooter>
+    </>
+  );
+}
+
+interface SlotsViewProps {
+  bookings?: Booking[];
+  openingHour?: OpeningHour;
+  selectedDay: Date;
+  isLoading: boolean;
+  isError: boolean;
+  refetchData: () => void;
+}
+
+function SlotsView(props: SlotsViewProps) {
+  const { services } = useBookingDialogContext();
+  const slots = useSlots(
+    props.openingHour,
+    props.bookings,
+    props.selectedDay,
+    services
+  );
+  const slotOrSlots = `${slots.length} ${
+    slots.length === 1 ? "slot" : "slots"
+  }`;
+
+  const selectedDay = `${props.selectedDay.getDate()} ${
+    daysOfWeek[props.selectedDay.getDay()]
+  }`;
+  const { slot: currentSlot, setSlot: setCurrentSlot } =
+    useBookingDialogContext();
+
+  if (props.isLoading) {
+    return <LoadingSkeleton className="h-full w-full" />;
+  }
+
+  if (!props.openingHour) {
+    return (
+      <Empty className="h-full w-full">
+        The store is closed for {selectedDay}.
+      </Empty>
+    );
+  }
+
+  if (props.isError) {
+    return (
+      <Empty className="h-full w-full">
+        There was an error retrieving the slots for {selectedDay}.
+      </Empty>
+    );
+  }
+
+  const handleSlotClick = (slot: Slot) => {
+    if (slot.slotId === currentSlot?.slotId) {
+      setCurrentSlot(undefined);
+    } else {
+      setCurrentSlot(slot);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <span className="inline-flex justify-between items-center w-full">
+        <h2 className="text-base">{slotOrSlots} available</h2>
+        <IconButton
+          Icon={RefreshCw}
+          onClick={() => {
+            props.refetchData();
+          }}
+        >
+          Refresh
+        </IconButton>
+      </span>
+      <ScrollableArea>
+        {slots.map((slot) => (
+          <SelectableSlot
+            key={slot.slotId}
+            thisSlot={slot}
+            day={selectedDay}
+            onClick={() => handleSlotClick(slot)}
+          />
+        ))}
+      </ScrollableArea>
     </div>
   );
 }
 
-interface SelectableDateProps {
-  className?: string;
-  handleClick?: () => void;
-  currentSlot?: Slot;
-  date?: Date;
-  from?: string;
-  to?: string;
-  id: string;
+interface CalendarViewProps {
+  selectedDay: Date;
+  setSelectedDay: SelectSingleEventHandler;
 }
 
-function SelectableSlot({
-  className,
-  handleClick,
-  currentSlot,
-  ...thisSlot
-}: SelectableDateProps) {
-  const [selected, setSelected] = useState(currentSlot?.id === thisSlot.id);
-
-  const onClick = () => {
-    if (handleClick) handleClick();
-  };
-
-  useEffect(() => {
-    if (currentSlot?.date && thisSlot.date) {
-      setSelected(currentSlot.id === thisSlot.id);
-    }
-  }, [currentSlot]);
-
-  const dayFormatted = thisSlot.date ? daysOfWeek[thisSlot.date.getDay()] : "";
-  const day = `${thisSlot.date?.getUTCDate()} ${dayFormatted}`;
-
+function CalendarView(props: CalendarViewProps) {
   return (
-    <button
-      className={cn(
-        "border border-border p-3 rounded-md w-full transition duration-200 ease-in-out",
-        {
-          "hover:border-secondary-foreground/40": !selected,
-          "border-secondary-foreground": selected,
-        },
-        className
-      )}
-      onClick={onClick}
-    >
-      <div className="text-sm text-start">
-        <h4 className="">{day}</h4>
-        <p className="text-muted-foreground">
-          {thisSlot.from} - {thisSlot.to}
-        </p>
-      </div>
-    </button>
+    <Calendar
+      mode="single"
+      fromMonth={new Date()}
+      selected={props.selectedDay}
+      onSelect={props.setSelectedDay}
+      className={cn("rounded-md border border-border h-fit", "max-sm:w-fit")}
+    />
   );
 }

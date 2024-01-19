@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
-import { cn, daysOfWeek } from "@/lib/utils";
+import { cn, daysOfWeek, getHMFromDateTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import {
   Calendar,
@@ -16,6 +16,7 @@ import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import IconButton from "../IconButton";
 import { ServiceCardRoot } from "../ServiceCard";
+import { NextButton } from "../NextButton";
 
 export function ReviewBooking() {
   const {
@@ -30,16 +31,19 @@ export function ReviewBooking() {
   const { totalCost, totalWait } = useBookingStatistics(services);
   setTitle("Review booking details");
 
-  const dayString = slot ? daysOfWeek[slot.date.getDay()] : "";
+  const dayString = slot ? daysOfWeek[slot.currentDay.getDay()] : "";
   const today = new Date();
   const yearIfDifferent =
-    today.getUTCFullYear() === slot?.date.getUTCFullYear()
+    today.getUTCFullYear() === slot?.currentDay.getUTCFullYear()
       ? ""
-      : slot?.date.getUTCFullYear();
+      : slot?.currentDay.getUTCFullYear();
   const day = yearIfDifferent
-    ? `${slot?.date.getUTCDate()} ${dayString} ${yearIfDifferent}`
-    : `${slot?.date.getUTCDate()} ${dayString}`;
-  const formattedDateTime = `${day}, ${slot?.from} - ${slot?.to}`;
+    ? `${slot?.currentDay.getUTCDate()} ${dayString} ${yearIfDifferent}`
+    : `${slot?.currentDay.getUTCDate()} ${dayString}`;
+
+  const startTimeStr = getHMFromDateTime(slot?.startTime as Date);
+  const endTimeStr = getHMFromDateTime(slot?.endTime as Date);
+  const formattedDateTime = `${day}, ${startTimeStr} - ${endTimeStr}`;
 
   const handleEditServices = () => setCurrentPageState("chooseServices");
   const handleEditSlot = () => setCurrentPageState("chooseDate");
@@ -84,9 +88,14 @@ export function ReviewBooking() {
       </ScrollableArea>
 
       <BookingDialogFooter>
-        <Button isLoading={isLoading} size="lg" onClick={submit}>
+        <NextButton
+          onClick={submit}
+          className="max-sm:px-5"
+          isLoading={isLoading}
+          nextPage={"reviewBooking"}
+        >
           Confirm
-        </Button>
+        </NextButton>
       </BookingDialogFooter>
     </>
   );

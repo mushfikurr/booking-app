@@ -8,6 +8,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
+import { ScrollableArea } from "./BookingDialog";
 
 interface ViewAllContent {
   classNames?: string;
@@ -39,9 +40,9 @@ export function ViewAllContent({
         <DialogHeader>
           <DialogTitle className="text-xl">{title}</DialogTitle>
         </DialogHeader>
-        <ScrollArea>
+        <ScrollableArea>
           <div className="flex flex-col gap-6 overflow-auto">{children}</div>
-        </ScrollArea>
+        </ScrollableArea>
       </DialogContent>
     </Dialog>
   );

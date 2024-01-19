@@ -33,15 +33,25 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { services, slot, businessUserId, userId }: BookingPOST = body;
 
-  const startDateTime = convertStringToDatetime(slot.from);
-  const endDateTime = convertStringToDatetime(slot.to);
-  const slotDate = new Date(slot.date);
-
-  console.log(body);
+  const startDateTime = slot.startTime;
+  const endDateTime = slot.endTime;
+  const slotDate = slot.currentDay;
 
   try {
+    const findBooking = await db.booking.findFirst({
+      where: { slotId: slot.slotId },
+    });
+
+    if (findBooking) {
+      return NextResponse.json(
+        { error: "A booking at this slot already exists" },
+        { status: 400 }
+      );
+    }
+
     const newBooking = await db.booking.create({
       data: {
+        slotId: slot.slotId,
         date: slotDate,
         startTime: startDateTime,
         endTime: endDateTime,
@@ -52,7 +62,6 @@ export async function POST(req: NextRequest) {
         },
       },
     });
-    console.log(newBooking);
 
     return NextResponse.json({ newBooking }, { status: 200 });
   } catch (error) {

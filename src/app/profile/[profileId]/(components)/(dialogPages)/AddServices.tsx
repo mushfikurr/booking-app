@@ -7,6 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import { SelectableServiceCard } from "../ServiceCard";
+import { useEffect, useRef } from "react";
+import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
+import autoAnimate from "@formkit/auto-animate";
+import { NextButton } from "../NextButton";
 
 export function ChooseServices() {
   const { setTitle, businessUser, services, setServices, setCurrentPageState } =
@@ -27,8 +31,6 @@ export function ChooseServices() {
       setServices([...services, service]);
     }
   };
-
-  const handleDone = () => setCurrentPageState("addServices");
 
   const serviceList =
     !data || isLoading ? (
@@ -58,9 +60,7 @@ export function ChooseServices() {
         </ScrollableArea>
       </div>
       <BookingDialogFooter services={services}>
-        <Button size="lg" onClick={handleDone}>
-          Done
-        </Button>
+        <NextButton nextPage="addServices">Done</NextButton>
       </BookingDialogFooter>
     </div>
   );

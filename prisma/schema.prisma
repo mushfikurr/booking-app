@@ -97,10 +97,11 @@ model Service {
 
 model Booking {
   id             String       @id @default(cuid())
+  slotId         String       @unique
   date           DateTime
   userId         String
   businessUserId String
-  startTime      DateTime     @unique
+  startTime      DateTime
   endTime        DateTime
   services       Service[]
   user           User?        @relation(fields: [userId], references: [id])

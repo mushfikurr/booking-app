@@ -20,6 +20,12 @@ export function convertStringToDatetime(time: string) {
   return dateTime;
 }
 
+export function todayNoTime(): Date {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+}
+
 export type Day =
   | "Sunday"
   | "Monday"

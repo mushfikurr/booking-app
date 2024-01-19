@@ -3,6 +3,7 @@
 "use client";
 
 import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
+import { OpeningHour, Service } from "@prisma/client";
 import axios from "axios";
 import { z } from "zod";
 import {
@@ -11,8 +12,6 @@ import {
   EditProfilePersonalSchema,
 } from "../schema/edit-profile-schema";
 import { TimeRangeSchema } from "../schema/time-range-schema";
-import { Service } from "@prisma/client";
-import { Slot } from "../hooks/useSlots";
 
 export const getServices = async (businessUserId: string) => {
   const resp = await axios.post("/api/service", { businessUserId });
@@ -24,24 +23,34 @@ export const getUserWithBusinessDataFromServer = async (userId: string) => {
   return resp.data;
 };
 
-export const getOpeningHoursFromServer = async (businessId: string) => {
-  const resp = await axios.post("/api/openingHour", {
-    businessUserId: businessId,
+export const getOpeningHoursFromServer = async (
+  businessUserId: string,
+  query?: Partial<OpeningHour>
+) => {
+  const resp = await axios.post("/api/openingHour/many", {
+    businessUserId,
+    ...query,
   });
-  return resp.data;
+  return resp.data.openingHours;
 };
 
-export const newBooking = async (
-  services: Service[],
-  slot: Slot,
-  businessUserId: string
+export const getOpeningHour = async (
+  businessUserId: string,
+  query?: Partial<OpeningHour>
 ) => {
-  const resp = await axios.post("/api/booking/new", {
-    services,
-    slot,
+  const resp = await axios.post("/api/openingHour", {
     businessUserId,
+    ...query,
   });
-  return resp.data;
+  return resp.data.openingHours;
+};
+
+export const getBookings = async (businessUserId: string, currentDay: Date) => {
+  const resp = await axios.post("/api/booking", {
+    businessUserId,
+    date: currentDay,
+  });
+  return resp.data.bookings;
 };
 
 export const newOpeningHour = async (
@@ -71,7 +80,7 @@ export const updateManyOpeningHour = async (
   businessId: string,
   listOfOpeningHours: OpeningHoursInputState
 ) => {
-  const resp = await axios.post("/api/openingHour/many", {
+  const resp = await axios.post("/api/openingHour/createMany", {
     businessId,
     listOfOpeningHours,
   });

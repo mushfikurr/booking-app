@@ -2,9 +2,10 @@
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Service } from "@prisma/client";
+import { BusinessUser, Service } from "@prisma/client";
 import { X } from "lucide-react";
 import { useState } from "react";
+import { StartBooking } from "./BookingDialog";
 const humanizeDuration = require("humanize-duration");
 
 interface ServiceCardRootProps {
@@ -72,25 +73,32 @@ interface CustomServiceCardProps {
   handleClick?: () => void;
 }
 
+interface BookingServiceCardProps extends CustomServiceCardProps {
+  businessUser: BusinessUser;
+}
+
 export function BookingServiceCard({
   service,
   handleClick,
-}: CustomServiceCardProps) {
+  ...props
+}: BookingServiceCardProps) {
   return (
     <ServiceCardRoot
       service={service}
       borderClassname={cn("rounded-r-none", "max-sm:border-l")}
     >
-      <button
-        className={cn(
-          buttonVariants({ variant: "ghost" }),
-          "h-[inherit] px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal",
-          "max-sm:border max-sm:border-border max-sm:rounded-l-lg max-sm:rounded-t-none max-sm:border-t-0 max-sm:py-4"
-        )}
-        onClick={handleClick}
-      >
-        Book
-      </button>
+      <StartBooking businessUser={props.businessUser} service={service}>
+        <button
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "h-[inherit] px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal",
+            "max-sm:border max-sm:border-border max-sm:rounded-l-lg max-sm:rounded-t-none max-sm:border-t-0 max-sm:py-4"
+          )}
+          onClick={handleClick}
+        >
+          Book
+        </button>
+      </StartBooking>
     </ServiceCardRoot>
   );
 }

@@ -14,6 +14,7 @@ export function BackButton() {
     <Button
       className={cn(
         "inline-flex gap-2 text-foreground/80",
+        "max-sm:px-5",
         "hover:text-foreground"
       )}
       variant="outline"

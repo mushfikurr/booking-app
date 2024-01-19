@@ -12,13 +12,11 @@ interface ServicesDisplayProps {
 export async function ServiceList({ businessUser }: ServicesDisplayProps) {
   const services = await getServices({ businessUserId: businessUser.id });
   const serviceCards = services.map((service) => (
-    <StartBooking
+    <BookingServiceCard
       key={service.id}
       businessUser={businessUser}
       service={service}
-    >
-      <BookingServiceCard service={service} />
-    </StartBooking>
+    />
   ));
 
   if (!services.length) return <EmptyServicesList />;

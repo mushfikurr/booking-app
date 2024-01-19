@@ -1,111 +1,87 @@
-import { OpeningHour, Service } from "@prisma/client";
-import { getOpeningHoursFromServer } from "../query/clientQuery";
-import { useQuery } from "@tanstack/react-query";
-import { daysOfWeek } from "../utils";
+// useSlots.ts
+import { useMemo } from "react";
+import { Booking, OpeningHour, Service } from "@prisma/client";
 
-interface UseSlotsArgs {
-  businessUserId: string;
-  selectedServices: Service[];
-  selectedDay: Date | undefined;
-}
 export interface Slot {
-  id: string;
-  date: Date;
-  from: string;
-  to: string;
-}
-
-export function useSlots({
-  businessUserId,
-  selectedServices,
-  selectedDay,
-}: UseSlotsArgs) {
-  if (!selectedDay) {
-    return {
-      slots: [],
-      isLoading: false,
-      isOpeningHours: false,
-      isError: false,
-    };
-  }
-
-  const { data, isLoading, isError } = useQuery(["openingHour"], async () => {
-    return await getOpeningHoursFromServer(businessUserId);
-  });
-  const openingHours = data?.openingHours;
-
-  const serviceWaitTimeInSecs = selectedServices.reduce(
-    (i, service) => i + service.estimatedTime,
-    0
-  );
-
-  const dayString = daysOfWeek[selectedDay.getDay()];
-  const currentDayOpeningHours =
-    openingHours?.length &&
-    openingHours?.find((o: OpeningHour) => o.dayOfWeek === dayString);
-
-  const openingTime = new Date(currentDayOpeningHours?.startTime);
-  const closingTime = new Date(currentDayOpeningHours?.endTime);
-  const slotDurationInMs = serviceWaitTimeInSecs * 1000;
-
-  const slots = calculateSlots({
-    currentDay: selectedDay,
-    openingTime,
-    closingTime,
-    slotDuration: slotDurationInMs,
-  });
-
-  return {
-    slots,
-    isLoading,
-    isOpeningHours: openingHours?.length,
-    currentDayOpeningHours,
-    isError,
-  };
-}
-
-function calculateSlots({
-  currentDay,
-  openingTime,
-  closingTime,
-  slotDuration,
-}: {
+  slotId: string;
   currentDay: Date;
-  openingTime: Date;
-  closingTime: Date;
-  slotDuration: number;
-}) {
-  const slots = [];
-  let currentTime = openingTime;
+  startTime: Date;
+  endTime: Date;
+}
 
-  while (currentTime < closingTime) {
-    const endTime = new Date(currentTime.getTime() + slotDuration);
+const generateSlotId = (
+  currentDay: Date,
+  startTime: Date,
+  endTime: Date
+): string => {
+  return `${currentDay.toISOString()}-${startTime.toISOString()}-${endTime.toISOString()}`;
+};
 
-    if (endTime > closingTime) {
-      endTime.setTime(closingTime.getTime());
+const useSlots = (
+  openingHour: OpeningHour | undefined,
+  bookings: Booking[] | undefined,
+  currentDay: Date,
+  services: Service[]
+): Slot[] => {
+  return useMemo(() => {
+    if (!openingHour) {
+      return [];
     }
 
-    const id = `${currentDay.getTime()}-${currentTime.getTime()}-${endTime.getTime()}`;
+    const calculateServiceDuration = () => {
+      return services.reduce(
+        (sum: number, newVal: Service) => sum + newVal.estimatedTime,
+        0
+      );
+    };
+    const serviceDuration = calculateServiceDuration() / 60;
 
-    slots.push({
-      id,
-      date: currentDay,
-      from:
-        currentTime.getHours() +
-        ":" +
-        (currentTime.getMinutes() < 10 ? "0" : "") +
-        currentTime.getMinutes(),
-      to:
-        endTime.getHours() +
-        ":" +
-        (endTime.getMinutes() < 10 ? "0" : "") +
-        endTime.getMinutes(),
-    });
+    const slots: Slot[] = [];
+    let start = new Date(openingHour.startTime);
+    start = applyDateOnly(start, currentDay);
 
-    currentTime = endTime;
-  }
+    let end = new Date(openingHour.endTime);
+    end = applyDateOnly(end, currentDay);
 
-  // TODO: filter bookings
+    while (start <= end) {
+      const startTime = new Date(start);
+      const endTime = new Date(start);
 
-  return slots;
-}
+      endTime.setMinutes(endTime.getMinutes() + serviceDuration);
+
+      if (endTime <= end && !bookings?.some(isSlotBooked(startTime, endTime))) {
+        const slotId = generateSlotId(currentDay, startTime, endTime);
+        slots.push({ slotId, currentDay, startTime, endTime });
+      }
+
+      start.setMinutes(start.getMinutes() + serviceDuration);
+    }
+
+    return slots;
+  }, [openingHour, bookings, currentDay, services]);
+};
+
+const applyDateOnly = (date1: Date, date2: Date) => {
+  date1.setDate(date2.getDate());
+  date1.setMonth(date2.getMonth());
+  date1.setFullYear(date2.getFullYear());
+
+  return date1;
+};
+
+const isSlotBooked = (startTime: Date, endTime: Date) => (booking: Booking) => {
+  const bookingDate = new Date(booking.date);
+  const bookingStartTime = new Date(booking.startTime);
+  const bookingEndTime = new Date(booking.endTime);
+  const getOnlyDateISOString = (date: Date) =>
+    date.toISOString().substring(0, 11); // Retrieve only the date (comparing date only)
+
+  // Compare booking to slot with conditions that will deemed if a slot is taken.
+  const bookedPredicate =
+    getOnlyDateISOString(bookingDate) === getOnlyDateISOString(startTime) &&
+    bookingEndTime.getTime() > startTime.getTime() &&
+    bookingStartTime.getTime() < endTime.getTime();
+  return bookedPredicate;
+};
+
+export default useSlots;

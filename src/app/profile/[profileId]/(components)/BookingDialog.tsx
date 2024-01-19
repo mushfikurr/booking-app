@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { BusinessUser, Service } from "@prisma/client";
 import { ScissorsLineDashed } from "lucide-react";
 import { ChooseServices } from "./(dialogPages)/AddServices";
-import { ChooseDate } from "./(dialogPages)/ChooseSlot";
 import { AddServices } from "./(dialogPages)/InitialViewService";
 import { ReviewBooking } from "./(dialogPages)/ReviewBooking";
 import { BackButton } from "./BackButton";
@@ -22,6 +21,10 @@ import {
   useBookingDialogContext,
 } from "./BookingDialogContext";
 import { Statistics } from "./Statistics";
+import ChooseSlot from "./(dialogPages)/ChooseSlot";
+import { PropsWithChildren, forwardRef, useEffect, useRef } from "react";
+import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
+import autoAnimate from "@formkit/auto-animate";
 
 interface StartBookingButtonProps {
   children: React.ReactNode;
@@ -35,28 +38,35 @@ export function StartBooking({
   service,
 }: StartBookingButtonProps) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <BookingDialogProvider businessUser={businessUser} service={service}>
+      <DialogConsumer>{children}</DialogConsumer>
+    </BookingDialogProvider>
+  );
+}
 
-      <BookingDialogProvider businessUser={businessUser} service={service}>
-        <BookingDialog />
-      </BookingDialogProvider>
+function DialogConsumer({ children }: { children: React.ReactNode }) {
+  const { open, setOpen } = useBookingDialogContext();
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <BookingDialog />
     </Dialog>
   );
 }
 
-const mapPageTypeToComponent: Record<PageType, any> = {
-  addServices: AddServices,
-  chooseDate: ChooseDate,
-  chooseServices: ChooseServices,
-  reviewBooking: ReviewBooking,
-};
+export const mapPageTypeToComponent: Map<PageType, any> = new Map([
+  ["addServices", AddServices],
+  ["chooseDate", ChooseSlot],
+  ["chooseServices", ChooseServices],
+  ["reviewBooking", ReviewBooking],
+]);
 
 function BookingDialog() {
   const { title, currentPage } = useBookingDialogContext();
 
   const renderCurrentPage = () => {
-    const Component = mapPageTypeToComponent[currentPage];
+    const Component = mapPageTypeToComponent.get(currentPage);
     return <Component />;
   };
 
@@ -102,17 +112,26 @@ interface ScrollableAreaProps {
   children: React.ReactNode;
   className?: string;
 }
-export function ScrollableArea({ children, className }: ScrollableAreaProps) {
+export const ScrollableArea = forwardRef<
+  HTMLDivElement,
+  PropsWithChildren<ScrollableAreaProps>
+>(({ children, className }: ScrollableAreaProps, forwardedRef) => {
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    scrollAreaRef.current && autoAnimate(scrollAreaRef.current);
+  }, [parent]);
+
   return (
-    <ScrollArea>
+    <ScrollArea ref={forwardedRef}>
       <div
         className={cn(
           "max-h-[32rem] max-sm:max-h-[calc(100vh-18rem)] flex flex-col gap-4",
           className
         )}
+        ref={scrollAreaRef}
       >
         {children}
       </div>
     </ScrollArea>
   );
-}
+});

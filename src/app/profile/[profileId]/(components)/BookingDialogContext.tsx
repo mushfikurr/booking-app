@@ -21,6 +21,9 @@ export type PageType =
   | "reviewBooking";
 
 interface BookingDialogContextType {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+
   title: string;
   setTitle: Dispatch<SetStateAction<string>>;
 
@@ -57,10 +60,10 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
   businessUser,
   service,
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(`Add services`);
   const [currentPage, setCurrentPage] = useState<PageType>("addServices");
-  const defaultServices: Service[] = service ? [service] : [];
-  const [services, setServices] = useState<Service[]>(defaultServices);
+  const [services, setServices] = useState<Service[]>(service ? [service] : []);
   const [pageStack, setPageStack] = useState<PageType[]>(["addServices"]);
   const [slot, setSlot] = useState<Slot | undefined>();
 
@@ -68,6 +71,14 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
 
   const { data: session } = useSession();
   const queryClient = useQueryClient();
+  const reset = () => {
+    setSlot(undefined);
+    setOpen(false);
+    setCurrentPage("addServices");
+    setServices([]);
+    setPageStack(["addServices"]);
+  };
+
   const mutation = useMutation({
     mutationFn: () => {
       return axios.post("/api/booking/new", {
@@ -78,10 +89,16 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["booking"] });
+      queryClient.invalidateQueries({
+        queryKey: ["openingHour", slot?.currentDay.toISOString()],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["bookings", slot?.currentDay.toISOString()],
+      });
+      reset();
     },
-    onError: (data: AxiosError) => {
-      return data.response?.data;
+    onError: (data: any) => {
+      return data.response?.data?.error;
     },
   });
 
@@ -102,11 +119,12 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
       await mutation.mutateAsync();
       toast({
         title: "Successfully created booking!",
-        description: "Customers will now be able to book this.",
+        description: "The business will prepare for your arrival.",
       });
-    } catch (err) {
+    } catch (err: any) {
       toast({
-        title: "There was an error creating a booking.",
+        title: "There was an error creating this booking",
+        description: err.response.data.error ?? "",
         variant: "destructive",
       });
       return (err as AxiosError).response?.data;
@@ -115,6 +133,8 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
 
   const contextValue = useMemo(
     () => ({
+      open,
+      setOpen,
       title,
       setTitle,
       currentPage,
@@ -131,6 +151,7 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
       isError: mutation.isError,
     }),
     [
+      open,
       title,
       setTitle,
       currentPage,
