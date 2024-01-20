@@ -1,25 +1,18 @@
 import { Empty } from "@/components/Empty";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { Button } from "@/components/ui/button";
-import { getServices } from "@/lib/query/clientQuery";
+import { useServices } from "@/lib/hooks/useServices";
 import { Service } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
-import { SelectableServiceCard } from "../ServiceCard";
-import { useEffect, useRef } from "react";
-import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
-import autoAnimate from "@formkit/auto-animate";
 import { NextButton } from "../NextButton";
+import { SelectableServiceCard } from "../ServiceCard";
 
 export function ChooseServices() {
   const { setTitle, businessUser, services, setServices, setCurrentPageState } =
     useBookingDialogContext();
   setTitle("Choose services to add to your booking");
 
-  const { data, isLoading, isError } = useQuery(["service"], async () => {
-    return await getServices(businessUser.id);
-  });
+  const { data, isLoading, isError } = useServices(businessUser.id);
 
   const isServiceInServices = (service: Service) =>
     services.some((o) => o.id === service.id);
@@ -32,32 +25,41 @@ export function ChooseServices() {
     }
   };
 
-  const serviceList =
-    !data || isLoading ? (
-      <LoadingSkeleton />
-    ) : (
-      data.services.map((service: Service) => (
-        <SelectableServiceCard
-          key={service.id}
-          service={service}
-          selected={isServiceInServices(service)}
-          handleClick={() => {
-            addServiceToBooking(service);
-          }}
-        />
-      ))
-    );
+  const serviceList = () => {
+    if (isLoading) {
+      return <LoadingSkeleton />;
+    }
+
+    if (!data?.length) {
+      return (
+        <Empty>
+          This business does not have any services to book at the moment.
+        </Empty>
+      );
+    }
+
+    if (isError) {
+      return (
+        <Empty>There was an error fetching the services. Try again.</Empty>
+      );
+    }
+
+    return data.map((service: Service) => (
+      <SelectableServiceCard
+        key={service.id}
+        service={service}
+        selected={isServiceInServices(service)}
+        handleClick={() => {
+          addServiceToBooking(service);
+        }}
+      />
+    ));
+  };
 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-5 px-6">
-        <ScrollableArea>
-          {isError ? (
-            <Empty>There was an error fetching the services. Try again.</Empty>
-          ) : (
-            serviceList
-          )}
-        </ScrollableArea>
+        <ScrollableArea>{serviceList()}</ScrollableArea>
       </div>
       <BookingDialogFooter services={services}>
         <NextButton nextPage="addServices">Done</NextButton>

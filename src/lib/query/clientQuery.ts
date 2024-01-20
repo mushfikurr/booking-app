@@ -1,5 +1,3 @@
-// TODO: Move all client get requests to this file to avoid repeated query definitions.
-
 "use client";
 
 import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
@@ -13,27 +11,6 @@ import {
 } from "../schema/edit-profile-schema";
 import { TimeRangeSchema } from "../schema/time-range-schema";
 
-export const getServices = async (businessUserId: string) => {
-  const resp = await axios.post("/api/service", { businessUserId });
-  return resp.data;
-};
-
-export const getUserWithBusinessDataFromServer = async (userId: string) => {
-  const resp = await axios.post("/api/businessUser", { userId });
-  return resp.data;
-};
-
-export const getOpeningHoursFromServer = async (
-  businessUserId: string,
-  query?: Partial<OpeningHour>
-) => {
-  const resp = await axios.post("/api/openingHour/many", {
-    businessUserId,
-    ...query,
-  });
-  return resp.data.openingHours;
-};
-
 export const getOpeningHour = async (
   businessUserId: string,
   query?: Partial<OpeningHour>
@@ -43,14 +20,6 @@ export const getOpeningHour = async (
     ...query,
   });
   return resp.data.openingHours;
-};
-
-export const getBookings = async (businessUserId: string, currentDay: Date) => {
-  const resp = await axios.post("/api/booking", {
-    businessUserId,
-    date: currentDay,
-  });
-  return resp.data.bookings;
 };
 
 export const newOpeningHour = async (

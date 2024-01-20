@@ -11,21 +11,21 @@ export interface DummyReview {
 type ReviewsProps = DummyReview[];
 
 const dummyReviews: DummyReview[] = [
-  {
-    name: "John Doe",
-    review: "This is the first review.",
-    reviewDate: "2023-01-01",
-  },
-  {
-    name: "Jane Smith",
-    review: "Another review here.",
-    reviewDate: "2023-01-05",
-  },
-  {
-    name: "Bob Johnson",
-    review: "A third review for testing.",
-    reviewDate: "2023-01-10",
-  },
+  // {
+  //   name: "John Doe",
+  //   review: "This is the first review.",
+  //   reviewDate: "2023-01-01",
+  // },
+  // {
+  //   name: "Jane Smith",
+  //   review: "Another review here.",
+  //   reviewDate: "2023-01-05",
+  // },
+  // {
+  //   name: "Bob Johnson",
+  //   review: "A third review for testing.",
+  //   reviewDate: "2023-01-10",
+  // },
 ];
 
 export async function Reviews() {
@@ -52,7 +52,7 @@ function EmptyReviews() {
   return (
     <div className="space-y-3">
       <h2 className="font-medium text-2xl">Reviews</h2>
-      <Empty>There aren't any reviews to display at the moment.</Empty>
+      <Empty>Reviews coming soon 🚀</Empty>
     </div>
   );
 }

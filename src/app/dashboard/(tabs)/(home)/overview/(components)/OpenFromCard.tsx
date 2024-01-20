@@ -1,9 +1,8 @@
 "use client";
 
-import { getOpeningHoursFromServer } from "@/lib/query/clientQuery";
+import { useOpeningHours } from "@/lib/hooks/useOpeningHour";
 import { getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import OverviewCard from "./StatisticCard";
@@ -17,14 +16,9 @@ export default function OpenFromCard({
   prefetchedOpeningHours,
   businessId,
 }: OpenFromCardProps) {
-  const { data, isLoading } = useQuery<OpeningHour[], Error>(
-    ["openingHour"],
-    async () => {
-      if (!businessId) throw Error("No business ID");
-      const response = await getOpeningHoursFromServer(businessId);
-      return response.openingHours;
-    },
-    { initialData: prefetchedOpeningHours }
+  const { data, isLoading } = useOpeningHours(
+    businessId,
+    prefetchedOpeningHours
   );
 
   const weekday = [

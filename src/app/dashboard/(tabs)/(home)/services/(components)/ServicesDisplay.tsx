@@ -1,11 +1,10 @@
 "use client";
 
+import { useServices } from "@/lib/hooks/useServices";
 import { Service } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
 import FullPageSkeleton from "../../../../../../components/FullPageSkeleton";
 import { useToast } from "../../../../../../components/ui/use-toast";
 import { ServiceCard } from "./ServiceCard";
-import { getServices } from "@/lib/query/clientQuery";
 
 function EmptyServices() {
   const squares = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -33,12 +32,9 @@ export default function ServicesDisplay({
   prefetchedServicesData: Service[];
   businessUserId: string;
 }) {
-  const { data, isLoading, isError } = useQuery(
-    ["service"],
-    async () => {
-      return await getServices(businessUserId);
-    },
-    { initialData: prefetchedServicesData }
+  const { data, isLoading, isError } = useServices(
+    businessUserId,
+    prefetchedServicesData
   );
   const { toast } = useToast();
 
@@ -50,21 +46,14 @@ export default function ServicesDisplay({
     return <FullPageSkeleton />;
   }
 
-  const services = data?.services;
-
-  if (services?.length === 0) {
+  if (data?.length === 0) {
     return <EmptyServices />;
   }
 
   return (
     <div className="grid grid-auto-fit-lg h-fit gap-6">
-      {services?.map((service: Service, idx: number) => (
-        <ServiceCard
-          key={service.id}
-          service={service}
-          isLoading={isLoading}
-          delayId={idx}
-        />
+      {data?.map((service: Service, idx: number) => (
+        <ServiceCard key={service.id} service={service} isLoading={isLoading} />
       ))}
     </div>
   );

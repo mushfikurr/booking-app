@@ -1,15 +1,15 @@
 "use client";
 
+import { useOpeningHours } from "@/lib/hooks/useOpeningHour";
 import {
   deleteOpeningHour,
-  getOpeningHoursFromServer,
   newOpeningHour,
   updateManyOpeningHour,
 } from "@/lib/query/clientQuery";
 import { TimeRangeSchema } from "@/lib/schema/time-range-schema";
 import { cn, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DoorClosed, DoorOpen, Loader2 } from "lucide-react";
 import { FC, useEffect } from "react";
 import { Updater, useImmer } from "use-immer";
@@ -89,15 +89,7 @@ export default function OpeningHoursDisplay({
   });
   const queryClient = useQueryClient();
 
-  const { data } = useQuery<OpeningHour[], Error>(
-    ["openingHour"],
-    async () => {
-      if (!businessId) throw Error("No business ID");
-      const response = await getOpeningHoursFromServer(businessId);
-      return response;
-    },
-    { initialData: prefetchedOpeningHours }
-  );
+  const { data } = useOpeningHours(businessId, prefetchedOpeningHours);
 
   const submitMutation = useMutation<any, Error>(
     ["openingHour"],

@@ -2,22 +2,22 @@ import { Booking, OpeningHour } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { getBookings, getOpeningHour } from "../query/clientQuery";
 import { daysOfWeek } from "../utils";
+import { useServices } from "./useServices";
+import { useOpeningHours } from "./useOpeningHour";
+import { useBookingsForDay } from "./useBookings";
 
 const useSlotsData = (businessUserId: string, selectedDay: Date) => {
-  const openingHoursQuery = useQuery<OpeningHour>(
-    ["openingHour", selectedDay.toISOString()],
-    async () => {
-      const resp = await getOpeningHour(businessUserId, {
-        dayOfWeek: daysOfWeek[selectedDay.getDay()],
-      });
-      return resp;
-    }
+  const selectDay = {
+    dayOfWeek: daysOfWeek[selectedDay.getDay()],
+  };
+
+  const openingHoursQuery = useOpeningHours(
+    businessUserId,
+    undefined,
+    selectDay
   );
 
-  const bookingsQuery = useQuery<Booking[]>(
-    ["bookings", selectedDay.toISOString()],
-    () => getBookings(businessUserId, selectedDay)
-  );
+  const bookingsQuery = useBookingsForDay(selectedDay, businessUserId);
 
   const refetchData = () => {
     openingHoursQuery.refetch();

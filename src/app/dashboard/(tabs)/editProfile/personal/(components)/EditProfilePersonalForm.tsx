@@ -1,15 +1,12 @@
 "use client";
 
-import {
-  getUserWithBusinessDataFromServer,
-  updatePersonalDetailsForUser,
-} from "@/lib/query/clientQuery";
+import { useBusinessUser } from "@/lib/hooks/useBusinessUser";
+import { updatePersonalDetailsForUser } from "@/lib/query/clientQuery";
 import { EditProfilePersonalSchema } from "@/lib/schema/edit-profile-schema";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Contact2 } from "lucide-react";
 import { z } from "zod";
-import { UserWithBusinessUser } from "../../../../../../lib/relational-model-type";
 import {
   CaptureForm,
   CaptureFormProps,
@@ -22,18 +19,16 @@ import {
   CardTitle,
 } from "../../../../../../components/ui/card";
 import { toast } from "../../../../../../components/ui/use-toast";
+import { UserWithBusinessUser } from "../../../../../../lib/relational-model-type";
 
 export default function EditProfilePersonalForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
 }) {
-  const { data, isLoading, refetch } = useQuery(
-    ["user"],
-    async () => {
-      return await getUserWithBusinessDataFromServer(prefetchedUser.id);
-    },
-    { initialData: prefetchedUser }
+  const { data, isLoading, refetch } = useBusinessUser(
+    prefetchedUser.id,
+    prefetchedUser
   );
 
   const queryClient = useQueryClient();

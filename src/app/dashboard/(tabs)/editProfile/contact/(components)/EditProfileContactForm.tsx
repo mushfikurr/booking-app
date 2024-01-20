@@ -1,40 +1,32 @@
 "use client";
 
+import { useBusinessUser } from "@/lib/hooks/useBusinessUser";
+import { updateContactDetailsForUser } from "@/lib/query/clientQuery";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { EditProfileContactSchema } from "@/lib/schema/edit-profile-schema";
 import { BusinessRegistrationContactSchema } from "@/lib/schema/register-form-schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { Smartphone } from "lucide-react";
-import {
-  CaptureForm,
-  CaptureFormProps,
-} from "../../../../../../components/CaptureForm";
+import { z } from "zod";
+import { CaptureForm, CaptureFormProps } from "@/components/CaptureForm";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../../../../../components/ui/card";
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import {
-  getUserWithBusinessDataFromServer,
-  updateContactDetailsForUser,
-} from "@/lib/query/clientQuery";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { EditProfileContactSchema } from "@/lib/schema/edit-profile-schema";
-import { AxiosError } from "axios";
-import { toast } from "../../../../../../components/ui/use-toast";
-import { z } from "zod";
+} from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
 
 export default function EditProfileContactForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
 }) {
-  const { data, isLoading, refetch } = useQuery(
-    ["user"],
-    async () => {
-      return await getUserWithBusinessDataFromServer(prefetchedUser.id);
-    },
-    { initialData: prefetchedUser }
+  const { data, isLoading, refetch } = useBusinessUser(
+    prefetchedUser.id,
+    prefetchedUser
   );
 
   const queryClient = useQueryClient();

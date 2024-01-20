@@ -28,7 +28,7 @@ export default async function ProfileLayout({
         )}
       >
         <Contact businessUser={businessUser as BusinessUser} />
-        <OpeningHourList />
+        <OpeningHourList businessUser={businessUser as BusinessUser} />
       </div>
     </div>
   );

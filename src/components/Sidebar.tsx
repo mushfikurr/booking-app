@@ -1,12 +1,14 @@
 "use client";
 
-import { useMediaQuery } from "@/lib/hooks/hooks";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
   ArrowRight,
   Calendar,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Contact,
   GanttChart,
@@ -104,7 +106,7 @@ export default function Sidebar({
             Dashboard
           </h1>
 
-          <ArrowLeft
+          <ChevronLeft
             onClick={() => setCondensedSidebar(true)}
             className="text-muted-foreground hover:text-foreground transition duration-200 ease-in-out cursor-pointer"
           />
@@ -230,7 +232,7 @@ function CondensedSidebar({
           className="px-3 rounded-sm"
           onClick={() => setCondensedSidebar(false)}
         >
-          <ArrowRight />
+          <ChevronRight />
         </Button>
       )}
 

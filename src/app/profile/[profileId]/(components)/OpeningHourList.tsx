@@ -1,24 +1,32 @@
 import { CollapsibleCard } from "@/components/CollapsibleCard";
-import { Day, cn, daysOfWeek } from "@/lib/utils";
+import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { getOpeningHoursData } from "@/lib/query/serverQuery";
+import { Day, cn, daysOfWeek, getHMFromDateTime } from "@/lib/utils";
+import { BusinessUser } from "@prisma/client";
 import { ChevronsRight } from "lucide-react";
+import { Suspense } from "react";
 
-export function OpeningHourList() {
-  const days: OpeningHourProps[] = [
-    { day: "Monday", startTime: "9:00", endTime: "5:00" },
-    { day: "Tuesday" },
-    { day: "Thursday", startTime: "9:00", endTime: "17:00" },
-    { day: "Friday", startTime: "9:00", endTime: "17:00" },
-    { day: "Saturday", startTime: "10:00", endTime: "15:00" },
-    { day: "Sunday", startTime: "12:00", endTime: "16:00" },
-  ];
+export async function OpeningHourList({
+  businessUser,
+}: {
+  businessUser: BusinessUser;
+}) {
+  const days = await getOpeningHoursData(businessUser.id);
 
   return (
     <CollapsibleCard title="Opening Hours">
-      <div className="flex flex-col gap-1 text-sm">
-        {days.map((day) => (
-          <OpeningHour key={day.day} {...day} />
-        ))}
-      </div>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <div className="flex flex-col gap-1 text-sm">
+          {days?.map((day) => (
+            <OpeningHour
+              key={day.dayOfWeek}
+              day={day.dayOfWeek as Day}
+              startTime={getHMFromDateTime(day.startTime)}
+              endTime={getHMFromDateTime(day.endTime)}
+            />
+          ))}
+        </div>
+      </Suspense>
     </CollapsibleCard>
   );
 }
