@@ -1,22 +1,21 @@
 import { Empty } from "@/components/Empty";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import useSlots, { Slot } from "@/lib/hooks/useSlots";
 import useSlotsData from "@/lib/hooks/useSlotsData";
 import { cn, daysOfWeek, todayNoTime } from "@/lib/utils";
 import { Booking, OpeningHour } from "@prisma/client";
+import { RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { SelectSingleEventHandler } from "react-day-picker";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
-import { SelectableSlot } from "../SelectableDate";
 import IconButton from "../IconButton";
-import { RefreshCw } from "lucide-react";
 import { NextButton } from "../NextButton";
+import { SelectableSlot } from "../SelectableDate";
 
 export default function ChooseSlot() {
-  const { setTitle, businessUser, services, slot, setCurrentPageState } =
+  const { setTitle, businessUser, services, slot } =
     useBookingDialogContext();
   setTitle("Choose a slot in your booking");
 
@@ -26,7 +25,7 @@ export default function ChooseSlot() {
   );
   const slotsData = useSlotsData(businessUser.id, selectedDay);
 
-  const handleDaySelect = (day: Date | undefined, selectedDay: Date) => {
+  const handleDaySelect = (_: Date | undefined, selectedDay: Date) => {
     setSelectedDay(selectedDay);
   };
 

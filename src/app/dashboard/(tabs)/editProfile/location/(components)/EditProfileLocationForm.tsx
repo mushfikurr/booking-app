@@ -14,27 +14,22 @@ import {
   CardTitle,
 } from "../../../../../../components/ui/card";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import {
-  getUserWithBusinessDataFromServer,
-  updateLocationDetailsForUser,
-} from "@/lib/query/clientQuery";
+import { updateLocationDetailsForUser } from "@/lib/query/clientQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { EditProfileLocationSchema } from "@/lib/schema/edit-profile-schema";
 import { AxiosError } from "axios";
 import { toast } from "../../../../../../components/ui/use-toast";
+import { useBusinessUser } from "@/lib/hooks/useBusinessUser";
 
 export default function EditProfileLocationForm({
   prefetchedUser,
 }: {
   prefetchedUser: UserWithBusinessUser;
 }) {
-  const { data, isLoading, refetch } = useQuery(
-    ["user"],
-    async () => {
-      return await getUserWithBusinessDataFromServer(prefetchedUser.id);
-    },
-    { initialData: prefetchedUser }
+  const { data, isLoading, refetch } = useBusinessUser(
+    prefetchedUser.id,
+    prefetchedUser
   );
 
   const queryClient = useQueryClient();

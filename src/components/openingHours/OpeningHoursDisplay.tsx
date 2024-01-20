@@ -1,6 +1,6 @@
 "use client";
 
-import { useOpeningHours } from "@/lib/hooks/useOpeningHour";
+import { useManyOpeningHours } from "@/lib/hooks/useOpeningHour";
 import {
   deleteOpeningHour,
   newOpeningHour,
@@ -89,7 +89,7 @@ export default function OpeningHoursDisplay({
   });
   const queryClient = useQueryClient();
 
-  const { data } = useOpeningHours(businessId, prefetchedOpeningHours);
+  const { data } = useManyOpeningHours(businessId, prefetchedOpeningHours);
 
   const submitMutation = useMutation<any, Error>(
     ["openingHour"],
