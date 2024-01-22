@@ -27,17 +27,24 @@ export function BusinessTitle({
       })}
     >
       <div className="space-y-1.5">
-        <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
+        <h1
+          className={cn(
+            "text-3xl font-semibold tracking-tight",
+            "max-sm:text-2xl"
+          )}
+        >
+          {title}
+        </h1>
         <span className="inline-flex gap-2 text-muted-foreground">
-          <TextLink className="text-md" href="">
-            <MapPin />
+          <TextLink className={cn("text-md", "max-sm:text-sm")} href="">
+            <MapPin className="max-sm:h-5 w-5" />
             223 Whitechapel Rd, E1 5JD
           </TextLink>
         </span>
       </div>
 
       <StartBooking businessUser={businessUser}>
-        <Button className={cn("px-10 py-6")}>Start booking</Button>
+        <Button className={cn("px-10 py-6", "px-6")}>Start booking</Button>
       </StartBooking>
     </div>
   );

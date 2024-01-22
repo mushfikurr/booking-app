@@ -21,7 +21,7 @@ export default function Home() {
                 </span>
               </h1>
               <div className="flex flex-col gap-2 ">
-                <div className="flex gap-3 max-w-lg bg-background p-3 rounded-md max-sm:flex-col">
+                <div className="flex gap-3 max-w-lg bg-background backdrop-blur-xl p-3 rounded-md max-sm:flex-col">
                   <div className="flex gap-3 grow">
                     <LocationDropdown />
                     <DateDropdown />
