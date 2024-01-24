@@ -15,6 +15,28 @@ export const getOpeningHoursData = cache(
   }
 );
 
+export const getDescendingBookings = cache(
+  async (businessUserId: string | undefined) => {
+    if (!businessUserId) {
+      return undefined;
+    }
+
+    const bookings = await db.booking.findMany({
+      where: {
+        businessUserId,
+      },
+      include: {
+        user: true,
+        services: true,
+      },
+      orderBy: {
+        startTime: "desc",
+      },
+    });
+    return bookings;
+  }
+);
+
 export const getBookingsData = cache(async (businessId: string | undefined) => {
   if (!businessId) {
     console.error("No business id...");

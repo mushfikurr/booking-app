@@ -20,7 +20,7 @@ export default async function Layout({
     <div className="flex min-h-screen">
       <Sidebar />
       <Suspense>
-        <div className="container min-h-full gap-5 pt-20 px-8 mb-16 md:px-12 md:pt-28 overflow-auto">
+        <div className="container min-h-full gap-5 pt-20 max-sm:px-8 mb-16 md:pt-28 overflow-auto">
           {children}
         </div>
       </Suspense>

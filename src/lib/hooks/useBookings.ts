@@ -1,4 +1,4 @@
-import { Booking } from "@prisma/client";
+import { Booking, Service, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -23,6 +23,37 @@ export const useBookingsForDay = (
     },
     {
       initialData: prefetchedBookings,
+    }
+  );
+};
+
+export interface BookingIncludesUser extends Booking {
+  user: User;
+}
+
+export interface BookingIncludesUserAndServices extends BookingIncludesUser {
+  services: Service[];
+}
+
+const getDescendingBookings = async (businessUserId: string) => {
+  const resp = await axios.post("/api/booking/descending/first", {
+    businessUserId,
+  });
+  return resp.data.bookings;
+};
+
+export const useRecentBooking = (
+  businessUserId?: string,
+  prefetchedBooking?: BookingIncludesUserAndServices
+) => {
+  return useQuery<BookingIncludesUserAndServices, Error>(
+    ["bookings", "descending"],
+    async () => {
+      if (!businessUserId) throw Error("No business user ID provided");
+      return await getDescendingBookings(businessUserId);
+    },
+    {
+      initialData: prefetchedBooking,
     }
   );
 };

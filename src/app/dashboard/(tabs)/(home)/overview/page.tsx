@@ -34,7 +34,7 @@ export default async function DashboardOverview() {
           </Suspense>
         </div>
 
-        <Suspense fallback={<LoadingSkeleton className="h-full" />}>
+        <Suspense fallback={<LoadingSkeleton className="grow" />}>
           <OverviewBookings
             prefetchedBookingsData={bookings as Booking[]}
             businessUserId={user?.businessUser?.id}

@@ -12,7 +12,6 @@ interface OverviewCardProps {
 }
 
 function OverviewCardLoading() {
-  console.log("is loading...");
   return (
     <Skeleton className="animate-pulse flex-auto flex gap-10 justify-between p-8 text-primary-foreground bg-primary rounded-3xl drop-shadow-sm items-center animate-in fade-in slide-in-from-bottom-4 ease-in-out duration-200">
       <div className="flex flex-col gap-3 justify-between w-full">
