@@ -8,11 +8,10 @@ const useSlotsData = (businessUserId: string, selectedDay: Date) => {
   };
 
   const openingHoursQuery = useSingleOpeningHours(
+    selectedDay.getDay(),
     businessUserId,
-    undefined,
-    selectDay
+    undefined
   );
-
   const bookingsQuery = useBookingsForDay(selectedDay, businessUserId);
 
   const refetchData = () => {

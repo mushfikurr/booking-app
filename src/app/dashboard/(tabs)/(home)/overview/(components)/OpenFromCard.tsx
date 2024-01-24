@@ -1,7 +1,7 @@
 "use client";
 
 import { useOpeningHours } from "@/lib/hooks/useOpeningHour";
-import { getHMFromDateTime } from "@/lib/utils";
+import { daysOfWeek, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -16,35 +16,36 @@ export default function OpenFromCard({
   prefetchedOpeningHours,
   businessId,
 }: OpenFromCardProps) {
+  const today = new Date();
+  const todaysString = daysOfWeek[today.getDay()];
+  const prefetchedOpeningHour = prefetchedOpeningHours?.find(
+    (o: OpeningHour) => o.dayOfWeek === todaysString
+  );
+  const selectDay: Partial<OpeningHour> = {
+    dayOfWeek: todaysString,
+  };
   const { data, isLoading } = useOpeningHours(
     businessId,
-    prefetchedOpeningHours
+    prefetchedOpeningHour,
+    today.toISOString(),
+    selectDay
   );
 
-  const weekday = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const [date, setDate] = useState<string>("");
+  const dateToDDHHMM = (date: Date) => {
+    const hour = date.getHours().toString().padStart(2, "0");
+    const minute = date.getMinutes().toString().padStart(2, "0");
+    return `${todaysString}, ${hour}:${minute}`;
+  };
+
+  const currentOpeningHour = data;
+  const [date, setDate] = useState<string>(dateToDDHHMM(today));
 
   const updateDate = () => {
-    const dateObj = new Date();
-    const hour = dateObj.getHours().toString().padStart(2, "0");
-    const minute = dateObj.getMinutes().toString().padStart(2, "0");
-    const day = dateObj.getDay();
-
-    const newDate = `${weekday[day]}, ${hour}:${minute}`;
+    const now = new Date();
+    const newDate = dateToDDHHMM(now);
     setDate(newDate);
   };
 
-  const currentOpeningHour = Array.isArray(data)
-    ? data?.find((obj) => obj.dayOfWeek === date.split(",")[0])
-    : undefined;
   const displayedTime = () => {
     if (currentOpeningHour?.startTime && currentOpeningHour?.endTime) {
       const formattedStartTime = getHMFromDateTime(

@@ -1,6 +1,7 @@
 import { OpeningHour } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Day, daysOfWeek } from "../utils";
 
 const getOpeningHours = async (
   businessUserId: string,
@@ -10,20 +11,40 @@ const getOpeningHours = async (
     businessUserId,
     ...query,
   });
-  return resp.data.openingHours;
+  if (Array.isArray(resp.data.openingHours)) {
+    return resp.data.openingHours[0];
+  } else {
+    throw new Error(resp.data.error ?? "Error retrieving opening hours");
+  }
 };
 
 export const useOpeningHours = (
   businessId?: string,
-  prefetchedOpeningHours?: OpeningHour[],
+  prefetchedOpeningHours?: OpeningHour,
+  queryId?: string,
   query?: Partial<OpeningHour>
+) => {
+  return useQuery<OpeningHour, Error>(
+    ["openingHour", queryId],
+    async () => {
+      if (!businessId) throw Error("No business ID");
+      const response = await getOpeningHours(businessId, query);
+      return response;
+    },
+    { initialData: prefetchedOpeningHours }
+  );
+};
+
+export const useManyOpeningHours = (
+  businessId?: string,
+  prefetchedOpeningHours?: OpeningHour[]
 ) => {
   return useQuery<OpeningHour[], Error>(
     ["openingHour"],
     async () => {
       if (!businessId) throw Error("No business ID");
-      const response = await getOpeningHours(businessId, query);
-      return response.openingHours;
+      const response = await getOpeningHours(businessId);
+      return response[0] ?? [];
     },
     { initialData: prefetchedOpeningHours }
   );
@@ -45,15 +66,19 @@ const getSingleOpeningHours = async (
 };
 
 export const useSingleOpeningHours = (
+  day: number,
   businessId?: string,
-  prefetchedOpeningHours?: OpeningHour,
-  query?: Partial<OpeningHour>
+  prefetchedOpeningHours?: OpeningHour
 ) => {
+  const selectDay = {
+    dayOfWeek: daysOfWeek[day],
+  };
+
   return useQuery<OpeningHour, Error>(
-    ["openingHour"],
+    ["openingHour", daysOfWeek[day]],
     async () => {
       if (!businessId) throw Error("No business ID");
-      const response = await getSingleOpeningHours(businessId, query);
+      const response = await getSingleOpeningHours(businessId, selectDay);
       return response;
     },
     { initialData: prefetchedOpeningHours }
