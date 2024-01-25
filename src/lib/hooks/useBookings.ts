@@ -1,6 +1,7 @@
 import { Booking, Service, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { dateNoTime } from "../utils";
 
 const getBookingsForDay = async (businessUserId: string, currentDay: Date) => {
   const resp = await axios.post("/api/booking", {
@@ -35,14 +36,16 @@ export interface BookingIncludesUserAndServices extends BookingIncludesUser {
   services: Service[];
 }
 
-const getDescendingBookings = async (businessUserId: string) => {
+const getDescendingBookings = async (businessUserId: string, query?: any) => {
   const resp = await axios.post("/api/booking/descending/first", {
     businessUserId,
+    ...query,
   });
   return resp.data.bookings;
 };
 
-export const useRecentBooking = (
+export const useUpcomingBooking = (
+  date: Date,
   businessUserId?: string,
   prefetchedBooking?: BookingIncludesUserAndServices
 ) => {
@@ -50,10 +53,47 @@ export const useRecentBooking = (
     ["bookings", "descending"],
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
-      return await getDescendingBookings(businessUserId);
+      if (!date) throw Error("No date specified");
+      const descendingBookings = await getDescendingBookings(
+        businessUserId,
+        date
+      );
+
+      return descendingBookings[descendingBookings.length - 1];
     },
     {
       initialData: prefetchedBooking,
+    }
+  );
+};
+
+const getDescendingBookingsForDay = async (
+  businessUserId: string,
+  query?: Partial<Booking>
+) => {
+  const resp = await axios.post("/api/booking/descending", {
+    businessUserId,
+    query,
+  });
+  return resp.data.bookings;
+};
+
+export const useDescendingBookingsForDay = (
+  selectedDate: Date,
+  businessUserId?: string,
+  prefetchedBookings?: BookingIncludesUserAndServices[]
+) => {
+  return useQuery<BookingIncludesUserAndServices[], Error>(
+    ["bookings", "descending", selectedDate.toISOString()],
+    async () => {
+      if (!businessUserId) throw Error("No business user ID provided");
+      const dateComparator = dateNoTime(selectedDate);
+      return await getDescendingBookingsForDay(businessUserId, {
+        date: dateComparator,
+      });
+    },
+    {
+      initialData: prefetchedBookings,
     }
   );
 };

@@ -5,11 +5,14 @@ export async function POST(req: NextRequest) {
   if (req.method === "POST") {
     try {
       const body = await req.json();
-      const { businessUserId } = body;
+      const { businessUserId, date } = body;
 
       const bookings = await db.booking.findFirst({
         where: {
           businessUserId,
+          startTime: {
+            gte: date,
+          },
         },
         orderBy: {
           startTime: "desc",

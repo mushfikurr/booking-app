@@ -26,6 +26,11 @@ export function todayNoTime(): Date {
   return today;
 }
 
+export function dateNoTime(date: Date): Date {
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
 export type Day =
   | "Sunday"
   | "Monday"

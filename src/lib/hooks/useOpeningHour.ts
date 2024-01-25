@@ -1,7 +1,7 @@
 import { OpeningHour } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Day, daysOfWeek } from "../utils";
+import { daysOfWeek } from "../utils";
 
 const getOpeningHours = async (
   businessUserId: string,
@@ -35,6 +35,21 @@ export const useOpeningHours = (
   );
 };
 
+const getManyOpeningHours = async (
+  businessUserId: string,
+  query?: Partial<OpeningHour>
+) => {
+  const resp = await axios.post("/api/openingHour/many", {
+    businessUserId,
+    ...query,
+  });
+  if (Array.isArray(resp.data.openingHours)) {
+    return resp.data.openingHours;
+  } else {
+    throw new Error(resp.data.error ?? "Error retrieving opening hours");
+  }
+};
+
 export const useManyOpeningHours = (
   businessId?: string,
   prefetchedOpeningHours?: OpeningHour[]
@@ -43,8 +58,8 @@ export const useManyOpeningHours = (
     ["openingHour"],
     async () => {
       if (!businessId) throw Error("No business ID");
-      const response = await getOpeningHours(businessId);
-      return response[0] ?? [];
+      const response = await getManyOpeningHours(businessId);
+      return response;
     },
     { initialData: prefetchedOpeningHours }
   );

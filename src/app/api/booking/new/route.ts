@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const findBooking = await db.booking.findFirst({
-      where: { slotId: slot.slotId },
+      where: { OR: [{ slotId: slot.slotId }, { startTime: startDateTime }] },
     });
 
     if (findBooking) {

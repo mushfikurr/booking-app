@@ -4,19 +4,21 @@ import { Button } from "@/components/ui/button";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import {
   BookingIncludesUserAndServices,
-  useRecentBooking,
+  useUpcomingBooking,
 } from "@/lib/hooks/useBookings";
-import { getHMFromDateTime, todayNoTime } from "@/lib/utils";
+import { cn, getHMFromDateTime, todayNoTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Search } from "lucide-react";
 
 interface UpcomingBooking {
+  businessUserId: string;
   prefetchedBooking: BookingIncludesUserAndServices;
 }
 
 export function UpcomingBooking(props: UpcomingBooking) {
-  const booking = useRecentBooking(
-    props.prefetchedBooking.businessUserId,
+  const booking = useUpcomingBooking(
+    new Date(),
+    props.businessUserId,
     props.prefetchedBooking
   );
   const user = booking.data?.user;
@@ -29,8 +31,13 @@ export function UpcomingBooking(props: UpcomingBooking) {
       : startTime?.toUTCString().substring(4, 16);
 
   return (
-    <div className="bg-primary text-primary-foreground rounded-xl p-9 flex gap-32 items-center drop-shadow-lg">
-      <div className="space-y-3 min-w-fit basis-2/3">
+    <div
+      className={cn(
+        "bg-primary text-primary-foreground rounded-xl p-9 flex gap-32 items-center drop-shadow-lg",
+        "max-md:flex-col max-md:gap-9"
+      )}
+    >
+      <div className={cn("space-y-3 min-w-fit basis-2/3", "max-md:w-full")}>
         <h2 className="font-medium">Upcoming booking</h2>
         <div>
           <h3 className="font-semibold text-2xl leading-tight">{fullName}</h3>
