@@ -10,12 +10,15 @@ export async function POST(req: NextRequest) {
       const upcomingBooking = await db.booking.findFirst({
         where: {
           businessUserId,
+          date: {
+            gte: date,
+          },
           startTime: {
             gte: date,
           },
         },
         orderBy: {
-          startTime: "desc",
+          startTime: "asc",
         },
         include: {
           user: true,

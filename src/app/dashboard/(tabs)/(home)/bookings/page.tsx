@@ -2,6 +2,7 @@ import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookings";
 import {
   getDescendingBookings,
+  getUpcomingBooking,
   getUserWithBusinessData,
 } from "@/lib/query/serverQuery";
 import { Suspense } from "react";
@@ -12,14 +13,7 @@ export default async function DashboardBookings() {
   const user = await getUserWithBusinessData();
   const now = new Date();
   const bookings = await getDescendingBookings(user?.businessUser?.id);
-  const upcomingBookings = bookings?.filter((booking) => {
-    const bookingStartTime = new Date(booking.startTime);
-    return bookingStartTime > now;
-  });
-  const upcomingBooking =
-    upcomingBookings && upcomingBookings.length > 0
-      ? upcomingBookings[0]
-      : undefined;
+  const upcomingBooking = await getUpcomingBooking(user?.businessUser?.id, now);
 
   return (
     <div className="min-h-screen space-y-6">

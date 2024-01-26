@@ -54,10 +54,9 @@ export const useUpcomingBooking = (
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
       if (!date) throw Error("No date specified");
-      const descendingBookings = await getDescendingBookings(
-        businessUserId,
-        date
-      );
+      const descendingBookings = await getDescendingBookings(businessUserId, {
+        date,
+      });
 
       return descendingBookings;
     },

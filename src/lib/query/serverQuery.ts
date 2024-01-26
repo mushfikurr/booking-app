@@ -37,6 +37,35 @@ export const getDescendingBookings = cache(
   }
 );
 
+export const getUpcomingBooking = cache(
+  async (businessUserId: string | undefined, date: Date) => {
+    if (!businessUserId) {
+      return undefined;
+    }
+
+    const upcomingBooking = await db.booking.findFirst({
+      where: {
+        businessUserId,
+        date: {
+          gte: date,
+        },
+        startTime: {
+          gte: date,
+        },
+      },
+      orderBy: {
+        startTime: "asc",
+      },
+      include: {
+        user: true,
+        services: true,
+      },
+    });
+
+    return upcomingBooking;
+  }
+);
+
 export const getBookingsData = cache(async (businessId: string | undefined) => {
   if (!businessId) {
     console.error("No business id...");
