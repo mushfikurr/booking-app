@@ -23,15 +23,19 @@ import {
 import { DataTablePagination } from "./data-table-pagination";
 import React from "react";
 import { Input } from "./input";
+import { Loader2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  descFirst?: boolean;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  ...props
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -51,12 +55,13 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
+    sortDescFirst: props.descFirst,
   });
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div>
-        <div className="flex items-center py-4">
+        <div className="flex items-center pb-3 gap-4">
           <Input
             placeholder="Filter by name..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -65,6 +70,9 @@ export function DataTable<TData, TValue>({
             }
             className="max-w-sm"
           />
+          {props.isLoading && (
+            <Loader2 className="animate-spin text-foreground/60 h-5 w-5" />
+          )}
         </div>
         <div className="rounded-md border">
           <Table>

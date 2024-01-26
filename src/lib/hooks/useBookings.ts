@@ -37,11 +37,11 @@ export interface BookingIncludesUserAndServices extends BookingIncludesUser {
 }
 
 const getDescendingBookings = async (businessUserId: string, query?: any) => {
-  const resp = await axios.post("/api/booking/descending/first", {
+  const resp = await axios.post("/api/booking/upcoming", {
     businessUserId,
     ...query,
   });
-  return resp.data.bookings;
+  return resp.data.upcomingBooking;
 };
 
 export const useUpcomingBooking = (
@@ -59,7 +59,7 @@ export const useUpcomingBooking = (
         date
       );
 
-      return descendingBookings[descendingBookings.length - 1];
+      return descendingBookings;
     },
     {
       initialData: prefetchedBooking,

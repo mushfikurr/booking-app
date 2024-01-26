@@ -23,7 +23,7 @@ export function ActionsDropdown() {
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem className="gap-2">
-          <Scaling className="h-4 w-4" strokeWidth={1.8} />
+          <Scaling className="h-4 w-4 text-foreground/60" strokeWidth={1.8} />
           View
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -31,7 +31,7 @@ export function ActionsDropdown() {
           className="text-destructive gap-2 font-medium"
           onClick={() => navigator.clipboard.writeText("lol")}
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4 text-destructive/60" />
           Cancel
         </DropdownMenuItem>
       </DropdownMenuContent>

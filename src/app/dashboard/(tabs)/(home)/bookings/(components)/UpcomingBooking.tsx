@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import {
   BookingIncludesUserAndServices,
@@ -8,11 +7,11 @@ import {
 } from "@/lib/hooks/useBookings";
 import { cn, getHMFromDateTime, todayNoTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
-import { Search } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface UpcomingBooking {
   businessUserId: string;
-  prefetchedBooking: BookingIncludesUserAndServices;
+  prefetchedBooking?: BookingIncludesUserAndServices;
 }
 
 export function UpcomingBooking(props: UpcomingBooking) {
@@ -23,8 +22,10 @@ export function UpcomingBooking(props: UpcomingBooking) {
   );
   const user = booking.data?.user;
   const fullName = user?.name;
-  const startTime = new Date(booking.data?.startTime as Date);
-  const startTimeFormatted = getHMFromDateTime(startTime);
+  const startTime = booking.data?.startTime
+    ? new Date(booking.data.startTime)
+    : null;
+  const startTimeFormatted = startTime ? getHMFromDateTime(startTime) : "";
   const todayOrDate =
     startTime?.getDate() === todayNoTime().getDate()
       ? "today"
@@ -38,21 +39,27 @@ export function UpcomingBooking(props: UpcomingBooking) {
       )}
     >
       <div className={cn("space-y-3 min-w-fit basis-2/3", "max-md:w-full")}>
-        <h2 className="font-medium">Upcoming booking</h2>
+        <span className="inline-flex gap-2 items-center">
+          {booking.isFetching && (
+            <Loader2 className="animate-spin text-primary-foreground/60 h-4 w-4" />
+          )}
+          <h2 className="font-medium">Next booking</h2>
+        </span>
+
         <div>
           <h3 className="font-semibold text-2xl leading-tight">{fullName}</h3>
           <h5 className="font-normal text-primary-foreground/80">
             {startTimeFormatted} {todayOrDate}
           </h5>
         </div>
-        <Button variant="secondary" className="w-full gap-3 items-center">
+        {/* <Button variant="secondary" className="w-full gap-3 items-center">
           <Search
             size={16}
             strokeWidth={2.6}
             className="text-secondary-foreground/80"
           />
           Navigate to
-        </Button>
+        </Button> */}
       </div>
       <div className="flex w-full gap-4 justify-between">
         <ServicesCountTile services={booking.data?.services} />

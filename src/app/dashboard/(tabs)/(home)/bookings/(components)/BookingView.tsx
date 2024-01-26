@@ -2,19 +2,15 @@
 
 import { Empty } from "@/components/Empty";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { DataTable } from "@/components/ui/data-table";
 import {
   BookingIncludesUserAndServices,
   useDescendingBookingsForDay,
 } from "@/lib/hooks/useBookings";
-import { getHMFromDateTime } from "@/lib/utils";
-import Image from "next/image";
 import { useState } from "react";
-import PopoverTextButton from "./PopoverTextButton";
-import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./Columns";
+import PopoverTextButton from "./PopoverTextButton";
 
 interface BookingViewProps {
   prefetchedBookings: BookingIncludesUserAndServices[];
@@ -80,10 +76,6 @@ function BookingList(props: BookingListProps) {
     props.prefetchedBookings
   );
 
-  if (bookings.isLoading) {
-    return <LoadingSkeleton />;
-  }
-
   if (!bookings.data?.length) {
     return (
       <Empty className="grow h-full">
@@ -93,11 +85,11 @@ function BookingList(props: BookingListProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {/* {bookings.data?.map((booking) => (
-        <Booking key={booking.id} booking={booking} />
-      ))} */}
-      <DataTable columns={columns} data={bookings.data} />
-    </div>
+    <DataTable
+      columns={columns}
+      data={bookings.data}
+      descFirst={true}
+      isLoading={bookings.isFetching}
+    />
   );
 }

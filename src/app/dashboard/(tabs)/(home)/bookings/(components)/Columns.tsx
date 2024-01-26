@@ -3,7 +3,7 @@
 import { DataTableColumnHeader } from "@/components/ui/data-table-header";
 import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookings";
 import { getHMFromDateTime } from "@/lib/utils";
-import { Service, User } from "@prisma/client";
+import { Service } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ActionsDropdown } from "./ActionsDropdown";
 

@@ -3,12 +3,13 @@ import {
   ArrowDown10,
   ArrowDownAZ,
   ArrowDownIcon,
+  ArrowDownNarrowWide,
   ArrowDownZA,
   ArrowUpIcon,
   EyeOff,
   SortAscIcon,
 } from "lucide-react";
-import { Column } from "@tanstack/react-table";
+import { Column, SortDirection } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
 import {
@@ -35,6 +36,16 @@ export function DataTableColumnHeader<TData, TValue>({
     return <div className={cn(className)}>{title}</div>;
   }
 
+  const getIconForDirection = (direction: false | SortDirection) => {
+    const iconForDirection =
+      direction === "asc" ? (
+        <ArrowDown01 className="ml-2 h-4 w-4" />
+      ) : (
+        <ArrowDown10 className="ml-2 h-4 w-4" />
+      );
+    return iconForDirection;
+  };
+
   return (
     <div className={cn("flex items-center space-x-2", className)}>
       <DropdownMenu>
@@ -45,13 +56,9 @@ export function DataTableColumnHeader<TData, TValue>({
             className="-ml-3 h-8 data-[state=open]:bg-accent"
           >
             <span>{title}</span>
-            {column.getIsSorted() === "desc" ? (
-              <ArrowDown10 className="ml-2 h-4 w-4" />
-            ) : column.getIsSorted() === "asc" ? (
-              <ArrowDown01 className="ml-2 h-4 w-4" />
-            ) : (
-              <ArrowDown01 className="ml-2 h-4 w-4" />
-            )}
+            {column.getIsSorted()
+              ? getIconForDirection(column.getIsSorted())
+              : getIconForDirection(column.getFirstSortDir())}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">

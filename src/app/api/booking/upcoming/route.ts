@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
           },
         },
         orderBy: {
-          startTime: "asc",
+          startTime: "desc",
         },
         include: {
           user: true,
