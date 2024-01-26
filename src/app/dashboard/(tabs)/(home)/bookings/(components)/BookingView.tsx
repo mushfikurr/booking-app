@@ -6,13 +6,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-    BookingIncludesUserAndServices,
-    useDescendingBookingsForDay
+  BookingIncludesUserAndServices,
+  useDescendingBookingsForDay,
 } from "@/lib/hooks/useBookings";
 import { getHMFromDateTime } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 import PopoverTextButton from "./PopoverTextButton";
+import { DataTable } from "@/components/ui/data-table";
+import { columns } from "./Columns";
 
 interface BookingViewProps {
   prefetchedBookings: BookingIncludesUserAndServices[];
@@ -92,48 +94,10 @@ function BookingList(props: BookingListProps) {
 
   return (
     <div className="space-y-4">
-      {bookings.data?.map((booking) => (
+      {/* {bookings.data?.map((booking) => (
         <Booking key={booking.id} booking={booking} />
-      ))}
-    </div>
-  );
-}
-
-function Booking({ booking }: { booking: BookingIncludesUserAndServices }) {
-  const servicesString = booking.services
-    .map((service) => service.name)
-    .join(", ");
-  const nameSplit = booking.user?.name ? booking.user?.name?.split(" ") : "";
-  const nameInitials =
-    nameSplit.length > 1 ? nameSplit[0][0] + nameSplit[1][0] : nameSplit[0][0];
-  const formattedTimeRange = `${getHMFromDateTime(
-    booking.startTime
-  )} - ${getHMFromDateTime(booking.endTime)}`;
-
-  return (
-    <div className="space-y-2">
-      <p className="text-foreground/80">{formattedTimeRange}</p>
-      <div className="flex justify-between items-center border border-border rounded-lg p-4">
-        <div className="flex gap-5 drop-shadow-sm grow">
-          <Avatar>
-            <AvatarImage asChild>
-              <Image src="https://picsum.photos/200" alt="Avatar Image" />
-            </AvatarImage>
-            <AvatarFallback>{nameInitials}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col justify-center gap-1">
-            <h3 className="text-sm font-medium leading-tight">
-              {booking.user.name}
-            </h3>
-            <p className="max-sm:line-clamp-1 truncate text-sm text-muted-foreground">
-              {servicesString}
-            </p>
-          </div>
-        </div>
-        <div>
-          <Button>Hello</Button>
-        </div>
-      </div>
+      ))} */}
+      <DataTable columns={columns} data={bookings.data} />
     </div>
   );
 }

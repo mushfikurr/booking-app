@@ -323,7 +323,7 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
 
   return (
     <>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 max-sm:flex-col max-sm:items-start">
         <div>
           <Toggle
             pressed={isOpen}
@@ -340,7 +340,7 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
         </div>
 
         {isOpen ? (
-          <div className="flex items-center gap-4 border border-border w-full p-3 rounded-sm">
+          <div className="flex items-center gap-4 border border-border w-full p-3 rounded-sm max-sm:flex-col max-sm:items-start">
             <div className="flex-grow">
               <h5 className="uppercase text-xs text-muted-foreground font-semibold">
                 {isOpen ? "Open" : "Closed"}
@@ -352,7 +352,7 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
               <Input
                 id="startTime"
                 className={cn(
-                  "w-20 text-center",
+                  "w-20 text-center max-sm:w-full",
                   fromInputStateErrors &&
                     fromInputStateErrors?.length > 0 &&
                     "border-destructive"
@@ -372,7 +372,7 @@ const DayOpeningHours: FC<DayOpeningHoursProps> = ({
               <Input
                 id="endTime"
                 className={cn(
-                  "w-20 text-center",
+                  "w-20 text-center max-sm:w-full",
                   toInputStateErrors &&
                     toInputStateErrors?.length > 0 &&
                     "border-destructive"
