@@ -17,7 +17,7 @@ export const useBookingsForDay = (
   prefetchedBookings?: Booking[]
 ) => {
   return useQuery<Booking[], Error>(
-    ["bookings", selectedDay.toISOString()],
+    ["bookings", businessUserId, selectedDay.toISOString()],
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
       return await getBookingsForDay(businessUserId, selectedDay);
@@ -50,7 +50,7 @@ export const useUpcomingBooking = (
   prefetchedBooking?: BookingIncludesUserAndServices
 ) => {
   return useQuery<BookingIncludesUserAndServices, Error>(
-    ["bookings", "descending"],
+    ["bookings", businessUserId, "descending"],
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
       if (!date) throw Error("No date specified");
@@ -83,7 +83,7 @@ export const useDescendingBookingsForDay = (
   prefetchedBookings?: BookingIncludesUserAndServices[]
 ) => {
   return useQuery<BookingIncludesUserAndServices[], Error>(
-    ["bookings", "descending", selectedDate.toISOString()],
+    ["bookings", businessUserId, "descending", selectedDate.toISOString()],
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
       const dateComparator = dateNoTime(selectedDate);

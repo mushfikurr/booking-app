@@ -18,7 +18,7 @@ export default function OverviewBookings({
   businessUserId: string | undefined;
 }) {
   const { data, isLoading } = useQuery(
-    ["booking"],
+    ["bookings"],
     async () => {
       return await getBookings(businessUserId);
     },

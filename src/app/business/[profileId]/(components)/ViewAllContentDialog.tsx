@@ -5,7 +5,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/custom-dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollableArea } from "./BookingDialog";

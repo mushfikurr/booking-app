@@ -1,7 +1,7 @@
 "use client";
 
 import { DataTableColumnHeader } from "@/components/ui/data-table-header";
-import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookings";
+import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookingsForBusiness";
 import { getHMFromDateTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
@@ -15,7 +15,7 @@ export const columns: ColumnDef<BookingIncludesUserAndServices>[] = [
 
       return (
         <div className="w-fit">
-          <ActionsDropdown />
+          <ActionsDropdown booking={booking} />
         </div>
       );
     },

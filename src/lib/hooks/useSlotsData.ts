@@ -1,5 +1,5 @@
 import { daysOfWeek } from "../utils";
-import { useBookingsForDay } from "./useBookings";
+import { useBookingsForDay } from "./useBookingsForBusiness";
 import { useSingleOpeningHours } from "./useOpeningHour";
 
 const useSlotsData = (businessUserId: string, selectedDay: Date) => {

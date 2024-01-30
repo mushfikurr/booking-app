@@ -3,22 +3,11 @@
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Calendar,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Clock,
-  Contact,
-  GanttChart,
-  Home,
   LucideIcon,
-  MapPin,
   Menu,
-  Scissors,
-  Smartphone,
-  User2,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,50 +22,28 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Toggle } from "./ui/toggle";
 
-interface MenuItem {
+export interface MenuItem {
   title: string;
   Icon: LucideIcon;
   link: string;
 }
 
-interface SubmenuProps {
+export interface SubmenuProps {
   HeaderIcon: LucideIcon;
   headerText: string;
   menuItems: MenuItem[];
 }
 
-const SUBMENU_PROPS: SubmenuProps[] = [
-  {
-    HeaderIcon: Home,
-    headerText: "Home",
-    menuItems: [
-      { title: "Overview", Icon: GanttChart, link: "/overview" },
-      { title: "Bookings", Icon: Calendar, link: "/bookings" },
-      { title: "Services", Icon: Scissors, link: "/services" },
-    ],
-  },
-  {
-    HeaderIcon: Contact,
-    headerText: "Edit Profile",
-    menuItems: [
-      { title: "Personal", Icon: User2, link: "/editProfile/personal" },
-      { title: "Location", Icon: MapPin, link: "/editProfile/location" },
-      { title: "Contact", Icon: Smartphone, link: "/editProfile/contact" },
-      {
-        title: "Opening Hours",
-        Icon: Clock,
-        link: "/editProfile/openinghours",
-      },
-    ],
-  },
-];
-
 const BREAKPOINTS = { mobile: 640, tablet: 768, desktop: 1280 };
 
-export default function Sidebar({
+export function Sidebar({
+  title,
+  submenuData,
   condense,
   forceNoCondense,
 }: {
+  title: string;
+  submenuData: SubmenuProps[];
   condense?: boolean;
   forceNoCondense?: boolean;
 }) {
@@ -94,6 +61,7 @@ export default function Sidebar({
       <CondensedSidebar
         setCondensedSidebar={setCondensedSidebar}
         isMobile={isMobile}
+        submenuData={submenuData}
       />
     );
   }
@@ -103,7 +71,7 @@ export default function Sidebar({
       <div className="px-8 py-10 pb-0">
         <span className="flex justify-between gap-2 items-center">
           <h1 className="text-2xl font-bold tracking-tight leading-none">
-            Dashboard
+            {title}
           </h1>
 
           <ChevronLeft
@@ -113,7 +81,7 @@ export default function Sidebar({
         </span>
       </div>
       <div className="space-y-5 h-auto">
-        {SUBMENU_PROPS.map((submenu) => (
+        {submenuData.map((submenu) => (
           <Submenu
             headerText={submenu.headerText}
             HeaderIcon={submenu.HeaderIcon}
@@ -198,7 +166,7 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
   };
 
   return (
-    <Link href={"/dashboard/" + link} passHref>
+    <Link href={link} passHref>
       {renderSelected()}
     </Link>
   );
@@ -207,9 +175,11 @@ function SubmenuItem({ title, Icon, link }: MenuItem) {
 function CondensedSidebar({
   isMobile,
   setCondensedSidebar,
+  submenuData,
 }: {
   isMobile: boolean;
   setCondensedSidebar: (condensed: boolean) => void;
+  submenuData: SubmenuProps[];
 }) {
   return (
     <div className="flex flex-col items-center bg-accent/50 min-w-[4rem] max-w-[8rem] gap-6 h-full z-10 min-h-screen overflow-hidden sticky top-0 left-0 pt-20">
@@ -222,7 +192,11 @@ function CondensedSidebar({
           </SheetTrigger>
           <SheetContent side="left" className="bg-accent">
             <div>
-              <Sidebar condense={false} forceNoCondense={true} />
+              <Sidebar
+                condense={false}
+                forceNoCondense={true}
+                submenuData={submenuData}
+              />
             </div>
           </SheetContent>
         </Sheet>
@@ -236,7 +210,7 @@ function CondensedSidebar({
         </Button>
       )}
 
-      {SUBMENU_PROPS.map((submenu, idx) => (
+      {submenuData.map((submenu, idx) => (
         <CondensedSubmenu
           headerText={submenu.headerText}
           HeaderIcon={submenu.HeaderIcon}

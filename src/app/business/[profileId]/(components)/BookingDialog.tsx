@@ -9,9 +9,12 @@ import {
 } from "@/components/ui/custom-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import autoAnimate from "@formkit/auto-animate";
 import { BusinessUser, Service } from "@prisma/client";
 import { ScissorsLineDashed } from "lucide-react";
+import { PropsWithChildren, forwardRef, useEffect, useRef } from "react";
 import { ChooseServices } from "./(dialogPages)/AddServices";
+import ChooseSlot from "./(dialogPages)/ChooseSlot";
 import { AddServices } from "./(dialogPages)/InitialViewService";
 import { ReviewBooking } from "./(dialogPages)/ReviewBooking";
 import { BackButton } from "./BackButton";
@@ -21,10 +24,6 @@ import {
   useBookingDialogContext,
 } from "./BookingDialogContext";
 import { Statistics } from "./Statistics";
-import ChooseSlot from "./(dialogPages)/ChooseSlot";
-import { PropsWithChildren, forwardRef, useEffect, useRef } from "react";
-import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
-import autoAnimate from "@formkit/auto-animate";
 
 interface StartBookingButtonProps {
   children: React.ReactNode;

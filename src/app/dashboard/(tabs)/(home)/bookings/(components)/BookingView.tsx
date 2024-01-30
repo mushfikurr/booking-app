@@ -1,13 +1,14 @@
 "use client";
 
 import { Empty } from "@/components/Empty";
-import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { DataTable } from "@/components/ui/data-table";
 import {
   BookingIncludesUserAndServices,
   useDescendingBookingsForDay,
-} from "@/lib/hooks/useBookings";
+} from "@/lib/hooks/useBookingsForBusiness";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { columns } from "./Columns";
 import PopoverTextButton from "./PopoverTextButton";
@@ -53,11 +54,45 @@ export function BookingView(props: BookingViewProps) {
     );
   };
 
+  const handleChevronClick = (direction: "left" | "right") => {
+    if (selectedDate) {
+      const directionAsNumber = direction === "left" ? -1 : 1;
+      setSelectedDate(
+        new Date(
+          selectedDate.setDate(selectedDate.getDate() + directionAsNumber)
+        )
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <PopoverTextButton displayContent={displayCalendar()} className="w-fit">
-        {selectedDayDisplayString}
-      </PopoverTextButton>
+      <div className="flex items-center gap-3">
+        <PopoverTextButton displayContent={displayCalendar()} className="w-fit">
+          {selectedDayDisplayString}
+        </PopoverTextButton>
+        <span className="inline-flex gap-2 items-center">
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => {
+              handleChevronClick("left");
+            }}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="outline"
+            onClick={() => {
+              handleChevronClick("right");
+            }}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </span>
+      </div>
+
       {displayBookingList()}
     </div>
   );

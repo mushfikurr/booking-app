@@ -1,6 +1,9 @@
 "use client";
 
-import { useOpeningHours } from "@/lib/hooks/useOpeningHour";
+import {
+  useOpeningHours,
+  useSingleOpeningHours,
+} from "@/lib/hooks/useOpeningHour";
 import { daysOfWeek, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { Clock } from "lucide-react";
@@ -21,14 +24,10 @@ export default function OpenFromCard({
   const prefetchedOpeningHour = prefetchedOpeningHours?.find(
     (o: OpeningHour) => o.dayOfWeek === todaysString
   );
-  const selectDay: Partial<OpeningHour> = {
-    dayOfWeek: todaysString,
-  };
-  const { data, isLoading } = useOpeningHours(
+  const { data, isLoading } = useSingleOpeningHours(
+    today.getDay(),
     businessId,
-    prefetchedOpeningHour,
-    today.toISOString(),
-    selectDay
+    prefetchedOpeningHour
   );
 
   const dateToDDHHMM = (date: Date) => {

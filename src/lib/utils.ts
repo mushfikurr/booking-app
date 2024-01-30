@@ -5,6 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function googleMapsUrl(params: Record<string, string>) {
+  const baseUrl = "http://maps.google.com/maps";
+  const searchParams = new URLSearchParams(params).toString();
+  return baseUrl + "?" + searchParams;
+}
+
 export function getHMFromDateTime(value: string | number | Date) {
   if (value) return new Date(value).toISOString().slice(11, 16);
   else return "";

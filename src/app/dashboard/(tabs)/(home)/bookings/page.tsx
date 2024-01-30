@@ -1,5 +1,5 @@
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
-import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookings";
+import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookingsForBusiness";
 import {
   getDescendingBookings,
   getUpcomingBooking,

@@ -4,7 +4,7 @@ import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import {
   BookingIncludesUserAndServices,
   useUpcomingBooking,
-} from "@/lib/hooks/useBookings";
+} from "@/lib/hooks/useBookingsForBusiness";
 import { cn, getHMFromDateTime, todayNoTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Loader2 } from "lucide-react";
