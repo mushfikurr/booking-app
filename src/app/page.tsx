@@ -1,11 +1,14 @@
-import { DateDropdown, LocationDropdown } from "@/components/Dropdown";
 import { TextLink } from "@/components/TextLink";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight } from "lucide-react";
+import { Search } from "lucide-react";
 import Image from "next/image";
 import haircut from "../../public/assets/haircut-2.jpg";
+import { db } from "@/lib/db";
+import { FeaturedBusiness } from "@/components/FeaturedService";
 
-export default function Home() {
+export default async function Home() {
+  const top3Businesses = await db.businessUser.findMany({ take: 3 });
+
   return (
     <main className="container max-w-7xl h-full pt-28 antialiased min-h-screen max-sm:px-0 max-sm:pt-[66px] pb-8">
       <div className="flex flex-col gap-8">
@@ -20,7 +23,7 @@ export default function Home() {
                   </h5>
                 </span>
               </h1>
-              <div className="flex flex-col gap-2 ">
+              {/* <div className="flex flex-col gap-2 ">
                 <div className="flex gap-3 max-w-lg bg-background backdrop-blur-xl p-3 rounded-md max-sm:flex-col">
                   <div className="flex gap-3 grow">
                     <LocationDropdown />
@@ -30,7 +33,11 @@ export default function Home() {
                     <span className="pt-[1.5px]">Search</span>
                   </Button>
                 </div>
-              </div>
+              </div> */}
+              <Button variant="secondary" size="lg" className="w-fit gap-3">
+                <Search className="h-4 w-4" />
+                Search for businesses
+              </Button>
             </div>
             <Image
               className="animate-in fade-in slide-in-from-right-4 transition-all duration-700 ease-in-out group-hover/header:brightness-125 brightness-100 object-fit z-1 left-60 absolute -top-10 -z-10"
@@ -47,32 +54,10 @@ export default function Home() {
             Featured services
           </TextLink>
 
-          <div className="space-y-6 sm:grid grid-cols-3 gap-8">
-            <div className="flex flex-col border border-border rounded-lg py-4 group/item">
-              <div className="flex-grow h-32"></div>
-              <div className="flex container justify-between items-center">
-                <div>
-                  <h3 className="text-sm">Dummy Data</h3>
-                  <p className="text-xs text-foreground/70">
-                    Whitechapel, London
-                  </p>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-foreground/50 group-hover/item:text-foreground/100 transition duration-200 ease-in-out" />
-              </div>
-            </div>
-
-            <div className="flex flex-col border border-border rounded-lg py-4 group/item">
-              <div className="flex-grow h-32"></div>
-              <div className="flex container justify-between items-center">
-                <div>
-                  <h3 className="text-sm">Dummy Data</h3>
-                  <p className="text-xs text-foreground/70">
-                    Whitechapel, London
-                  </p>
-                </div>
-                <ArrowUpRight className="h-5 w-5 text-foreground/50 group-hover/item:text-foreground/100 transition duration-200 ease-in-out" />
-              </div>
-            </div>
+          <div className="grid-auto-fit grid">
+            {top3Businesses.map((b) => {
+              return <FeaturedBusiness key={b.id} {...b} />;
+            })}
           </div>
         </div>
       </div>

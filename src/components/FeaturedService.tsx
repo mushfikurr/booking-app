@@ -1,31 +1,23 @@
-import { ArrowRight } from "lucide-react";
+import { BusinessUser } from "@prisma/client";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import { FC } from "react";
 
-interface FeaturedServiceProps {
-  id: number;
-  name: string;
-  location: string;
-  rating: string;
-}
-
-const FeaturedService: FC<FeaturedServiceProps> = ({
-  id,
-  name,
-  location,
-  rating,
-}) => {
+export const FeaturedBusiness: FC<BusinessUser> = (
+  businessUser: BusinessUser
+) => {
   return (
-    <div className="flex flex-col border border-border rounded-md py-4 group">
+    <Link href={"/business/"} className="flex flex-col border border-border rounded-lg py-4 group/item">
       <div className="flex-grow h-32"></div>
       <div className="flex container justify-between items-center">
         <div>
-          <h3 className="text-sm">{name}</h3>
-          <p className="text-xs text-foreground/70">{location}</p>
+          <h3 className="text-sm">{businessUser.profileId}</h3>
+          <p className="text-xs text-foreground/70">
+            {businessUser.streetAddress1}
+          </p>
         </div>
-        <ArrowRight className="h-5 w-5 text-foreground/50 group-hover:text-foreground/100" />
+        <ArrowUpRight className="h-5 w-5 text-foreground/50 group-hover/item:text-foreground/100 transition duration-200 ease-in-out" />
       </div>
-    </div>
+    </Link>
   );
 };
-
-export default FeaturedService;
