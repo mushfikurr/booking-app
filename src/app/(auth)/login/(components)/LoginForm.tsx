@@ -28,7 +28,6 @@ const LoginForm = () => {
       const callback = await signIn("credentials", {
         ...payload,
         redirect: false,
-        callbackUrl: "http://localhost:3000/",
       });
 
       if (callback?.error) {

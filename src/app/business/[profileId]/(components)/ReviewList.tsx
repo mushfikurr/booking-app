@@ -8,8 +8,6 @@ export interface DummyReview {
   reviewDate: string;
 }
 
-type ReviewsProps = DummyReview[];
-
 const dummyReviews: DummyReview[] = [
   // {
   //   name: "John Doe",

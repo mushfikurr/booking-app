@@ -1,6 +1,9 @@
 "use client";
 
+import { useDebounce } from "@/lib/hooks/useDebounce";
+import { useSearchBusiness } from "@/lib/hooks/useSearch";
 import { Calendar, ChevronDown, Loader2, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Command,
   CommandEmpty,
@@ -9,22 +12,17 @@ import {
   CommandItem,
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { useEffect, useState } from "react";
-import { User } from "@prisma/client";
-import { useDebounce } from "@/lib/hooks/useDebounce";
-import { useSearchBusiness } from "@/lib/hooks/useSearch";
 
 export function LocationDropdown() {
   const [filter, setFilter] = useState("");
   const debouncedFilter = useDebounce(filter, 3000);
   const query = useSearchBusiness(debouncedFilter);
-  console.log(query.data);
 
   useEffect(() => {
     if (debouncedFilter || !debouncedFilter.length) {
       query.refetch();
     }
-  }, [debouncedFilter]);
+  }, [query, debouncedFilter]);
 
   return (
     <Popover>

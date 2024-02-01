@@ -6,13 +6,11 @@ import { LucideIcon } from "lucide-react";
 interface ContactClipboardButtonProps {
   Icon: LucideIcon;
   name: string;
-  toClipboard?: string;
 }
 
 export function ContactClipboardButton({
   Icon,
   name,
-  toClipboard,
 }: ContactClipboardButtonProps) {
   const copyToClipboard = () => {
     console.log("Copied to clipboard");

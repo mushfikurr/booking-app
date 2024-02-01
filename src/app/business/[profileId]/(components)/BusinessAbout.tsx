@@ -4,12 +4,12 @@ import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-interface BusinessAbout {
+interface BusinessAboutProps {
   businessTitle?: string | null;
   about: string;
 }
 
-export function BusinessAbout({ businessTitle, about }: BusinessAbout) {
+export function BusinessAbout({ businessTitle, about }: BusinessAboutProps) {
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
     setIsOpen(!isOpen);

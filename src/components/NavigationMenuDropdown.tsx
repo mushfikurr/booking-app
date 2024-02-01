@@ -1,10 +1,5 @@
 import { cn } from "@/lib/utils";
-import {
-  Activity,
-  LogOut,
-  LucideIcon,
-  User2
-} from "lucide-react";
+import { Activity, LogOut, LucideIcon, User2 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";

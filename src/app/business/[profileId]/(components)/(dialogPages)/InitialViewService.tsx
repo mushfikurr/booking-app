@@ -1,15 +1,14 @@
 import { Empty } from "@/components/Empty";
-import { Button } from "@/components/ui/button";
+import autoAnimate from "@formkit/auto-animate";
 import { Service } from "@prisma/client";
+import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
 import { Plus } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import IconButton from "../IconButton";
-import { RemovableServiceCard } from "../ServiceCard";
-import { useEffect, useRef } from "react";
-import { ScrollAreaElement } from "@radix-ui/react-scroll-area";
-import autoAnimate from "@formkit/auto-animate";
 import { NextButton } from "../NextButton";
+import { RemovableServiceCard } from "../ServiceCard";
 
 export function AddServices() {
   const { businessUser, services, setServices, setCurrentPageState, setTitle } =
@@ -19,7 +18,7 @@ export function AddServices() {
   const scrollAreaRef = useRef<ScrollAreaElement>(null);
   useEffect(() => {
     scrollAreaRef.current && autoAnimate(scrollAreaRef.current);
-  }, [parent]);
+  }, [scrollAreaRef]);
 
   const handleRemoveService = (service: Service) => {
     setServices(services.filter((o) => o.id !== service.id));

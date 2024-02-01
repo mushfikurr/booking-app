@@ -1,4 +1,3 @@
-import axios from "axios";
 import * as z from "zod";
 
 export const RegistrationSchema = z

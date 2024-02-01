@@ -9,12 +9,12 @@ import { cn, getHMFromDateTime, todayNoTime } from "@/lib/utils";
 import { Service } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 
-interface UpcomingBooking {
+interface UpcomingBookingProps {
   businessUserId: string;
   prefetchedBooking?: BookingIncludesUserAndServices;
 }
 
-export function UpcomingBooking(props: UpcomingBooking) {
+export function UpcomingBooking(props: UpcomingBookingProps) {
   const booking = useUpcomingBooking(
     new Date(),
     props.businessUserId,
@@ -86,10 +86,11 @@ function ServicesCountTile({ services }: { services?: Service[] }) {
 }
 
 function ServicesWaitTile({ services }: { services?: Service[] }) {
+  const { totalWait } = useBookingStatistics(services ?? []);
+
   if (!services) {
     return;
   }
-  const { totalWait } = useBookingStatistics(services);
   const label = "long";
 
   return (
@@ -101,11 +102,12 @@ function ServicesWaitTile({ services }: { services?: Service[] }) {
 }
 
 function ServicesCostTile({ services }: { services?: Service[] }) {
+  const { totalCost } = useBookingStatistics(services ?? []);
+  const label = "in revenue";
+
   if (!services) {
     return;
   }
-  const { totalCost } = useBookingStatistics(services);
-  const label = "in revenue";
 
   return (
     <div className="text-center space-y-2">

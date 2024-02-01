@@ -9,7 +9,7 @@ interface LayoutProps {
 }
 
 const Providers: FC<LayoutProps> = ({ children }) => {
-  const [queryClient, setQueryClient] = useState(() => new QueryClient());
+  const [queryClient, _] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>{children}</SessionProvider>

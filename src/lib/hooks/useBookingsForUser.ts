@@ -1,4 +1,4 @@
-import { Booking, BusinessUser, Service, User } from "@prisma/client";
+import { Booking, BusinessUser, Service } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 

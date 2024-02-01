@@ -1,9 +1,8 @@
+import { Empty } from "@/components/Empty";
 import { getServices } from "@/lib/query/serverQuery";
 import { BusinessUser } from "@prisma/client";
 import { BookingServiceCard } from "./ServiceCard";
 import { ViewAllContent } from "./ViewAllContentDialog";
-import { Empty } from "@/components/Empty";
-import { StartBooking } from "./BookingDialog";
 
 interface ServicesDisplayProps {
   businessUser: BusinessUser;

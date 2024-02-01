@@ -8,7 +8,7 @@ import { NextButton } from "../NextButton";
 import { SelectableServiceCard } from "../ServiceCard";
 
 export function ChooseServices() {
-  const { setTitle, businessUser, services, setServices, setCurrentPageState } =
+  const { setTitle, businessUser, services, setServices } =
     useBookingDialogContext();
   setTitle("Choose services to add to your booking");
 

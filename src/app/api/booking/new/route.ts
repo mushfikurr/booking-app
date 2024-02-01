@@ -1,18 +1,7 @@
 import { db } from "@/lib/db";
 import { Slot } from "@/lib/hooks/useSlots";
-import { convertStringToDatetime } from "@/lib/utils";
 import { Service } from "@prisma/client";
-import {
-  PrismaClientInitializationError,
-  PrismaClientKnownRequestError,
-  PrismaClientValidationError,
-} from "@prisma/client/runtime/library";
 import { NextRequest, NextResponse } from "next/server";
-
-type PrismaError =
-  | PrismaClientValidationError
-  | PrismaClientKnownRequestError
-  | PrismaClientInitializationError;
 
 interface BookingPOST {
   services: Service[];

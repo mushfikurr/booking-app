@@ -151,6 +151,7 @@ export const BookingDialogProvider: React.FC<BookingDialogProviderProps> = ({
       isError: mutation.isError,
     }),
     [
+      submit,
       open,
       title,
       setTitle,

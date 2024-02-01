@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "sst bind next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -65,6 +65,9 @@
     "prisma": "^5.3.1",
     "tailwindcss": "latest",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "sst": "^2.40.1",
+    "aws-cdk-lib": "2.124.0",
+    "constructs": "10.3.0"
   }
 }

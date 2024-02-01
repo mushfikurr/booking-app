@@ -1,6 +1,9 @@
 import { Service } from "@prisma/client";
 
 export function useBookingStatistics(services: Service[]) {
+  if (!services.length) {
+    return { totalCost: 0, totalWait: 0 };
+  }
   const totalCost = services.reduce(
     (i, service) => i + parseFloat(service.price),
     0

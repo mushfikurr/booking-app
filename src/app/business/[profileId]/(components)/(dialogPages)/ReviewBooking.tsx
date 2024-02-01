@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import { cn, daysOfWeek, getHMFromDateTime } from "@/lib/utils";
@@ -15,19 +14,12 @@ import {
 import { BookingDialogFooter, ScrollableArea } from "../BookingDialog";
 import { useBookingDialogContext } from "../BookingDialogContext";
 import IconButton from "../IconButton";
-import { ServiceCardRoot } from "../ServiceCard";
 import { NextButton } from "../NextButton";
+import { ServiceCardRoot } from "../ServiceCard";
 
 export function ReviewBooking() {
-  const {
-    setTitle,
-    services,
-    slot,
-    setCurrentPageState,
-    submit,
-    isLoading,
-    isError,
-  } = useBookingDialogContext();
+  const { setTitle, services, slot, setCurrentPageState, submit, isLoading } =
+    useBookingDialogContext();
   const { totalCost, totalWait } = useBookingStatistics(services);
   setTitle("Review booking details");
 
@@ -102,7 +94,7 @@ export function ReviewBooking() {
 }
 
 interface ReviewEntryProps {
-  value: string;
+  value: React.ReactNode;
   title: string;
   Icon: LucideIcon;
   className?: string;

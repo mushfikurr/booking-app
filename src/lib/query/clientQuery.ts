@@ -1,7 +1,7 @@
 "use client";
 
 import { OpeningHoursInputState } from "@/components/openingHours/OpeningHoursDisplay";
-import { OpeningHour, Service } from "@prisma/client";
+import { OpeningHour } from "@prisma/client";
 import axios from "axios";
 import { z } from "zod";
 import {

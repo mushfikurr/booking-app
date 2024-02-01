@@ -1,26 +1,23 @@
 "use client";
 
-import { BusinessRegistrationLocationSchema } from "@/lib/schema/register-form-schema";
-import { Building2 } from "lucide-react";
-import {
-  CaptureForm,
-  CaptureFormProps,
-} from "../../../../../../components/CaptureForm";
+import { CaptureForm, CaptureFormProps } from "@/components/CaptureForm";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../../../../../components/ui/card";
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import { updateLocationDetailsForUser } from "@/lib/query/clientQuery";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { z } from "zod";
-import { EditProfileLocationSchema } from "@/lib/schema/edit-profile-schema";
-import { AxiosError } from "axios";
-import { toast } from "../../../../../../components/ui/use-toast";
+} from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 import { useBusinessUser } from "@/lib/hooks/useBusinessUser";
+import { updateLocationDetailsForUser } from "@/lib/query/clientQuery";
+import { UserWithBusinessUser } from "@/lib/relational-model-type";
+import { EditProfileLocationSchema } from "@/lib/schema/edit-profile-schema";
+import { BusinessRegistrationLocationSchema } from "@/lib/schema/register-form-schema";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Building2 } from "lucide-react";
+import { z } from "zod";
 
 export default function EditProfileLocationForm({
   prefetchedUser,
@@ -31,6 +28,7 @@ export default function EditProfileLocationForm({
     prefetchedUser.id,
     prefetchedUser
   );
+  const { toast } = useToast();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({

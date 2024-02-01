@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import autoAnimate from "@formkit/auto-animate";
 import { BusinessUser, Service } from "@prisma/client";
 import { ScissorsLineDashed } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { PropsWithChildren, forwardRef, useEffect, useRef } from "react";
 import { ChooseServices } from "./(dialogPages)/AddServices";
 import ChooseSlot from "./(dialogPages)/ChooseSlot";
@@ -24,6 +26,8 @@ import {
   useBookingDialogContext,
 } from "./BookingDialogContext";
 import { Statistics } from "./Statistics";
+
+type SessionStatus = "authenticated" | "unauthenticated" | "loading";
 
 interface StartBookingButtonProps {
   children: React.ReactNode;
@@ -45,14 +49,30 @@ export function StartBooking({
 
 function DialogConsumer({ children }: { children: React.ReactNode }) {
   const { open, setOpen } = useBookingDialogContext();
+  const session = useSession();
+  const sessionStatus = session.status;
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <BookingDialog />
-    </Dialog>
-  );
+  if (sessionStatus === "unauthenticated") {
+    return (
+      <StartBookingUnauthenticated>{children}</StartBookingUnauthenticated>
+    );
+  } else if (sessionStatus === "authenticated") {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <BookingDialog />
+      </Dialog>
+    );
+  }
 }
+
+const StartBookingUnauthenticated = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return <Link href="/login">{children}</Link>;
+};
 
 export const mapPageTypeToComponent: Map<PageType, any> = new Map([
   ["addServices", AddServices],
@@ -87,7 +107,7 @@ function BookingDialog() {
   );
 }
 
-interface BookingDialogFooter {
+interface BookingDialogFooterProps {
   services?: Service[];
   children?: React.ReactNode;
 }
@@ -95,7 +115,7 @@ interface BookingDialogFooter {
 export function BookingDialogFooter({
   children,
   ...props
-}: BookingDialogFooter) {
+}: BookingDialogFooterProps) {
   return (
     <div className="border-t">
       <div className="px-6 py-3 flex justify-between">
@@ -118,7 +138,7 @@ export const ScrollableArea = forwardRef<
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     scrollAreaRef.current && autoAnimate(scrollAreaRef.current);
-  }, [parent]);
+  }, [scrollAreaRef]);
 
   return (
     <ScrollArea ref={forwardedRef}>

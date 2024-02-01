@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { ScrollableArea } from "./BookingDialog";
 
-interface ViewAllContent {
+interface ViewAllContentProps {
   classNames?: string;
   title: string;
   children: React.ReactNode[];
@@ -19,7 +19,7 @@ export function ViewAllContent({
   children,
   title,
   classNames,
-}: ViewAllContent) {
+}: ViewAllContentProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>

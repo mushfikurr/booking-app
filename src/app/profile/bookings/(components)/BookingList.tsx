@@ -3,8 +3,8 @@
 import { TextLink } from "@/components/TextLink";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import {
-    BookingIncludesServicesAndBusiness,
-    useBookingsForUser,
+  BookingIncludesServicesAndBusiness,
+  useBookingsForUser,
 } from "@/lib/hooks/useBookingsForUser";
 import { cn, getHMFromDateTime, googleMapsUrl } from "@/lib/utils";
 import autoAnimate from "@formkit/auto-animate";
@@ -14,11 +14,11 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { ActionsDropdown } from "./ActionsDropdown";
 
-interface BookingList {
+interface BookingListProps {
   prefetchedBookings: BookingIncludesServicesAndBusiness[];
 }
 
-export function BookingList({ ...props }: BookingList) {
+export function BookingList({ ...props }: BookingListProps) {
   const session = useSession();
   const bookings = useBookingsForUser(
     session.data?.user?.id,

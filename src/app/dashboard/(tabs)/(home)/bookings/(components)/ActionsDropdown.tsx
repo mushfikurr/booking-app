@@ -180,7 +180,7 @@ function ViewDialog(props: ViewDialogProps) {
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>{booking.user.name}'s booking</DialogTitle>
+        <DialogTitle>{booking.user.name}&apos;s booking</DialogTitle>
       </DialogHeader>
       <ScrollableArea>
         <div className="space-y-2">

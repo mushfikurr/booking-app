@@ -6,17 +6,15 @@ import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { cn } from "@/lib/utils";
 import { MapPin } from "lucide-react";
 import { StartBooking } from "./BookingDialog";
+import { useSession } from "next-auth/react";
 
 interface BusinessTitleProps {
   businessUser: UserWithBusinessUser;
-  callToAction?: () => void;
 }
 
-export function BusinessTitle({
-  businessUser,
-  callToAction,
-}: BusinessTitleProps) {
+export function BusinessTitle({ businessUser }: BusinessTitleProps) {
   const title = businessUser?.user.name;
+  const session = useSession();
 
   return (
     <div

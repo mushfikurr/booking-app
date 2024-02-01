@@ -34,8 +34,6 @@ export interface SubmenuProps {
   menuItems: MenuItem[];
 }
 
-const BREAKPOINTS = { mobile: 640, tablet: 768, desktop: 1280 };
-
 export function Sidebar({
   title,
   submenuData,
@@ -54,7 +52,7 @@ export function Sidebar({
     if (isMobile && !forceNoCondense) {
       setCondensedSidebar(true);
     }
-  }, [isMobile]);
+  }, [isMobile, forceNoCondense]);
 
   if (condensedSidebar) {
     return (
@@ -193,6 +191,7 @@ function CondensedSidebar({
           <SheetContent side="left" className="bg-accent">
             <div>
               <Sidebar
+                title="Dashboard"
                 condense={false}
                 forceNoCondense={true}
                 submenuData={submenuData}

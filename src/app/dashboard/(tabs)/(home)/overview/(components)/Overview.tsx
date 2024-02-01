@@ -27,7 +27,7 @@ export default async function Overview({
               businessId={businessId}
             />
             <ExpectedCustomerCard />
-            <EstimatedRevenueCard user={user} />
+            <EstimatedRevenueCard />
           </div>
         </div>
 

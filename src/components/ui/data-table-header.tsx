@@ -1,17 +1,14 @@
+import { Column, SortDirection } from "@tanstack/react-table";
 import {
   ArrowDown01,
   ArrowDown10,
-  ArrowDownAZ,
   ArrowDownIcon,
-  ArrowDownNarrowWide,
-  ArrowDownZA,
   ArrowUpIcon,
   EyeOff,
-  SortAscIcon,
 } from "lucide-react";
-import { Column, SortDirection } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
-import { Button } from "./button";
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {

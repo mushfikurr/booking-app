@@ -4,6 +4,7 @@ import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 import { Booking } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
 
 const getBookings = async (businessUserId: string | undefined) => {
   const resp = await axios.post("/api/booking", { businessUserId });
@@ -32,10 +33,21 @@ export default function OverviewBookings({
       <div className="flex-grow animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
         <div className="flex flex-col items-center justify-center bg-muted rounded-lg border border-border drop-shadow-sm p-32 space-y-1 text-center">
           <h3 className="text-muted-foreground font-semibold text-xl tracking-tight">
-            No bookings at the moment.
+            No bookings today.
           </h3>
           <p className="text-muted-foreground text-sm tracking-wide leading-tight">
-            In order to recieve bookings from customers, create a service.
+            Ensure you have{" "}
+            <Link href="/dashboard/services" className="font-semibold">
+              services
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/dashboard/editProfile/openinghours"
+              className="font-semibold"
+            >
+              opening hours
+            </Link>{" "}
+            set up.
           </p>
         </div>
       </div>

@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PageType, useBookingDialogContext } from "./BookingDialogContext";
 import { MouseEvent, MouseEventHandler } from "react";
-import { mapPageTypeToComponent } from "./BookingDialog";
+import { PageType, useBookingDialogContext } from "./BookingDialogContext";
 
 interface NextButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

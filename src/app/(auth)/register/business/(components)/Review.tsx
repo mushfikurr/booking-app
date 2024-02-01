@@ -29,7 +29,7 @@ const Review: FC<ReviewProps> = ({ forms }) => {
         allFormValues,
         forms.map((form) => form.schema)
       );
-      const resp = await axios.post("/api/register/business", validatedForms);
+      await axios.post("/api/register/business", validatedForms);
       toast({
         title: "Successfully created business account!",
         description: "Please login to continue.",

@@ -9,12 +9,12 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface CollapsibleCard {
+interface CollapsibleCardProps {
   title: string;
   children: React.ReactNode;
 }
 
-export function CollapsibleCard({ title, children }: CollapsibleCard) {
+export function CollapsibleCard({ title, children }: CollapsibleCardProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (

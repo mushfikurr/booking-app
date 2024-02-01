@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useOpeningHours,
-  useSingleOpeningHours,
-} from "@/lib/hooks/useOpeningHour";
+import { useSingleOpeningHours } from "@/lib/hooks/useOpeningHour";
 import { daysOfWeek, getHMFromDateTime } from "@/lib/utils";
 import { OpeningHour } from "@prisma/client";
 import { Clock } from "lucide-react";
@@ -39,12 +36,6 @@ export default function OpenFromCard({
   const currentOpeningHour = data;
   const [date, setDate] = useState<string>(dateToDDHHMM(today));
 
-  const updateDate = () => {
-    const now = new Date();
-    const newDate = dateToDDHHMM(now);
-    setDate(newDate);
-  };
-
   const displayedTime = () => {
     if (currentOpeningHour?.startTime && currentOpeningHour?.endTime) {
       const formattedStartTime = getHMFromDateTime(
@@ -58,12 +49,18 @@ export default function OpenFromCard({
   };
 
   useEffect(() => {
+    const updateDate = () => {
+      const now = new Date();
+      const newDate = dateToDDHHMM(now);
+      setDate(newDate);
+    };
+
     const interval = setInterval(updateDate, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [updateDate]);
+  }, [dateToDDHHMM, setDate]);
 
   return (
     <OverviewCard

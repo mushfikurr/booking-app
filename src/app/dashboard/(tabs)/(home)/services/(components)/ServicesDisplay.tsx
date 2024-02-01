@@ -52,7 +52,7 @@ export default function ServicesDisplay({
 
   return (
     <div className="grid grid-auto-fit-lg h-fit gap-6">
-      {data?.map((service: Service, idx: number) => (
+      {data?.map((service: Service, _: number) => (
         <ServiceCard key={service.id} service={service} isLoading={isLoading} />
       ))}
     </div>

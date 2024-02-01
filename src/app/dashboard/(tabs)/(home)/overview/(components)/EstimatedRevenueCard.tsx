@@ -1,16 +1,9 @@
 "use client";
 
-import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { Coins } from "lucide-react";
 import OverviewCard from "./StatisticCard";
 
-interface EstimatedRevenueCardProps {
-  user?: UserWithBusinessUser;
-}
-
-export default function EstimatedRevenueCard({
-  user,
-}: EstimatedRevenueCardProps) {
+export default function EstimatedRevenueCard() {
   return (
     <OverviewCard
       subheading="Estimated"

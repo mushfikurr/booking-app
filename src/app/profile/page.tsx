@@ -16,8 +16,8 @@ export default async function Profile() {
       : userNameSplit[0][0];
 
   const bookingsCount =
-    (await db.user.count({
-      where: { id: session?.user?.id },
+    (await db.booking.count({
+      where: { userId: session?.user?.id },
     })) ?? 0;
 
   return (

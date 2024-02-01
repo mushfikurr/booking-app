@@ -13,18 +13,34 @@ export async function OpeningHourList({
 }) {
   const days = await getOpeningHoursData(businessUser.id);
 
+  const renderOpeningHours = () => {
+    if (!days || !days.length) {
+      return (
+        <>
+          <h3 className="font-medium">There are no opening hours set yet.</h3>
+          <p className="text-foreground/80">
+            If you are the business owner, consider setting opening hours for
+            your business.
+          </p>
+        </>
+      );
+    } else {
+      return days?.map((day) => (
+        <OpeningHour
+          key={day.dayOfWeek}
+          day={day.dayOfWeek as Day}
+          startTime={getHMFromDateTime(day.startTime)}
+          endTime={getHMFromDateTime(day.endTime)}
+        />
+      ));
+    }
+  };
+
   return (
     <CollapsibleCard title="Opening Hours">
       <Suspense fallback={<LoadingSkeleton />}>
         <div className="flex flex-col gap-1 text-sm">
-          {days?.map((day) => (
-            <OpeningHour
-              key={day.dayOfWeek}
-              day={day.dayOfWeek as Day}
-              startTime={getHMFromDateTime(day.startTime)}
-              endTime={getHMFromDateTime(day.endTime)}
-            />
-          ))}
+          {renderOpeningHours()}
         </div>
       </Suspense>
     </CollapsibleCard>

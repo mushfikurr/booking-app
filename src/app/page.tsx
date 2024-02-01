@@ -1,10 +1,12 @@
+import { FeaturedBusiness } from "@/components/FeaturedService";
 import { TextLink } from "@/components/TextLink";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import haircut from "../../public/assets/haircut-2.jpg";
-import { db } from "@/lib/db";
-import { FeaturedBusiness } from "@/components/FeaturedService";
 
 export default async function Home() {
   const top3Businesses = await db.businessUser.findMany({ take: 3 });
@@ -34,10 +36,17 @@ export default async function Home() {
                   </Button>
                 </div>
               </div> */}
-              <Button variant="secondary" size="lg" className="w-fit gap-3">
+              <Link
+                href="/search"
+                className={cn(
+                  buttonVariants({ size: "lg", variant: "secondary" }),
+                  "w-fit gap-3",
+                  "max-sm:w-full"
+                )}
+              >
                 <Search className="h-4 w-4" />
                 Search for businesses
-              </Button>
+              </Link>
             </div>
             <Image
               className="animate-in fade-in slide-in-from-right-4 transition-all duration-700 ease-in-out group-hover/header:brightness-125 brightness-100 object-fit z-1 left-60 absolute -top-10 -z-10"
@@ -55,7 +64,7 @@ export default async function Home() {
           </TextLink>
 
           <div className="grid-auto-fit grid">
-            {top3Businesses.map((b) => {
+            {top3Businesses?.map((b) => {
               return <FeaturedBusiness key={b.id} {...b} />;
             })}
           </div>
