@@ -1,11 +1,10 @@
+import { authOptions } from "@/app/(auth)/AuthOptions";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import {
   NavigationMenuAuthenticated,
   NavigationMenuUnauthenticated,
 } from "./NavigationMenu";
-import { authOptions } from "@/app/(auth)/AuthOptions";
-import Image from "next/image";
 
 async function NavbarWithProvider() {
   const data = await getServerSession(authOptions);
