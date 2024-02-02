@@ -21,7 +21,7 @@ export default function OpenFromCard({
   const prefetchedOpeningHour = prefetchedOpeningHours?.find(
     (o: OpeningHour) => o.dayOfWeek === todaysString
   );
-  const { data, isLoading } = useSingleOpeningHours(
+  const { data, isLoading, isFetching } = useSingleOpeningHours(
     today.getDay(),
     businessId,
     prefetchedOpeningHour
@@ -69,6 +69,7 @@ export default function OpenFromCard({
       description={date}
       Icon={Clock}
       isLoading={isLoading}
+      isRefetching={isFetching}
     ></OverviewCard>
   );
 }

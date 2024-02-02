@@ -2,14 +2,29 @@
 
 import { Users } from "lucide-react";
 import OverviewCard from "./StatisticCard";
+import { useCountForUpcomingBookings } from "@/lib/hooks/useBookingsForBusiness";
+import { todayNoTime } from "@/lib/utils";
 
-export default function ExpectedCustomerCard() {
+interface ExpectedCustomerCardProps {
+  businessUserId?: string;
+}
+export default function ExpectedCustomerCard({
+  ...props
+}: ExpectedCustomerCardProps) {
+  const today = todayNoTime();
+  const expectedCustomers = useCountForUpcomingBookings(
+    today,
+    props.businessUserId
+  );
+
   return (
     <OverviewCard
       subheading="Expecting"
-      main="6"
-      description="customers"
+      main={expectedCustomers.data ?? "0"}
+      description="customers today"
       Icon={Users}
-    ></OverviewCard>
+      isLoading={expectedCustomers.isLoading}
+      isRefetching={expectedCustomers.isFetching}
+    />
   );
 }

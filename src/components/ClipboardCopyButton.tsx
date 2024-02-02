@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { Button, ButtonProps } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
@@ -18,7 +17,6 @@ export default function ClipboardCopyButton({
   ...props
 }: ClipboardCopyProps) {
   const { toast } = useToast();
-  const pathname = usePathname();
 
   const handleCopy = () => {
     const currentUrl = window.location.href;

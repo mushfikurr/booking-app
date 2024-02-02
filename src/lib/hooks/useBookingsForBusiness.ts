@@ -36,7 +36,7 @@ export interface BookingIncludesUserAndServices extends BookingIncludesUser {
   services: Service[];
 }
 
-const getDescendingBookings = async (businessUserId: string, query?: any) => {
+const getUpcomingBooking = async (businessUserId: string, query?: any) => {
   const resp = await axios.post("/api/booking/upcoming", {
     businessUserId,
     ...query,
@@ -54,11 +54,11 @@ export const useUpcomingBooking = (
     async () => {
       if (!businessUserId) throw Error("No business user ID provided");
       if (!date) throw Error("No date specified");
-      const descendingBookings = await getDescendingBookings(businessUserId, {
+      const upcomingBooking = await getUpcomingBooking(businessUserId, {
         date,
       });
 
-      return descendingBookings;
+      return upcomingBooking;
     },
     {
       initialData: prefetchedBooking,
@@ -93,6 +93,35 @@ export const useDescendingBookingsForDay = (
     },
     {
       initialData: prefetchedBookings,
+    }
+  );
+};
+
+const getCountForUpcomingBookings = async (
+  businessUserId: string,
+  date?: Date
+) => {
+  const resp = await axios.post("/api/booking/upcoming/count", {
+    businessUserId,
+    date,
+  });
+  return resp.data.count;
+};
+
+export const useCountForUpcomingBookings = (
+  selectedDate: Date,
+  businessUserId?: string,
+  prefetchedCount?: number
+) => {
+  return useQuery<number, Error>(
+    ["bookings", "upcoming", "count"],
+    async () => {
+      if (!businessUserId) throw Error("No business user ID provided");
+      const dateComparator = dateNoTime(selectedDate);
+      return await getCountForUpcomingBookings(businessUserId, dateComparator);
+    },
+    {
+      initialData: prefetchedCount,
     }
   );
 };

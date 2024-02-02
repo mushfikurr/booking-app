@@ -10,7 +10,7 @@ import { Service } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 
 interface UpcomingBookingProps {
-  businessUserId: string;
+  businessUserId?: string;
   prefetchedBooking?: BookingIncludesUserAndServices;
 }
 
@@ -34,23 +34,36 @@ export function UpcomingBooking(props: UpcomingBookingProps) {
   return (
     <div
       className={cn(
-        "bg-primary text-primary-foreground rounded-xl p-9 flex gap-32 items-center drop-shadow-lg",
+        "border border-border text-foreground rounded-lg p-6 flex gap-32 items-center drop-shadow-lg",
         "max-md:flex-col max-md:gap-9"
       )}
     >
-      <div className={cn("space-y-3 min-w-fit basis-2/3", "max-md:w-full")}>
-        <span className="inline-flex gap-2 items-center">
+      <div
+        className={cn(
+          "space-y-2 min-w-fit basis-2/3",
+          "max-md:w-full",
+          !booking.data && "space-y-1"
+        )}
+      >
+        <span className={"inline-flex gap-2 items-center"}>
+          <h2 className="font-semibold text-muted-foreground">Next booking</h2>
           {booking.isFetching && (
-            <Loader2 className="animate-spin text-primary-foreground/60 h-4 w-4" />
+            <Loader2 className="animate-spin text-foreground/60 h-4 w-4" />
           )}
-          <h2 className="font-medium">Next booking</h2>
         </span>
+        {!booking.data && (
+          <h3 className="text-lead leading-tight text-muted-foreground">
+            No upcoming bookings
+          </h3>
+        )}
 
         <div>
-          <h3 className="font-semibold text-2xl leading-tight">{fullName}</h3>
-          <h5 className="font-normal text-primary-foreground/80">
-            {startTimeFormatted} {todayOrDate}
-          </h5>
+          <h3 className="font-semibold text-xl leading-tight">{fullName}</h3>
+          {booking.data && (
+            <h5 className="font-normal text-foreground/80">
+              {startTimeFormatted} {todayOrDate}
+            </h5>
+          )}
         </div>
         {/* <Button variant="secondary" className="w-full gap-3 items-center">
           <Search
@@ -78,9 +91,9 @@ function ServicesCountTile({ services }: { services?: Service[] }) {
   const label = amountOfServices > 1 ? "services" : "service";
 
   return (
-    <div className="text-center space-y-2">
-      <h2 className="text-4xl">{amountOfServices}</h2>
-      <h3 className="text-primary-foreground/80">{label}</h3>
+    <div className="text-center space-y-1">
+      <h2 className="text-2xl font-semibold">{amountOfServices}</h2>
+      <h3 className="text-foreground/80">{label}</h3>
     </div>
   );
 }
@@ -94,9 +107,9 @@ function ServicesWaitTile({ services }: { services?: Service[] }) {
   const label = "long";
 
   return (
-    <div className="text-center space-y-2">
-      <h2 className="text-4xl">{totalWait}</h2>
-      <h3 className="text-primary-foreground/80">{label}</h3>
+    <div className="text-center space-y-1">
+      <h2 className="text-2xl font-semibold">{totalWait}</h2>
+      <h3 className="text-foreground/80">{label}</h3>
     </div>
   );
 }
@@ -110,9 +123,9 @@ function ServicesCostTile({ services }: { services?: Service[] }) {
   }
 
   return (
-    <div className="text-center space-y-2">
-      <h2 className="text-4xl">{totalCost}</h2>
-      <h3 className="text-primary-foreground/80">{label}</h3>
+    <div className="text-center space-y-1">
+      <h2 className="text-2xl font-semibold">{totalCost}</h2>
+      <h3 className="text-foreground/80">{label}</h3>
     </div>
   );
 }

@@ -1,13 +1,17 @@
 import ClipboardCopyButton from "@/components/ClipboardCopyButton";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { BookingIncludesUserAndServices } from "@/lib/hooks/useBookingsForBusiness";
 import {
   getBookingsData,
   getOpeningHoursData,
+  getUpcomingBooking,
   getUserWithBusinessData,
 } from "@/lib/query/serverQuery";
+import { todayNoTime } from "@/lib/utils";
 import { Booking } from "@prisma/client";
 import { ClipboardCopy } from "lucide-react";
 import { Suspense } from "react";
+import { UpcomingBooking } from "./(components)/UpcomingBooking";
 import EstimatedRevenueCard from "./(components)/EstimatedRevenueCard";
 import ExpectedCustomerCard from "./(components)/ExpectedCustomerCard";
 import OpenFromCard from "./(components)/OpenFromCard";
@@ -18,6 +22,7 @@ export default async function DashboardOverview() {
   const businessId = user?.businessUser?.id;
   const bookings = await getBookingsData(businessId);
   const openingHours = await getOpeningHoursData(businessId);
+  const upcomingBooking = await getUpcomingBooking(businessId, todayNoTime());
 
   return (
     <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 min-h-screen">
@@ -37,14 +42,24 @@ export default async function DashboardOverview() {
               Copy profile link
             </ClipboardCopyButton>
           </div>
+          <Suspense fallback={<LoadingSkeleton className="grow" />}>
+            {upcomingBooking && (
+              <UpcomingBooking
+                prefetchedBooking={
+                  upcomingBooking as BookingIncludesUserAndServices
+                }
+                businessUserId={user?.businessUser?.id}
+              />
+            )}
+          </Suspense>
           <Suspense fallback={<LoadingSkeleton />}>
             <div className="flex flex-col lg:flex-row justify-between gap-3 lg:gap-8 w-full">
               <OpenFromCard
                 prefetchedOpeningHours={openingHours}
                 businessId={businessId}
               />
-              <ExpectedCustomerCard />
-              <EstimatedRevenueCard />
+              <ExpectedCustomerCard businessUserId={businessId} />
+              <EstimatedRevenueCard businessUserId={businessId} />
             </div>
           </Suspense>
         </div>

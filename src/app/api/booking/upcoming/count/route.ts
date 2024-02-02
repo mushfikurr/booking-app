@@ -7,24 +7,15 @@ export async function POST(req: NextRequest) {
       const body = await req.json();
       const { businessUserId, date } = body;
 
-      const upcomingBooking = await db.booking.findFirst({
+      const count = await db.booking.count({
         where: {
           businessUserId,
-
-          startTime: {
-            gte: date,
+          date: {
+            equals: date,
           },
         },
-        orderBy: {
-          startTime: "asc",
-        },
-        include: {
-          user: true,
-          services: true,
-        },
       });
-
-      return NextResponse.json({ upcomingBooking }, { status: 200 });
+      return NextResponse.json({ count }, { status: 200 });
     } catch (error) {
       return NextResponse.json(
         {
