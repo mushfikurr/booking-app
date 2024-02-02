@@ -8,9 +8,11 @@ export default function ComingSoonPage({
 }: ComingSoonPage) {
   return (
     <div className={cn(className, "flex h-full items-center justify-center")}>
-      <div className="flex flex-col text-center gap-6">
-        <p className="text-3xl">🚀</p>
-        <div className="text-center space-y-1">
+      <div className={cn("flex flex-col text-center gap-6")}>
+        <p className="text-3xl animate-in fade-in slide-in-from-bottom-8 ease-in-out duration-300">
+          🚀
+        </p>
+        <div className="text-center space-y-1 animate-in fade-in slide-in-from-bottom-4 ease-in-out duration-200">
           <h1 className="font-medium text-xl">
             This page is currently in development
           </h1>
