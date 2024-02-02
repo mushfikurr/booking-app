@@ -6,8 +6,13 @@ import { FC } from "react";
 export const FeaturedBusiness: FC<BusinessUser> = (
   businessUser: BusinessUser
 ) => {
+  const businessPageHref = `/business/${businessUser.profileId}`;
+
   return (
-    <Link href={"/business/"} className="flex flex-col border border-border rounded-lg py-4 group/item">
+    <Link
+      href={businessPageHref}
+      className="flex flex-col border border-border rounded-lg py-4 group/item"
+    >
       <div className="flex-grow h-32"></div>
       <div className="flex container justify-between items-center">
         <div>
