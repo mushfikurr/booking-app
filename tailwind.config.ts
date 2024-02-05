@@ -1,5 +1,7 @@
+import { withUt } from "uploadthing/tw";
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+
+module.exports = withUt({
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -58,26 +60,26 @@ module.exports = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: 0 },
+          from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 },
+          to: { height: "0" },
         },
         "collapsible-down": {
-          from: { opacity: 0, height: "0" },
+          from: { opacity: "0", height: "0" },
           to: {
-            opacity: 100,
+            opacity: "100",
             height: "var(--radix-collapsible-content-height)",
           },
         },
         "collapsible-up": {
           from: {
-            opacity: 100,
+            opacity: "100",
             height: "var(--radix-collapsible-content-height)",
           },
-          to: { opacity: 0, height: "0" },
+          to: { opacity: "0", height: "0" },
         },
       },
       animation: {
@@ -92,4 +94,4 @@ module.exports = {
     require("tailwindcss-animate"),
     require("@shrutibalasa/tailwind-grid-auto-fit"),
   ],
-};
+});

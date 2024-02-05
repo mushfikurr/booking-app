@@ -30,28 +30,26 @@ export default function ChooseSlot() {
 
   return (
     <div className="space-y-8">
-      <ScrollableArea className="px-6 w-full">
-        <div className="">
-          <div
-            className={cn("flex gap-6", "max-sm:flex-col max-sm:items-center")}
-          >
-            <CalendarView
+      <div className="px-6 w-full">
+        <div
+          className={cn("flex gap-6", "max-sm:flex-col max-sm:items-center")}
+        >
+          <CalendarView
+            selectedDay={selectedDay}
+            setSelectedDay={handleDaySelect}
+          />
+          <div className={cn("grow", "max-sm:w-full")}>
+            <SlotsView
+              bookings={slotsData.bookings}
+              openingHour={slotsData.openingHours}
               selectedDay={selectedDay}
-              setSelectedDay={handleDaySelect}
+              isLoading={slotsData.isLoading}
+              isError={slotsData.isError}
+              refetchData={slotsData.refetchData}
             />
-            <div className={cn("grow", "max-sm:w-full")}>
-              <SlotsView
-                bookings={slotsData.bookings}
-                openingHour={slotsData.openingHours}
-                selectedDay={selectedDay}
-                isLoading={slotsData.isLoading}
-                isError={slotsData.isError}
-                refetchData={slotsData.refetchData}
-              />
-            </div>
           </div>
         </div>
-      </ScrollableArea>
+      </div>
       <BookingDialogFooter services={services}>
         <NextButton nextPage="reviewBooking" disabled={!slot}>
           Review

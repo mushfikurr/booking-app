@@ -91,7 +91,7 @@ export function BookingServiceCard({
         <button
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            "px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal h-full",
+            "px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal h-[inherit]",
             "max-sm:border max-sm:border-border max-sm:rounded-l-lg max-sm:rounded-t-none max-sm:border-t-0 max-sm:py-4"
           )}
           onClick={handleClick}

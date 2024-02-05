@@ -1,19 +1,27 @@
 import { cn } from "@/lib/utils";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { HTMLAttributeAnchorTarget } from "react";
 
 interface TextLinkProps {
   href: string;
+  children: React.ReactNode;
   className?: string;
   Icon?: LucideIcon;
-  children: React.ReactNode;
+  target?: HTMLAttributeAnchorTarget;
 }
 
-export function TextLink({ className, Icon, href, children }: TextLinkProps) {
+export function TextLink({
+  className,
+  Icon,
+  href,
+  target,
+  children,
+}: TextLinkProps) {
   return (
     <Link
       href={href}
-      target="_blank"
+      target={target}
       className={cn(
         "inline-flex gap-3 text-sm items-center font-medium text-muted-foreground",
         "hover:text-foreground",

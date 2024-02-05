@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { ActionsDropdown } from "./ActionsDropdown";
+import { Empty } from "@/components/Empty";
 
 interface BookingListProps {
   prefetchedBookings: BookingIncludesServicesAndBusiness[];
@@ -30,15 +31,21 @@ export function BookingList({ ...props }: BookingListProps) {
     parent.current && autoAnimate(parent.current);
   }, [parent]);
 
+  const renderBookingView = () => {
+    if (!bookings.data?.length)
+      return <Empty>You have not created any bookings yet.</Empty>;
+    return bookings.data?.map((b) => (
+      <Booking key={b.id} booking={b} isFetching={bookings.isFetching} />
+    ));
+  };
+
   return (
     <div className="space-y-3">
       {bookings.isFetching && (
         <Loader2 className="h-5 w-5 text-foreground/60 animate-spin mb-3" />
       )}
       <div className="grid grid-auto-fit-md gap-3" ref={parent}>
-        {bookings.data?.map((b) => (
-          <Booking key={b.id} booking={b} isFetching={bookings.isFetching} />
-        ))}
+        {renderBookingView()}
       </div>
     </div>
   );

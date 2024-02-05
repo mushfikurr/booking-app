@@ -71,7 +71,11 @@ const StartBookingUnauthenticated = ({
 }: {
   children: React.ReactNode;
 }) => {
-  return <Link href="/login">{children}</Link>;
+  return (
+    <Link href="/login" className="h-[inherit] inline-flex items-stretch">
+      {children}
+    </Link>
+  );
 };
 
 export const mapPageTypeToComponent: Map<PageType, any> = new Map([
@@ -91,7 +95,7 @@ function BookingDialog() {
 
   return (
     <DialogContent
-      className="max-w-4xl space-y-3 overflow-y-scroll max-h-screen p-0"
+      className="max-w-4xl space-y-3 overflow-y-auto max-h-screen p-0 relative"
       closeClassNames="right-5 top-2"
     >
       <DialogHeader className="bg-background p-6 pb-0">
@@ -117,7 +121,7 @@ export function BookingDialogFooter({
   ...props
 }: BookingDialogFooterProps) {
   return (
-    <div className="border-t">
+    <div className="border-t sticky bottom-0 backdrop-blur-md">
       <div className="px-6 py-3 flex justify-between">
         <BackButton />
         {props.services && <Statistics services={props.services} />}

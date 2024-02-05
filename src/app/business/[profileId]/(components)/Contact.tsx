@@ -50,7 +50,11 @@ function ContactLink({ Icon, name, href }: ContactLinkProps) {
   if (!name) return;
 
   return (
-    <TextLink className="justify-between font-normal" href={href}>
+    <TextLink
+      className="justify-between font-normal"
+      href={href}
+      target="_blank"
+    >
       <Icon className="h-5 w-5"></Icon>
       <p className="text-sm">{name}</p>
     </TextLink>

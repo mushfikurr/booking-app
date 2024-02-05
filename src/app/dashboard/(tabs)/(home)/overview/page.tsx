@@ -25,11 +25,18 @@ export default async function DashboardOverview() {
   const upcomingBooking = await getUpcomingBooking(businessId, todayNoTime());
 
   return (
-    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6 min-h-screen">
+    <div className="block space-y-6 lg:space-y-0 lg:flex gap-6">
       <div className="flex flex-col gap-6 flex-grow">
         <div className="flex flex-col gap-4">
-          <div className="w-full items-center inline-flex justify-between gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
+          <div className="w-full items-center inline-flex justify-between gap-2">
+            <span className="inline-flex gap-1.5 items-center">
+              <h1 className="text-2xl font-semibold tracking-tight">
+                Overview
+              </h1>
+              <div className="text-muted-foreground text-2xl font-medium tracking-tight">
+                / {user?.businessUser?.businessDisplayName}
+              </div>
+            </span>
             <ClipboardCopyButton
               className="gap-2 text-xs"
               variant="outline"
