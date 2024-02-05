@@ -41,7 +41,7 @@ export function ReviewBooking() {
   const handleEditSlot = () => setCurrentPageState("chooseDate");
 
   return (
-    <>
+    <div className="space-y-8">
       <ScrollableArea>
         <div className="flex px-6 gap-6 max-sm:flex-col-reverse">
           <div className="space-y-3 flex-grow">
@@ -89,7 +89,7 @@ export function ReviewBooking() {
           Confirm
         </NextButton>
       </BookingDialogFooter>
-    </>
+    </div>
   );
 }
 

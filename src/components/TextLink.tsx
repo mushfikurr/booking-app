@@ -13,6 +13,7 @@ export function TextLink({ className, Icon, href, children }: TextLinkProps) {
   return (
     <Link
       href={href}
+      target="_blank"
       className={cn(
         "inline-flex gap-3 text-sm items-center font-medium text-muted-foreground",
         "hover:text-foreground",

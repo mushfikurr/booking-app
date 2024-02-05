@@ -10,9 +10,24 @@ interface ContactProps {
 }
 
 export default function Contact({ businessUser }: ContactProps) {
-  const phoneNumber = { Icon: Phone, name: businessUser.phoneNumber, href: "" };
-  const email = { Icon: Mail, name: businessUser.businessEmail, href: "" };
-  const instagram = { Icon: Instagram, name: businessUser.instagram, href: "" };
+  const INSTAGRAM_BASE_URL = "https://www.instagram.com/";
+  const MAILTO_BASE_URL = "mailto:";
+  const TEL_BASE_URL = "tel:";
+  const phoneNumber = {
+    Icon: Phone,
+    name: businessUser.phoneNumber,
+    href: `${TEL_BASE_URL}${businessUser.phoneNumber}`,
+  };
+  const email = {
+    Icon: Mail,
+    name: businessUser.businessEmail,
+    href: `${MAILTO_BASE_URL}${businessUser.businessEmail}`,
+  };
+  const instagram = {
+    Icon: Instagram,
+    name: businessUser.instagram,
+    href: `${INSTAGRAM_BASE_URL}/${businessUser.instagram}`,
+  };
 
   return (
     <CollapsibleCard title="Contact">
@@ -33,7 +48,7 @@ interface ContactLinkProps {
 
 function ContactLink({ Icon, name, href }: ContactLinkProps) {
   if (!name) return;
-  
+
   return (
     <TextLink className="justify-between font-normal" href={href}>
       <Icon className="h-5 w-5"></Icon>

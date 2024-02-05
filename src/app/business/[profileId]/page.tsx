@@ -11,9 +11,9 @@ import { LoadingSkeleton } from "@/components/LoadingSkeleton";
 export default async function Profile({ params }: { params: any }) {
   const { profileId } = params;
   const businessUser = await getBusinessUser({ profileId });
-  const businessTitle = businessUser?.user.name;
+  const businessTitle = businessUser?.businessDisplayName;
   const about =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget turpis nec mauris ullamcorper fermentum id vel quam. Sed vehicula lectus ut tellus varius, non dictum justo ullamcorper. Proin euismod arcu vel nulla dignissim, vel tincidunt ipsum tristique. Aliquam erat volutpat. Vestibulum nec dui eget ligula luctus accumsan. Curabitur auctor, elit ut varius volutpat, ipsum tortor cursus justo, at ultricies diam ipsum ac libero. Etiam ullamcorper velit eu dui luctus, a fermentum mauris congue. Quisque ut risus non felis fermentum dapibus. Vivamus vel ultrices elit.";
+    businessUser?.about ?? `Welcome to ${businessUser?.user?.name}!`;
 
   return (
     <div className="flex flex-col gap-1.5">

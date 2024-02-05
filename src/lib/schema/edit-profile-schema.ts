@@ -74,6 +74,12 @@ export const EditProfileLocationSchema = z.object({
 });
 
 export const EditProfileContactSchema = z.object({
+  about: z
+    .string({ invalid_type_error: "About me must be a string" })
+    .min(5, { message: "About me must be at least 5 characters long" })
+    .max(500, { message: "About me can only be 500 characters." })
+    .optional()
+    .or(z.literal("")),
   phoneNumber: z
     .string({ invalid_type_error: "Phone number must be a valid string" })
     .min(11, {
@@ -81,6 +87,16 @@ export const EditProfileContactSchema = z.object({
     })
     .regex(/^((\+44)|(0)) ?\d{4} ?\d{6}$/, {
       message: "Phone number must be in valid UK format",
+    }),
+
+  businessDisplayName: z
+    .string({ invalid_type_error: "Business display name must be a string" })
+    .min(5, {
+      message: "Business display name must be at minimum 5 characters long",
+    })
+    .max(50, {
+      message:
+        "Business display name can only be at maximum 50 characters long",
     }),
   instagram: z
     .string({

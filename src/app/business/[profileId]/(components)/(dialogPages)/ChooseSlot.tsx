@@ -15,8 +15,7 @@ import { NextButton } from "../NextButton";
 import { SelectableSlot } from "../SelectableDate";
 
 export default function ChooseSlot() {
-  const { setTitle, businessUser, services, slot } =
-    useBookingDialogContext();
+  const { setTitle, businessUser, services, slot } = useBookingDialogContext();
   setTitle("Choose a slot in your booking");
 
   const today = todayNoTime();
@@ -30,7 +29,7 @@ export default function ChooseSlot() {
   };
 
   return (
-    <>
+    <div className="space-y-8">
       <ScrollableArea className="px-6 w-full">
         <div className="">
           <div
@@ -58,7 +57,7 @@ export default function ChooseSlot() {
           Review
         </NextButton>
       </BookingDialogFooter>
-    </>
+    </div>
   );
 }
 

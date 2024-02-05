@@ -103,6 +103,21 @@ export const BusinessRegistrationContactSchema = z.object({
       message:
         "Profile ID must only match the following characters: a-z. Multiple words can be strung together with a hyphen (i.e. john-doe-store). Numbers can be used at the end with a hyphen (i.e. john-doe-store-4)",
     }),
+  businessDisplayName: z
+    .string({ invalid_type_error: "Business display name must be a string" })
+    .min(5, {
+      message: "Business display name must be at minimum 5 characters long",
+    })
+    .max(50, {
+      message:
+        "Business display name can only be at maximum 50 characters long",
+    }),
+  about: z
+    .string({ invalid_type_error: "About me must be a string" })
+    .min(5, { message: "About me must be at least 5 characters long" })
+    .max(500, { message: "About me can only be 500 characters." })
+    .optional()
+    .or(z.literal("")),
   phoneNumber: z
     .string({ invalid_type_error: "Phone number must be a valid string" })
     .min(11, {

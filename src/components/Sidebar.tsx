@@ -245,7 +245,7 @@ function CondensedSubmenuItem({ title, Icon, link }: MenuItem) {
     link.split("/").splice(1).join() === pathname.split("/").splice(2).join();
 
   return (
-    <Link href={"/dashboard/" + link} passHref>
+    <Link href={link} passHref>
       <Popover>
         <PopoverTrigger>
           <Toggle pressed={isSelected}>

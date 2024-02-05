@@ -13,7 +13,7 @@ import { RemovableServiceCard } from "../ServiceCard";
 export function AddServices() {
   const { businessUser, services, setServices, setCurrentPageState, setTitle } =
     useBookingDialogContext();
-  setTitle(`Booking with ${businessUser.user.name}`);
+  setTitle(`Booking with ${businessUser.businessDisplayName}`);
 
   const scrollAreaRef = useRef<ScrollAreaElement>(null);
   useEffect(() => {
@@ -41,7 +41,7 @@ export function AddServices() {
   const handleAddService = () => setCurrentPageState("chooseServices");
 
   return (
-    <>
+    <div className="space-y-8">
       <div className="flex flex-col gap-3 px-6">
         <span className="inline-flex justify-between items-center">
           <h2 className="text-xl font-medium">Services</h2>
@@ -57,6 +57,6 @@ export function AddServices() {
           Find a slot
         </NextButton>
       </BookingDialogFooter>
-    </>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import {
   BusinessRegistrationLocationSchema,
   BusinessRegistrationPersonalSchema,
 } from "@/lib/schema/register-form-schema";
+import { BusinessUser } from "@prisma/client";
 import { hash } from "bcrypt-ts";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -41,27 +42,19 @@ async function validateUser({
   }
 }
 
-async function validateBusinessUser({
-  streetAddress1,
-  streetAddress2,
-  postcode,
-  phoneNumber,
-  instagram,
-  businessEmail,
-  profileId,
-}: {
-  streetAddress1: string;
-  streetAddress2?: string;
-  postcode: string;
-  phoneNumber: string;
-  instagram?: string;
-  businessEmail: string;
-  profileId: string;
-}) {
+type ReplaceNullWithUndefined<T extends Object> = {
+  [k in keyof T]: null extends T[k] ? Exclude<T[k], null> | undefined : T[k];
+};
+type PartialBusinessUser = Partial<BusinessUser>;
+interface BusinessUserWithoutConfirm extends PartialBusinessUser {
+  confirmPassword?: string;
+}
+
+async function validateBusinessUser(businessUser: BusinessUserWithoutConfirm) {
   try {
     const exist = await db.businessUser.findUnique({
       where: {
-        profileId,
+        profileId: businessUser.profileId,
       },
     });
 
@@ -69,15 +62,9 @@ async function validateBusinessUser({
       throw new Error("Profile ID already exists.");
     }
 
-    return {
-      streetAddress1,
-      streetAddress2,
-      postcode,
-      phoneNumber,
-      instagram,
-      businessEmail,
-      profileId,
-    };
+    const { confirmPassword, ...rest } = businessUser;
+
+    return rest;
   } catch (err) {
     console.error(err);
     return null;
@@ -117,14 +104,14 @@ export async function POST(request: NextRequest) {
 
   try {
     const { name, email, password, ...businessUserData } = resultData;
+
     const validatedUser = await validateUser({
       name,
       email,
       password,
     });
-    const validatedBusinessUser = await validateBusinessUser({
-      ...businessUserData,
-    });
+    const validatedBusinessUser = await validateBusinessUser(businessUserData);
+    console.log(validatedBusinessUser);
 
     return await db.$transaction(async (tx) => {
       const user = await tx.user.create({

@@ -58,6 +58,20 @@ export default function EditProfileContactForm({
     schema: BusinessRegistrationContactSchema,
     formFields: [
       {
+        name: "businessDisplayName",
+        label: "Business Display Name",
+        description:
+          "The name of your business, that will be displayed on your business page.",
+        defaultValue: data.businessUser.businessDisplayName,
+      },
+      {
+        name: "about",
+        label: "About Me",
+        description:
+          "A short description to tell customers all about your business.",
+        defaultValue: data.businessUser.about,
+      },
+      {
         name: "phoneNumber",
         label: "Phone Number *",
         defaultValue: data.businessUser.phoneNumber,

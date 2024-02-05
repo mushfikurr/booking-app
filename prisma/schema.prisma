@@ -69,6 +69,8 @@ model BusinessUser {
   id             String        @id @default(cuid())
   streetAddress1 String
   streetAddress2 String?
+  about          String?
+  businessDisplayName String
   postcode       String
   phoneNumber    String
   instagram      String?

@@ -17,8 +17,8 @@ export async function OpeningHourList({
     if (!days || !days.length) {
       return (
         <>
-          <h3 className="font-medium">There are no opening hours set yet.</h3>
-          <p className="text-foreground/80">
+          <h3 className="font-medium">No opening hours provided</h3>
+          <p className="text-muted-foreground">
             If you are the business owner, consider setting opening hours for
             your business.
           </p>

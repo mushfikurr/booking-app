@@ -106,6 +106,18 @@ export const forms: MultiCaptureFormProps[] = [
           "Profile ID used to find your profile page on BookingApp. Must contain only characters, with hyphens only joining words.",
       },
       {
+        name: "businessDisplayName",
+        label: "Business Display Name",
+        description:
+          "The name of your business, that will be displayed on your business page.",
+      },
+      {
+        name: "about",
+        label: "About Me",
+        description:
+          "A short description to tell customers all about your business.",
+      },
+      {
         name: "phoneNumber",
         label: "Phone Number",
         description: "Must be a valid UK number",

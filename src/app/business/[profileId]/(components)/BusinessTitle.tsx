@@ -6,15 +6,19 @@ import { UserWithBusinessUser } from "@/lib/relational-model-type";
 import { cn } from "@/lib/utils";
 import { MapPin } from "lucide-react";
 import { StartBooking } from "./BookingDialog";
-import { useSession } from "next-auth/react";
 
 interface BusinessTitleProps {
   businessUser: UserWithBusinessUser;
 }
 
 export function BusinessTitle({ businessUser }: BusinessTitleProps) {
-  const title = businessUser?.user.name;
-  const session = useSession();
+  const title = businessUser?.businessDisplayName;
+  const streetAddress = [
+    businessUser?.streetAddress1,
+    businessUser?.streetAddress2 ?? undefined,
+    businessUser?.postcode,
+  ].filter(Boolean);
+  const location = streetAddress.join(", ");
 
   return (
     <div
@@ -36,7 +40,7 @@ export function BusinessTitle({ businessUser }: BusinessTitleProps) {
         <span className="inline-flex gap-2 text-muted-foreground">
           <TextLink className={cn("text-md", "max-sm:text-sm")} href="">
             <MapPin className="max-sm:h-5 w-5" />
-            223 Whitechapel Rd, E1 5JD
+            {location}
           </TextLink>
         </span>
       </div>

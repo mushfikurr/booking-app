@@ -57,9 +57,11 @@ export function ChooseServices() {
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div className="flex flex-col gap-5 px-6">
-        <ScrollableArea>{serviceList()}</ScrollableArea>
+    <div className="space-y-8">
+      <div>
+        <div className="flex flex-col gap-5 px-6">
+          <ScrollableArea>{serviceList()}</ScrollableArea>
+        </div>
       </div>
       <BookingDialogFooter services={services}>
         <NextButton nextPage="addServices">Done</NextButton>

@@ -16,7 +16,7 @@ export const FeaturedBusiness: FC<BusinessUser> = (
       <div className="flex-grow h-32"></div>
       <div className="flex container justify-between items-center">
         <div>
-          <h3 className="text-sm">{businessUser.profileId}</h3>
+          <h3 className="text-sm">{businessUser.businessDisplayName}</h3>
           <p className="text-xs text-foreground/70">
             {businessUser.streetAddress1}
           </p>

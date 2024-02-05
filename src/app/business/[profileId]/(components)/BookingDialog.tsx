@@ -91,7 +91,7 @@ function BookingDialog() {
 
   return (
     <DialogContent
-      className="max-w-3xl space-y-3 overflow-clip max-h-[calc(100vh-8rem)] max-sm:max-h-screen p-0"
+      className="max-w-4xl space-y-3 overflow-y-scroll max-h-screen p-0"
       closeClassNames="right-5 top-2"
     >
       <DialogHeader className="bg-background p-6 pb-0">
