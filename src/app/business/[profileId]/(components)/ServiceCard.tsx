@@ -30,7 +30,7 @@ export function ServiceCardRoot({
   return (
     <Component
       className={cn(
-        "flex items-stretch min-w-full drop-shadow-sm",
+        "flex min-w-full drop-shadow-sm items-stretch min-h-max",
         "max-sm:flex-col",
         className
       )}
@@ -91,7 +91,7 @@ export function BookingServiceCard({
         <button
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            "h-full px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal",
+            "px-8 rounded-r-lg border-border border border-l-0 rounded-l-none text-sm font-normal h-full",
             "max-sm:border max-sm:border-border max-sm:rounded-l-lg max-sm:rounded-t-none max-sm:border-t-0 max-sm:py-4"
           )}
           onClick={handleClick}
