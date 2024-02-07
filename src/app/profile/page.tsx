@@ -2,6 +2,8 @@ import { TextLink } from "@/components/TextLink";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
+import { BASE_IMAGE_URL } from "@/lib/uploadthing";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { LucideIcon, ScissorsLineDashed, Stars } from "lucide-react";
 import { getServerSession } from "next-auth";
 
@@ -24,6 +26,10 @@ export default async function Profile() {
     <div className="space-y-6">
       <div className="flex gap-10 items-center rounded-lg">
         <Avatar className="h-32 w-32">
+          <AvatarImage
+            alt="Profile Picture"
+            src={user?.image ? BASE_IMAGE_URL + user?.image : ""}
+          />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <div className="space-y-3">

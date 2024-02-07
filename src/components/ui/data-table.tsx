@@ -24,6 +24,7 @@ import { DataTablePagination } from "./data-table-pagination";
 import React from "react";
 import { Input } from "./input";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -59,7 +60,12 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div
+      className={cn(
+        "space-y-4",
+        "animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out"
+      )}
+    >
       <div>
         <div className="flex items-center pb-3 gap-4">
           <Input

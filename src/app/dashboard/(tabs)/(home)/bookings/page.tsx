@@ -7,7 +7,6 @@ import { BookingView } from "./(components)/BookingView";
 
 export default async function DashboardBookings() {
   const user = await getUserWithBusinessData();
-  const now = new Date();
   const bookings = await getDescendingBookings(user?.businessUser?.id);
 
   return (

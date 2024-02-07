@@ -40,7 +40,7 @@ export default function EditProfilePersonalForm({
       );
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries(["user"]);
+      await queryClient.invalidateQueries(["businessUser"]);
       refetch();
     },
     onError: (data: AxiosError) => {

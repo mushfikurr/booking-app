@@ -35,7 +35,7 @@ export default function EditProfileContactForm({
       return updateContactDetailsForUser(data.id || prefetchedUser.id, payload);
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries(["user"]);
+      await queryClient.invalidateQueries(["businessUser"]);
       refetch();
     },
     onError: (data: AxiosError) => {

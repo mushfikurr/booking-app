@@ -81,6 +81,7 @@ model BusinessUser {
   services       Service[]
   bookings       Booking[]
   openingHours   OpeningHour[]
+  albums             Album[] 
 
   @@index([userId])
   @@index([businessEmail])
@@ -114,6 +115,28 @@ model Booking {
   @@index([userId])
   @@index([businessUserId])
 }
+
+model Album {
+  id            String      @id @default(cuid())
+  businessUserId String
+  images        Image[]
+  createdAt     DateTime    @default(now())
+  businessUser  BusinessUser @relation(fields: [businessUserId], references: [id])
+
+  @@index([businessUserId])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  albumId   String
+  createdAt DateTime @default(now())
+
+  album     Album    @relation(fields: [albumId], references: [id])
+  @@index([albumId])
+}
+
 
 model VerificationToken {
   identifier String

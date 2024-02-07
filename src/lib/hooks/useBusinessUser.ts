@@ -9,7 +9,7 @@ const getBusinessUser = async (userId: string) => {
 
 export const useBusinessUser = (userId?: string, prefetchedUser?: User) => {
   return useQuery(
-    ["user"],
+    ["businessUser"],
     async () => {
       if (!userId) {
         throw Error("No user ID provided!");

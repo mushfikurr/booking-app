@@ -1,8 +1,8 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  if (req.method === "GET") {
+export async function POST(req: NextRequest) {
+  if (req.method === "POST") {
     try {
       const body = await req.json();
       const { userId } = body;

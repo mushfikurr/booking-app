@@ -40,7 +40,11 @@ export function BookingView(props: BookingViewProps) {
 
   const displayBookingList = () => {
     if (!selectedDate) {
-      return <Empty>Please select a date to view bookings.</Empty>;
+      return (
+        <Empty className="animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
+          Please select a date to view bookings.
+        </Empty>
+      );
     }
 
     return (
@@ -66,7 +70,7 @@ export function BookingView(props: BookingViewProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-3 duration-300 ease-in-out">
       <div className="flex items-center gap-3">
         <PopoverTextButton displayContent={displayCalendar()} className="w-fit">
           {selectedDayDisplayString}
@@ -113,7 +117,7 @@ function BookingList(props: BookingListProps) {
 
   if (!bookings.data?.length) {
     return (
-      <Empty className="grow h-full">
+      <Empty className="grow h-full animate-in fade-in slide-in-from-bottom-4 duration-500 ease-in-out">
         There are no bookings for the selected date.
       </Empty>
     );
