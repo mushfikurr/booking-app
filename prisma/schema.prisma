@@ -81,7 +81,7 @@ model BusinessUser {
   services       Service[]
   bookings       Booking[]
   openingHours   OpeningHour[]
-  albums             Album[] 
+  album             Album?
 
   @@index([userId])
   @@index([businessEmail])
@@ -118,7 +118,7 @@ model Booking {
 
 model Album {
   id            String      @id @default(cuid())
-  businessUserId String
+  businessUserId String     @unique
   images        Image[]
   createdAt     DateTime    @default(now())
   businessUser  BusinessUser @relation(fields: [businessUserId], references: [id])

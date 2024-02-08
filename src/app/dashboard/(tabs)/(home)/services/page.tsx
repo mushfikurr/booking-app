@@ -33,7 +33,7 @@ export default async function ServicesPage() {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="gap-2 items-center font-semibold leading-none p-3 py-2">
+              <Button className="gap-2 items-center leading-none p-3 py-2">
                 <Plus className="h-4 w-4" />
                 <p className="translate-y-[0px] text-xs">Add service</p>
               </Button>

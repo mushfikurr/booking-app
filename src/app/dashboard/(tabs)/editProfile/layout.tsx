@@ -14,9 +14,7 @@ export default async function EditProfileLayout({
   return (
     <div className="flex flex-col justify-between min-h-full">
       <div className="flex max-sm:gap-6 gap-12 w-full max-sm:flex-col max-sm:items-center">
-        <div className="w-full">
-          <Suspense>{children}</Suspense>
-        </div>
+        <div className="w-full">{children}</div>
         <EditProfilePicture user={user} />
       </div>
       <Link

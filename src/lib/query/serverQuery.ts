@@ -100,6 +100,17 @@ export const getBusinessUser = cache(
   }
 );
 
+export const getBusinessUserWithAlbum = cache(
+  async (businessUserQuery: Partial<BusinessUser>) => {
+    const businessUser = await db.businessUser.findFirst({
+      where: businessUserQuery,
+      include: { user: true, album: true },
+    });
+
+    return businessUser;
+  }
+);
+
 export const getServices = cache(async (serviceQuery: Partial<Service>) => {
   const services = await db.service.findMany({ where: serviceQuery });
   return services;

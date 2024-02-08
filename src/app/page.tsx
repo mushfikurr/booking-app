@@ -3,7 +3,7 @@ import { TextLink } from "@/components/TextLink";
 import { buttonVariants } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import haircut from "../../public/assets/haircut-2.jpg";
@@ -25,27 +25,16 @@ export default async function Home() {
                   </h5>
                 </span>
               </h1>
-              {/* <div className="flex flex-col gap-2 ">
-                <div className="flex gap-3 max-w-lg bg-background backdrop-blur-xl p-3 rounded-md max-sm:flex-col">
-                  <div className="flex gap-3 grow">
-                    <LocationDropdown />
-                    <DateDropdown />
-                  </div>
-                  <Button className="text-xs px-6 py-6">
-                    <span className="pt-[1.5px]">Search</span>
-                  </Button>
-                </div>
-              </div> */}
               <Link
-                href="/search"
+                href="/register"
                 className={cn(
-                  buttonVariants({ size: "lg", variant: "secondary" }),
+                  buttonVariants({ size: "lg", variant: "outline" }),
                   "w-fit gap-3",
                   "max-sm:w-full"
                 )}
               >
-                <Search className="h-4 w-4" />
-                Search for businesses
+                <UserPlus className="h-4 w-4" />
+                Register an account
               </Link>
             </div>
             <Image
@@ -63,7 +52,7 @@ export default async function Home() {
             Featured services
           </TextLink>
 
-          <div className="grid-auto-fit grid">
+          <div className="grid-auto-fit grid gap-8">
             {top3Businesses?.map((b) => {
               return <FeaturedBusiness key={b.id} {...b} />;
             })}

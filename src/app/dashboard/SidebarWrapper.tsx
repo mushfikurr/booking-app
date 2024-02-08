@@ -7,6 +7,7 @@ import {
   Contact,
   GanttChart,
   Home,
+  ImageIcon,
   MapPin,
   Scissors,
   Smartphone,
@@ -21,6 +22,11 @@ const SUBMENU_PROPS: SubmenuProps[] = [
       { title: "Overview", Icon: GanttChart, link: "/dashboard/overview" },
       { title: "Bookings", Icon: Calendar, link: "/dashboard/bookings" },
       { title: "Services", Icon: Scissors, link: "/dashboard/services" },
+      {
+        title: "Showcase",
+        Icon: ImageIcon,
+        link: "/dashboard/showcase",
+      },
     ],
   },
   {

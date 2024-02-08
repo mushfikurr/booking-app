@@ -104,6 +104,7 @@ function EditProfilePicture({ user }: EditProfilePictureProps) {
             onClientUploadComplete={(res) => {
               setAvatarUrl(res[0].key);
               mutation.mutate(res[0].key);
+              
             }}
             onUploadError={(error: Error) => {
               toast({

@@ -68,14 +68,14 @@ export default function EditProfilePersonalForm({
         name: "name",
         label: "Name *",
         placeholder: "John Doe",
-        defaultValue: data.name,
+        defaultValue: data?.name,
       },
       {
         name: "email",
         label: "Personal Email Address",
         placeholder: "johndoe@gmail.com",
         type: "email",
-        defaultValue: data.email,
+        defaultValue: data?.email,
       },
       {
         name: "password",

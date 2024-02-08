@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/(auth)/AuthOptions";
 import { getServerSession } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError, UTApi } from "uploadthing/server";
+import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
@@ -18,10 +18,18 @@ export const ourFileRouter = {
       return { userId: session.user.id, image: session.user.image };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Upload complete for userId:", metadata.userId);
-      console.log("file url", file.url);
-
-      return { uploadedBy: metadata.userId };
+      return { uploadedBy: metadata.userId, file };
+    }),
+  albumUpload: f({ image: { maxFileSize: "4MB", maxFileCount: 4 } })
+    .middleware(async ({ req }) => {
+      const session = await auth();
+      if (!session) throw new UploadThingError("Unauthorized");
+      if (!session.user.isBusinessUser)
+        throw new UploadThingError("Not a business user");
+      return { userId: session.user.id };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      return { uploadedBy: metadata.userId, file };
     }),
 } satisfies FileRouter;
 
