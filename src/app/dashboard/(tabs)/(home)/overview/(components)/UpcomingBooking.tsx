@@ -34,7 +34,7 @@ export function UpcomingBooking(props: UpcomingBookingProps) {
   return (
     <div
       className={cn(
-        "border border-border text-foreground rounded-lg p-6 flex gap-32 items-center drop-shadow-lg",
+        "bg-background border border-border text-foreground rounded-lg p-6 flex gap-32 items-center drop-shadow-sm",
         "max-md:flex-col max-md:gap-9"
       )}
     >

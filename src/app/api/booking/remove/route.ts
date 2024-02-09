@@ -22,6 +22,7 @@ export async function DELETE(req: NextRequest) {
 
     const soughtBooking = await db.booking.findFirst({ where: { id } });
     if (!soughtBooking) {
+      console.error(new Error("Booking doesnt exist to remove"));
       console.error("Booking doesnt exist for remove", soughtBooking);
       return NextResponse.json(
         { error: "Booking does not exist", field: "name" },
@@ -35,6 +36,7 @@ export async function DELETE(req: NextRequest) {
     }
   } catch (err) {
     const errorMessage = (err as PrismaError).message;
+    console.error(new Error((err as Error).message));
     console.error(errorMessage);
     return NextResponse.json({ error: errorMessage }, { status: 400 });
   }
