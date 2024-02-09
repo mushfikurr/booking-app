@@ -13,7 +13,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BookingApp",
+  title: "Bookal",
   description:
     "The fastest way to book services from your favourite local businesses.",
 };

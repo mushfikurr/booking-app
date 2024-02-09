@@ -25,9 +25,7 @@ async function NavbarWithProvider() {
                 height={64}
                 className="w-10 h-10 mt-1"
               /> */}
-              <p className="font-medium text-lg tracking-tighter">
-                BookingApp.
-              </p>
+              <p className="font-medium text-lg tracking-tighter">Bookal.</p>
             </span>
           </Link>
           <div>

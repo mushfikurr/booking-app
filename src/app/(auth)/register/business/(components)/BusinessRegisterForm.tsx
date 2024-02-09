@@ -103,7 +103,7 @@ export const forms: MultiCaptureFormProps[] = [
         name: "profileId",
         label: "Profile ID",
         description:
-          "Profile ID used to find your profile page on BookingApp. Must contain only characters, with hyphens only joining words.",
+          "Profile ID used to find your profile page on Bookal. Must contain only characters, with hyphens only joining words.",
       },
       {
         name: "businessDisplayName",
