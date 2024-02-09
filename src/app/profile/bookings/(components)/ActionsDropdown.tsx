@@ -3,39 +3,39 @@
 import { ScrollableArea } from "@/app/business/[profileId]/(components)/BookingDialog";
 import { ServiceCardRoot } from "@/app/business/[profileId]/(components)/ServiceCard";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/custom-dialog";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/components/ui/use-toast";
 import { useBookingStatistics } from "@/lib/hooks/useBookingStatistics";
 import { BookingIncludesServicesAndBusiness } from "@/lib/hooks/useBookingsForUser";
 import { getHMFromDateTime } from "@/lib/utils";
 import {
-    UseMutationResult,
-    useMutation,
-    useQueryClient,
+  UseMutationResult,
+  useMutation,
+  useQueryClient,
 } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Clock, Loader2, Scaling, X } from "lucide-react";
@@ -55,9 +55,7 @@ export function ActionsDropdown({
   const queryClient = useQueryClient();
   const bookingMutation = useMutation({
     mutationFn: async () => {
-      return await axios.delete("/api/booking/remove", {
-        data: { id: booking.id },
-      });
+      return await axios.post("/api/booking/remove", { id: booking.id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

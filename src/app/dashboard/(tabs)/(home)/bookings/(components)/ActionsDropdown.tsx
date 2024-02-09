@@ -50,9 +50,7 @@ export function ActionsDropdown({ booking }: ActionsDropdownProps) {
   const queryClient = useQueryClient();
   const bookingMutation = useMutation({
     mutationFn: async () => {
-      return await axios.delete("/api/booking/remove", {
-        data: { id: booking.id },
-      });
+      return await axios.post("/api/booking/remove", { id: booking.id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
