@@ -1,6 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { useUser } from "@/lib/hooks/useUser";
+import { BASE_IMAGE_URL, cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,10 +18,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
-import { BASE_IMAGE_URL } from "@/lib/uploadthing";
-import { useSession } from "next-auth/react";
-import { useUser } from "@/lib/hooks/useUser";
-import { Loader2 } from "lucide-react";
 
 interface NavLinkProps {
   route: string;

@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import { BASE_IMAGE_URL, UploadButton } from "@/lib/uploadthing";
-import { cn } from "@/lib/utils";
+import { UploadButton } from "@/lib/uploadthing";
+import { BASE_IMAGE_URL, cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";

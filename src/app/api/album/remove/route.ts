@@ -5,7 +5,6 @@ import {
   PrismaClientValidationError,
 } from "@prisma/client/runtime/library";
 import { NextRequest, NextResponse } from "next/server";
-import { UTApi } from "uploadthing/server";
 
 type PrismaError =
   | PrismaClientValidationError

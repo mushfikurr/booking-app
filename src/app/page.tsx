@@ -7,9 +7,11 @@ import { UserPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import haircut from "../../public/assets/haircut-2.jpg";
+import { getServerSession } from "next-auth";
 
 export default async function Home() {
   const top3Businesses = await db.businessUser.findMany({ take: 3 });
+  const session = await getServerSession();
 
   return (
     <main className="container max-w-7xl h-full pt-28 antialiased min-h-screen max-sm:px-0 max-sm:pt-[66px] pb-8">
@@ -25,17 +27,19 @@ export default async function Home() {
                   </h5>
                 </span>
               </h1>
-              <Link
-                href="/register"
-                className={cn(
-                  buttonVariants({ size: "lg", variant: "outline" }),
-                  "w-fit gap-3",
-                  "max-sm:w-full"
-                )}
-              >
-                <UserPlus className="h-4 w-4" />
-                Register an account
-              </Link>
+              {!session?.user && (
+                <Link
+                  href="/register"
+                  className={cn(
+                    buttonVariants({ size: "lg", variant: "outline" }),
+                    "w-fit gap-3",
+                    "max-sm:w-full"
+                  )}
+                >
+                  <UserPlus className="h-4 w-4" />
+                  Register an account
+                </Link>
+              )}
             </div>
             <Image
               className="animate-in fade-in slide-in-from-right-4 transition-all duration-700 ease-in-out group-hover/header:brightness-125 brightness-100 object-fit z-1 left-60 absolute -top-10 -z-10"

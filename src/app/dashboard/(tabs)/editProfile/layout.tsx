@@ -1,8 +1,8 @@
 import { getUserWithBusinessData } from "@/lib/query/serverQuery";
 import { ArrowRight } from "lucide-react";
-import { ReactNode, Suspense } from "react";
-import EditProfilePicture from "./(components)/EditProfilePicture";
 import Link from "next/link";
+import { ReactNode } from "react";
+import EditProfilePicture from "./(components)/EditProfilePicture";
 
 export default async function EditProfileLayout({
   children,

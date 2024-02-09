@@ -12,8 +12,7 @@ import {
 import { AlbumToImages, useAlbum } from "@/lib/hooks/useAlbum";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { UserWithBusinessUser } from "@/lib/relational-model-type";
-import { BASE_IMAGE_URL } from "@/lib/uploadthing";
-import { cn } from "@/lib/utils";
+import { BASE_IMAGE_URL, cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { StaticImageData } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
@@ -49,7 +48,7 @@ export function HeaderCarousel({
           <CarouselEmpty />
         ) : (
           <Carousel className="w-full h-full">
-            <CarouselContent className="drop-shadow-md -ml-1">
+            <CarouselContent className="drop-shadow-md -ml-[0.385rem]">
               {images?.map((img, index) => (
                 <CarouselItem
                   key={img.id}

@@ -1,9 +1,8 @@
 import { TextLink } from "@/components/TextLink";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db";
-import { BASE_IMAGE_URL } from "@/lib/uploadthing";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { BASE_IMAGE_URL } from "@/lib/utils";
 import { LucideIcon, ScissorsLineDashed, Stars } from "lucide-react";
 import { getServerSession } from "next-auth";
 
