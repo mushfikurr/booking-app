@@ -37,10 +37,8 @@ export const newOpeningHour = async (
 };
 
 export const deleteOpeningHour = async (openingHourId: number) => {
-  const resp = await axios.delete("/api/openingHour/delete", {
-    data: {
-      id: openingHourId,
-    },
+  const resp = await axios.post("/api/openingHour/delete", {
+    id: openingHourId,
   });
   return resp.data;
 };

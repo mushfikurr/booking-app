@@ -11,8 +11,8 @@ type PrismaError =
   | PrismaClientKnownRequestError
   | PrismaClientInitializationError;
 
-export async function DELETE(req: NextRequest) {
-  if (req.method !== "DELETE") {
+export async function POST(req: NextRequest) {
+  if (req.method !== "POST") {
     return NextResponse.json({ error: "Wrong request type" }, { status: 405 });
   }
 
