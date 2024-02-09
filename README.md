@@ -2,7 +2,7 @@
 
 This is Bookal [(live here)](https://djmp5s7y24vjt.cloudfront.net/), a fully-featured modern booking web application that allows local businesses to create, manage, and share their business with customers.
 
-###### Examples of usage
+##### Examples of usage
 
 Creating a booking on a business' page:
 ![An example of booking with Bookal](https://i.imgur.com/eyUcGKg.gif)
