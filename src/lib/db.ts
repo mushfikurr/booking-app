@@ -1,19 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import "server-only";
+import { Config } from "sst/node/config";
 
-declare global {
-  // eslint-disable-next-line no-var, no-unused-vars
-  var cachedPrisma: PrismaClient;
-}
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-let prisma: PrismaClient;
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  if (!global.cachedPrisma) {
-    global.cachedPrisma = new PrismaClient();
-  }
-  prisma = global.cachedPrisma;
-}
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({
+    datasourceUrl: Config.DATABASE_URL,
+  });
 
-export const db = prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;
