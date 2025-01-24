@@ -16,7 +16,7 @@ Managing your business (dashboard):
 ...and much more!
 
 ## Why?
-As a person who is always visiting local business' (thanks Jay!), I was surprised to see they were still operating through mobile phone and text. 
+As a person who is always visiting local businesses, I was surprised to see they were still operating through mobile phone and text. 
 
 Though there are many services that offer this service, many:
 - Fail to properly address the wants of a local business, often being hard to create.
